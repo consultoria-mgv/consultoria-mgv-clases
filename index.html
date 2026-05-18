@@ -1,0 +1,1991 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seguridad e Higiene Industrial — Clase Interactiva</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0F1923;
+  --ink2: #2A3B4C;
+  --slate: #4A5568;
+  --muted: #718096;
+  --border: #E2E8F0;
+  --bg: #F7F9FC;
+  --surface: #FFFFFF;
+  --u1: #C0392B;      /* Riesgos — rojo industrial */
+  --u1-light: #FDECEA;
+  --u1-mid: #E74C3C;
+  --u2: #1A6B4A;      /* Higiene — verde técnico */
+  --u2-light: #E8F5EE;
+  --u2-mid: #27AE60;
+  --gold: #D4831A;
+  --gold-light: #FEF3E2;
+  --font-display: 'DM Serif Display', serif;
+  --font-body: 'DM Sans', sans-serif;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.07);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.13);
+  --r: 12px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ══ HERO ══════════════════════════════════════════════════════ */
+.hero {
+  background: var(--ink);
+  color: #fff;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 30px,
+      rgba(255,255,255,0.018) 30px,
+      rgba(255,255,255,0.018) 31px
+    ),
+    linear-gradient(135deg, #0F1923 0%, #1a2d42 60%, #0F1923 100%);
+}
+.hero-accent {
+  position: absolute;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(192,57,43,0.18) 0%, transparent 70%);
+  top: -200px; right: -100px;
+  pointer-events: none;
+}
+.hero-accent2 {
+  position: absolute;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(26,107,74,0.15) 0%, transparent 70%);
+  bottom: -80px; left: 80px;
+  pointer-events: none;
+}
+
+.hero-inner {
+  position: relative; z-index: 2;
+  max-width: 1100px; margin: 0 auto;
+  padding: 3rem 2rem 2.5rem;
+  width: 100%;
+}
+
+.hero-kicker {
+  font-family: var(--font-body);
+  font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 0.75rem;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  line-height: 1.15;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+.hero h1 em { color: #E87C6B; font-style: italic; }
+
+.hero-desc {
+  font-size: 0.9rem; color: rgba(255,255,255,0.68);
+  max-width: 580px; margin-bottom: 1.75rem;
+  line-height: 1.7;
+}
+
+.hero-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 2rem; }
+.hero-pill {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.82);
+  padding: 4px 14px; border-radius: 20px;
+  font-size: 0.72rem; font-weight: 500; letter-spacing: 0.02em;
+}
+
+.hero-units {
+  display: flex; gap: 12px; flex-wrap: wrap;
+}
+.hero-unit-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 20px; border-radius: 8px;
+  font-family: var(--font-body); font-size: 0.82rem; font-weight: 600;
+  cursor: pointer; border: none; transition: all 0.2s;
+  text-decoration: none;
+}
+.hero-unit-btn.u1 { background: var(--u1); color: #fff; }
+.hero-unit-btn.u1:hover { background: var(--u1-mid); transform: translateY(-2px); }
+.hero-unit-btn.u2 { background: var(--u2); color: #fff; }
+.hero-unit-btn.u2:hover { background: var(--u2-mid); transform: translateY(-2px); }
+
+/* ══ NAV ════════════════════════════════════════════════════════ */
+.sticky-nav {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(15,25,35,0.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.nav-inner {
+  max-width: 1100px; margin: 0 auto;
+  padding: 0 2rem;
+  display: flex; align-items: center; gap: 0;
+  overflow-x: auto;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 7px;
+  padding: 14px 16px;
+  color: rgba(255,255,255,0.55);
+  font-size: 0.78rem; font-weight: 500;
+  cursor: pointer; border: none; background: none;
+  font-family: var(--font-body);
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s; white-space: nowrap;
+  text-decoration: none;
+}
+.nav-item:hover { color: #fff; }
+.nav-item.u1-active { color: #E87C6B; border-bottom-color: var(--u1); }
+.nav-item.u2-active { color: #6ECF9B; border-bottom-color: var(--u2); }
+.nav-dot { width: 7px; height: 7px; border-radius: 50%; }
+.nd-u1 { background: var(--u1); }
+.nd-u2 { background: var(--u2); }
+
+/* ══ MAIN LAYOUT ════════════════════════════════════════════════ */
+main { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem; }
+
+/* ══ SECTION HEADER ══════════════════════════════════════════════ */
+.section-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 5px 14px; border-radius: 20px;
+  font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.sb-u1 { background: var(--u1); color: #fff; }
+.sb-u2 { background: var(--u2); color: #fff; }
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.section-subtitle {
+  font-size: 0.88rem; color: var(--slate);
+  max-width: 700px; margin-bottom: 2rem;
+  line-height: 1.65;
+}
+
+.section-divider {
+  border: none;
+  border-top: 2px solid var(--border);
+  margin: 3.5rem 0;
+}
+
+/* ══ CONTENT BLOCKS ═════════════════════════════════════════════ */
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+@media (max-width: 700px) { .content-grid { grid-template-columns: 1fr; } }
+
+.content-card {
+  background: var(--surface);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-sm);
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.content-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+.card-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 0.85rem;
+}
+.card-icon {
+  width: 38px; height: 38px; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; flex-shrink: 0;
+}
+.ci-u1 { background: var(--u1-light); }
+.ci-u2 { background: var(--u2-light); }
+
+.card-title {
+  font-weight: 600; font-size: 0.9rem; color: var(--ink);
+}
+
+.card-body {
+  font-size: 0.83rem; color: var(--slate); line-height: 1.65;
+}
+
+.card-body ul { padding-left: 1.1rem; margin-top: 0.5rem; }
+.card-body li { margin-bottom: 0.35rem; }
+
+/* Full-width card */
+.card-full {
+  background: var(--surface);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-sm);
+  padding: 1.75rem 2rem;
+  border: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+}
+.card-full h3 {
+  font-family: var(--font-display);
+  font-size: 1.15rem; color: var(--ink);
+  margin-bottom: 0.75rem;
+}
+.card-full p { font-size: 0.85rem; color: var(--slate); line-height: 1.7; margin-bottom: 0.8rem; }
+.card-full p:last-child { margin-bottom: 0; }
+
+/* Accent stripe */
+.card-stripe-u1 { border-left: 4px solid var(--u1); }
+.card-stripe-u2 { border-left: 4px solid var(--u2); }
+.card-stripe-gold { border-left: 4px solid var(--gold); }
+
+/* ══ DEFINITION BLOCK ════════════════════════════════════════════ */
+.definition-block {
+  background: var(--ink);
+  color: #fff;
+  border-radius: var(--r);
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  position: relative; overflow: hidden;
+}
+.definition-block::before {
+  content: '"';
+  position: absolute; right: 1.5rem; top: -0.5rem;
+  font-family: var(--font-display);
+  font-size: 8rem; color: rgba(255,255,255,0.06);
+  line-height: 1;
+}
+.definition-block .def-label {
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 0.75rem;
+}
+.definition-block .def-text {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  line-height: 1.55; color: rgba(255,255,255,0.92);
+}
+.definition-block .def-source {
+  font-size: 0.72rem; color: rgba(255,255,255,0.4);
+  margin-top: 1rem; font-style: italic;
+}
+
+/* ══ CLASSIFICATION TABLE ════════════════════════════════════════ */
+.class-table {
+  width: 100%; border-collapse: separate; border-spacing: 0;
+  border-radius: var(--r); overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.5rem; font-size: 0.8rem;
+}
+.class-table thead { background: var(--ink); color: #fff; }
+.class-table thead th {
+  padding: 11px 14px; text-align: left; font-weight: 600;
+  font-size: 0.75rem; letter-spacing: 0.03em;
+}
+.class-table tbody tr:nth-child(odd) { background: var(--surface); }
+.class-table tbody tr:nth-child(even) { background: var(--bg); }
+.class-table tbody tr:hover { background: #EBF4FF; }
+.class-table tbody td { padding: 10px 14px; color: var(--slate); border-bottom: 1px solid var(--border); vertical-align: top; }
+.class-table tbody td:first-child { color: var(--ink); font-weight: 600; }
+
+/* ══ STATS ROW ═══════════════════════════════════════════════════ */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem; margin-bottom: 2rem;
+}
+.stat-card {
+  background: var(--surface);
+  border-radius: var(--r); padding: 1.25rem;
+  text-align: center; box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+}
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 2.2rem; line-height: 1.1; color: var(--ink);
+  margin-bottom: 3px;
+}
+.stat-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+
+/* ══ CASE STUDY ══════════════════════════════════════════════════ */
+.case-study {
+  border-radius: var(--r); overflow: hidden;
+  box-shadow: var(--shadow-md); margin-bottom: 2rem;
+}
+.case-header {
+  padding: 1.25rem 1.75rem;
+  display: flex; align-items: center; gap: 14px;
+}
+.case-header-u1 { background: var(--u1); }
+.case-header-u2 { background: var(--u2); }
+.case-tag {
+  background: rgba(255,255,255,0.2);
+  color: #fff; padding: 3px 10px;
+  border-radius: 20px; font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.case-title { color: #fff; font-weight: 700; font-size: 0.95rem; }
+.case-meta { color: rgba(255,255,255,0.72); font-size: 0.76rem; margin-top: 1px; }
+.case-body {
+  background: var(--surface);
+  padding: 1.75rem;
+  border: 1px solid var(--border);
+  border-top: none;
+  font-size: 0.84rem; color: var(--slate); line-height: 1.7;
+}
+.case-body h4 {
+  color: var(--ink); font-weight: 600; font-size: 0.85rem;
+  margin: 1.25rem 0 0.5rem;
+}
+.case-body h4:first-child { margin-top: 0; }
+.case-body p { margin-bottom: 0.75rem; }
+.case-body ol, .case-body ul { padding-left: 1.2rem; margin-bottom: 0.75rem; }
+.case-body li { margin-bottom: 0.3rem; }
+
+.case-lesson {
+  background: var(--gold-light);
+  border-left: 4px solid var(--gold);
+  padding: 0.9rem 1.25rem;
+  border-radius: 0 8px 8px 0;
+  margin-top: 1.25rem;
+  font-size: 0.82rem; color: #7A4A0A;
+}
+.case-lesson strong { color: #5A3209; }
+
+/* ══ ACCORDION ═══════════════════════════════════════════════════ */
+.accordion { margin-bottom: 1.5rem; }
+.acc-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  margin-bottom: 6px;
+  overflow: hidden;
+}
+.acc-header {
+  width: 100%; display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 1.25rem;
+  background: none; border: none;
+  cursor: pointer; font-family: var(--font-body);
+  font-size: 0.87rem; font-weight: 600; color: var(--ink);
+  text-align: left;
+  transition: background 0.15s;
+}
+.acc-header:hover { background: var(--bg); }
+.acc-arrow {
+  font-size: 0.75rem; color: var(--muted);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.acc-item.open .acc-arrow { transform: rotate(180deg); }
+.acc-body {
+  display: none;
+  padding: 0 1.25rem 1.25rem;
+  font-size: 0.83rem; color: var(--slate); line-height: 1.7;
+}
+.acc-item.open .acc-body { display: block; }
+.acc-body ul { padding-left: 1.1rem; margin-top: 0.5rem; }
+.acc-body li { margin-bottom: 0.4rem; }
+.acc-body p { margin-bottom: 0.6rem; }
+
+/* ══ STEP LIST ═══════════════════════════════════════════════════ */
+.step-list { counter-reset: step-counter; list-style: none; padding: 0; margin-bottom: 1.5rem; }
+.step-list li {
+  counter-increment: step-counter;
+  display: flex; gap: 1rem; margin-bottom: 1rem;
+  align-items: flex-start;
+}
+.step-list li::before {
+  content: counter(step-counter);
+  display: flex; align-items: center; justify-content: center;
+  min-width: 32px; height: 32px; border-radius: 50%;
+  font-weight: 700; font-size: 0.8rem; color: #fff;
+  background: var(--ink); flex-shrink: 0;
+  margin-top: 1px;
+}
+.step-list.u1 li::before { background: var(--u1); }
+.step-list.u2 li::before { background: var(--u2); }
+.step-list li .step-content { font-size: 0.84rem; color: var(--slate); line-height: 1.65; }
+.step-list li .step-content strong { color: var(--ink); }
+
+/* ══ CALLOUT ═════════════════════════════════════════════════════ */
+.callout {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 1.1rem 1.35rem;
+  border-radius: var(--r); margin-bottom: 1.25rem;
+  font-size: 0.83rem; line-height: 1.65;
+}
+.callout-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
+.callout-warn { background: #FFF8E1; border: 1px solid #FFE082; color: #7A5800; }
+.callout-danger { background: var(--u1-light); border: 1px solid #F5A9A3; color: #7A1A10; }
+.callout-info { background: #E3F2FD; border: 1px solid #90CAF9; color: #0D3C61; }
+.callout-success { background: var(--u2-light); border: 1px solid #A5D6A7; color: #1B4D2A; }
+
+/* ══ TABS ════════════════════════════════════════════════════════ */
+.tab-bar {
+  display: flex; gap: 4px; flex-wrap: wrap;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 1.5rem;
+}
+.tab-btn {
+  padding: 9px 18px; border: none; background: none;
+  font-family: var(--font-body); font-size: 0.82rem; font-weight: 600;
+  color: var(--muted); cursor: pointer; border-radius: 8px 8px 0 0;
+  transition: all 0.15s; position: relative; bottom: -2px;
+}
+.tab-btn:hover { color: var(--ink); background: var(--bg); }
+.tab-btn.active-u1 { color: var(--u1); border-bottom: 2px solid var(--u1); background: var(--u1-light); }
+.tab-btn.active-u2 { color: var(--u2); border-bottom: 2px solid var(--u2); background: var(--u2-light); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ══ QUIZ ════════════════════════════════════════════════════════ */
+.quiz-wrap {
+  background: var(--surface);
+  border-radius: var(--r); box-shadow: var(--shadow-md);
+  border: 1px solid var(--border); overflow: hidden;
+  margin-bottom: 2rem;
+}
+.quiz-header {
+  background: var(--ink); padding: 1.1rem 1.5rem;
+  display: flex; align-items: center; gap: 12px;
+}
+.quiz-header h3 { color: #fff; font-size: 0.95rem; font-weight: 700; }
+.quiz-progress {
+  margin-left: auto; font-size: 0.75rem; color: rgba(255,255,255,0.6);
+}
+.quiz-body { padding: 1.75rem; }
+.quiz-question {
+  font-weight: 600; font-size: 0.92rem; color: var(--ink);
+  margin-bottom: 1.25rem; line-height: 1.5;
+}
+.quiz-options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.25rem; }
+.quiz-opt {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; border-radius: 8px;
+  border: 1.5px solid var(--border);
+  cursor: pointer; transition: all 0.15s;
+  font-size: 0.84rem; color: var(--slate);
+  background: var(--bg);
+}
+.quiz-opt:hover { border-color: var(--ink); color: var(--ink); background: #fff; }
+.quiz-opt.selected { border-color: var(--ink); background: #fff; color: var(--ink); font-weight: 600; }
+.quiz-opt.correct { border-color: var(--u2); background: var(--u2-light); color: var(--u2); }
+.quiz-opt.wrong { border-color: var(--u1); background: var(--u1-light); color: var(--u1); }
+.quiz-opt-dot {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 2px solid currentColor; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.55rem;
+}
+.quiz-feedback {
+  display: none; padding: 0.85rem 1rem;
+  border-radius: 8px; font-size: 0.82rem; margin-bottom: 1rem;
+}
+.quiz-feedback.show { display: block; }
+.quiz-feedback.ok { background: var(--u2-light); color: var(--u2); border: 1px solid #A5D6A7; }
+.quiz-feedback.fail { background: var(--u1-light); color: var(--u1); border: 1px solid #F5A9A3; }
+.quiz-nav { display: flex; gap: 8px; align-items: center; }
+.qbtn {
+  padding: 9px 22px; border-radius: 8px; border: none;
+  font-family: var(--font-body); font-size: 0.82rem; font-weight: 600;
+  cursor: pointer; transition: all 0.15s;
+}
+.qbtn-primary { background: var(--ink); color: #fff; }
+.qbtn-primary:hover { opacity: 0.85; }
+.qbtn-outline { background: var(--bg); color: var(--ink); border: 1.5px solid var(--border); }
+.qbtn-outline:hover { background: #fff; border-color: var(--ink); }
+.qbtn:disabled { opacity: 0.4; cursor: not-allowed; }
+.quiz-score {
+  display: none; text-align: center; padding: 2rem;
+}
+.quiz-score.show { display: block; }
+.score-circle {
+  width: 90px; height: 90px; border-radius: 50%;
+  border: 5px solid var(--u2);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 1rem;
+  font-family: var(--font-display); font-size: 2rem; color: var(--u2);
+}
+
+/* ══ DB / NOISE TABLE ════════════════════════════════════════════ */
+.noise-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 0.78rem; margin-bottom: 1.5rem;
+}
+.noise-table th {
+  background: var(--u2); color: #fff;
+  padding: 9px 12px; text-align: center;
+}
+.noise-table td { padding: 8px 12px; text-align: center; border-bottom: 1px solid var(--border); }
+.noise-table tr:nth-child(even) td { background: var(--u2-light); }
+.noise-table td.risk-level { font-weight: 700; padding: 4px 10px; border-radius: 20px; font-size: 0.72rem; }
+.rl-ok { background: #d4edda; color: #1b5e20; }
+.rl-caution { background: #fff3cd; color: #7a5800; }
+.rl-danger { background: #f8d7da; color: #7a1a10; }
+.rl-critical { background: var(--u1); color: #fff; }
+
+/* ══ PROGRESS BAR ════════════════════════════════════════════════ */
+.exposure-bar { margin-bottom: 12px; }
+.exposure-label { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 0.78rem; }
+.exposure-label span:first-child { color: var(--ink); font-weight: 600; }
+.exposure-label span:last-child { color: var(--muted); }
+.bar-track { height: 10px; background: var(--bg); border-radius: 5px; overflow: hidden; border: 1px solid var(--border); }
+.bar-fill { height: 100%; border-radius: 5px; transition: width 1.2s ease; }
+
+/* ══ TOX CARD ════════════════════════════════════════════════════ */
+.tox-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+.tox-card {
+  background: var(--surface); border-radius: var(--r);
+  border: 1px solid var(--border); padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+.tox-card .tox-emoji { font-size: 1.8rem; margin-bottom: 0.6rem; }
+.tox-card h4 { font-size: 0.87rem; font-weight: 700; color: var(--ink); margin-bottom: 0.4rem; }
+.tox-card p { font-size: 0.78rem; color: var(--slate); line-height: 1.55; }
+.tox-tag {
+  display: inline-block; margin-top: 0.6rem;
+  padding: 2px 9px; border-radius: 10px;
+  font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+}
+.tag-agudo { background: #ffe0e0; color: #b71c1c; }
+.tag-cronico { background: #e8eaf6; color: #283593; }
+.tag-local { background: #fff3e0; color: #e65100; }
+.tag-sistemico { background: #fce4ec; color: #880e4f; }
+
+/* ══ INTERACTIVE CONTROLS ════════════════════════════════════════ */
+.calc-box {
+  background: var(--surface); border-radius: var(--r);
+  border: 1px solid var(--border); padding: 1.75rem;
+  box-shadow: var(--shadow-sm); margin-bottom: 1.5rem;
+}
+.calc-box h3 { font-size: 0.92rem; font-weight: 700; color: var(--ink); margin-bottom: 0.3rem; }
+.calc-box .calc-desc { font-size: 0.78rem; color: var(--muted); margin-bottom: 1.25rem; }
+.calc-row { display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end; margin-bottom: 1rem; }
+.calc-field { flex: 1; min-width: 140px; }
+.calc-field label { display: block; font-size: 0.74rem; font-weight: 600; color: var(--slate); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.04em; }
+.calc-field input, .calc-field select {
+  width: 100%; padding: 9px 12px;
+  border: 1.5px solid var(--border); border-radius: 8px;
+  font-family: var(--font-body); font-size: 0.85rem; color: var(--ink);
+  background: var(--bg); transition: border-color 0.15s;
+}
+.calc-field input:focus, .calc-field select:focus { outline: none; border-color: var(--u2); background: #fff; }
+.calc-result {
+  padding: 1rem 1.25rem; border-radius: 8px;
+  background: var(--ink); color: #fff;
+  font-size: 0.88rem; font-weight: 600;
+  display: none;
+}
+.calc-result.show { display: block; }
+.calc-result .result-val { font-family: var(--font-display); font-size: 1.4rem; }
+
+/* ══ FOOTER NAV ══════════════════════════════════════════════════ */
+.section-nav {
+  display: flex; justify-content: space-between;
+  margin-top: 2rem; gap: 1rem; flex-wrap: wrap;
+}
+.snav-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 20px; border-radius: 8px; border: none;
+  background: var(--surface); color: var(--ink);
+  font-family: var(--font-body); font-size: 0.82rem; font-weight: 600;
+  cursor: pointer; border: 1.5px solid var(--border);
+  transition: all 0.15s; text-decoration: none;
+}
+.snav-btn:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+/* ══ UNIT SECTION ════════════════════════════════════════════════ */
+.unit-section { margin-bottom: 4rem; }
+
+/* ══ OBJETIVOS BLOCK ═════════════════════════════════════════════ */
+.objetivos-block {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1rem; margin-bottom: 2rem;
+}
+@media (max-width:700px) { .objetivos-block { grid-template-columns: 1fr; } }
+.obj-card {
+  border-radius: var(--r); padding: 1.25rem 1.5rem;
+  border: 1px solid var(--border);
+}
+.obj-card-u1 { background: var(--u1-light); border-color: #F5A9A3; }
+.obj-card-u2 { background: var(--u2-light); border-color: #A5D6A7; }
+.obj-card h4 { font-size: 0.82rem; font-weight: 700; margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.obj-card-u1 h4 { color: var(--u1); }
+.obj-card-u2 h4 { color: var(--u2); }
+.obj-card ul { padding-left: 1.1rem; }
+.obj-card li { font-size: 0.82rem; color: var(--slate); margin-bottom: 0.3rem; line-height: 1.5; }
+
+/* Highlight box */
+.highlight-box {
+  background: linear-gradient(135deg, var(--ink) 0%, #2A3B4C 100%);
+  border-radius: var(--r); padding: 2rem;
+  color: #fff; margin-bottom: 2rem; position: relative; overflow: hidden;
+}
+.highlight-box::after {
+  content: ''; position: absolute; right: -40px; top: -40px;
+  width: 160px; height: 160px; border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+}
+.highlight-box h3 {
+  font-family: var(--font-display); font-size: 1.2rem;
+  color: #fff; margin-bottom: 0.5rem;
+}
+.highlight-box p { font-size: 0.84rem; color: rgba(255,255,255,0.72); line-height: 1.7; }
+
+/* ══ ANIMATIONS ══════════════════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.anim-up { animation: fadeUp 0.45s ease both; }
+
+.section-anchor { scroll-margin-top: 56px; }
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══════════════════════════════════════════════════════ -->
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-accent"></div>
+  <div class="hero-accent2"></div>
+  <div class="hero-inner anim-up">
+    <div class="hero-kicker">Ingeniería Industrial · Seguridad e Higiene Industrial</div>
+    <h1>Riesgos Profesionales<br>e <em>Higiene Industrial</em></h1>
+    <p class="hero-desc">Clase completa con definiciones, clasificaciones, casos reales, estadísticas, toxicología, control ambiental y exposición a ruido y vibraciones. Modalidad en línea.</p>
+    <div class="hero-pills">
+      <span class="hero-pill">NOM-011-STPS-2001</span>
+      <span class="hero-pill">NOM-024-STPS-2001</span>
+      <span class="hero-pill">NOM-010-STPS-2014</span>
+      <span class="hero-pill">ISO 9612:2009</span>
+      <span class="hero-pill">ACGIH TLV/BEI</span>
+    </div>
+    <div class="hero-units">
+      <a href="#unidad1" class="hero-unit-btn u1">🏭 Unidad 1 — Riesgos Profesionales</a>
+      <a href="#unidad2" class="hero-unit-btn u2">🔬 Unidad 2 — Higiene Industrial</a>
+    </div>
+  </div>
+</header>
+
+<!-- ══ NAV ════════════════════════════════════════════════════════ -->
+<nav class="sticky-nav" aria-label="Navegación de la clase">
+  <div class="nav-inner">
+    <a class="nav-item u1-active" href="#def-riesgo"><span class="nav-dot nd-u1"></span>Definición</a>
+    <a class="nav-item u1-active" href="#clasificacion"><span class="nav-dot nd-u1"></span>Clasificación</a>
+    <a class="nav-item u1-active" href="#estadisticas"><span class="nav-dot nd-u1"></span>Estadísticas</a>
+    <a class="nav-item u1-active" href="#factores"><span class="nav-dot nd-u1"></span>Factores Higiénicos</a>
+    <a class="nav-item u2-active" href="#toxicologia"><span class="nav-dot nd-u2"></span>Toxicología</a>
+    <a class="nav-item u2-active" href="#control-ambiental"><span class="nav-dot nd-u2"></span>Control Ambiental</a>
+    <a class="nav-item u2-active" href="#ruido"><span class="nav-dot nd-u2"></span>Ruido</a>
+    <a class="nav-item u2-active" href="#vibraciones"><span class="nav-dot nd-u2"></span>Vibraciones</a>
+    <a class="nav-item" href="#evaluacion">✏️ Evaluación</a>
+  </div>
+</nav>
+
+<!-- ══ MAIN ═══════════════════════════════════════════════════════ -->
+<main>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     UNIDAD 1: RIESGOS PROFESIONALES EN LAS ORGANIZACIONES
+══════════════════════════════════════════════════════════════════ -->
+<div id="unidad1" class="unit-section section-anchor">
+  <div class="section-badge sb-u1">🏭 Unidad 1</div>
+  <h2 class="section-title">Riesgos Profesionales en las Organizaciones</h2>
+  <p class="section-subtitle">Comprende la naturaleza del riesgo laboral, sus clasificaciones y el impacto real de las enfermedades de trabajo en la industria mexicana e internacional.</p>
+
+  <div class="objetivos-block">
+    <div class="obj-card obj-card-u1">
+      <h4>📌 Contenido temático</h4>
+      <ul>
+        <li>Definición de riesgo profesional</li>
+        <li>Riesgos profesionales en el trabajo</li>
+        <li>Clasificación de factores de riesgo</li>
+        <li>Estadísticas y casos de enfermedades de trabajo</li>
+        <li>Factores de riesgo higiénico</li>
+      </ul>
+    </div>
+    <div class="obj-card obj-card-u2" style="border-color:#90CAF9;background:#E3F2FD;">
+      <h4 style="color:#1565C0;">🎯 Objetivo de aprendizaje</h4>
+      <ul>
+        <li>Analizar riesgos profesionales y su definición</li>
+        <li>Clasificar factores de riesgo (incluyendo higiénicos)</li>
+        <li>Interpretar estadísticas de enfermedades laborales</li>
+        <li>Desarrollar estrategias de prevención y control</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- DEFINICIÓN -->
+  <div id="def-riesgo" class="section-anchor">
+    <div class="definition-block">
+      <div class="def-label">Definición legal — Ley Federal del Trabajo, Art. 473</div>
+      <div class="def-text">"Riesgo de trabajo son los <strong>accidentes y enfermedades</strong> a que están expuestos los trabajadores <strong>en ejercicio o con motivo del trabajo</strong>."</div>
+      <div class="def-source">Ley Federal del Trabajo, México | OIT: "toda lesión, enfermedad o muerte que ocurra como consecuencia del trabajo"</div>
+    </div>
+
+    <div class="content-grid">
+      <div class="content-card card-stripe-u1">
+        <div class="card-header">
+          <div class="card-icon ci-u1">⚡</div>
+          <div class="card-title">Accidente de Trabajo</div>
+        </div>
+        <div class="card-body">
+          <p>Toda lesión orgánica, perturbación funcional o muerte, producida <strong>repentinamente</strong> en ejercicio o con motivo del trabajo.</p>
+          <ul>
+            <li>Ocurrencia súbita e inesperada</li>
+            <li>Causa externa identificable</li>
+            <li>Lesión corporal o funcional</li>
+            <li>Relación directa con la actividad laboral</li>
+          </ul>
+          <p style="margin-top:0.75rem;font-size:0.76rem;color:#999;font-style:italic">Ejemplo: fractura de muñeca al caer de una escalera durante una inspección de equipo.</p>
+        </div>
+      </div>
+      <div class="content-card card-stripe-u1">
+        <div class="card-header">
+          <div class="card-icon ci-u1">🦠</div>
+          <div class="card-title">Enfermedad de Trabajo</div>
+        </div>
+        <div class="card-body">
+          <p>Todo estado patológico derivado de la <strong>acción continuada</strong> de una causa que tenga origen o motivo en el trabajo (LFT, Art. 475).</p>
+          <ul>
+            <li>Desarrollo progresivo y crónico</li>
+            <li>Relación causa-efecto con exposición laboral</li>
+            <li>Reconocida en la tabla de enfermedades (LFT)</li>
+            <li>Período de latencia variable</li>
+          </ul>
+          <p style="margin-top:0.75rem;font-size:0.76rem;color:#999;font-style:italic">Ejemplo: hipoacusia bilateral en operador de maquinaria pesada con 15 años de exposición a 92 dB.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-info">
+      <span class="callout-icon">💡</span>
+      <div><strong>Distinción clave:</strong> El accidente es un <em>evento puntual</em>; la enfermedad es un <em>proceso gradual</em>. Ambos generan las mismas prestaciones al trabajador (Art. 487 LFT): atención médica, rehabilitación, incapacidades e indemnizaciones. En México, el IMSS gestiona estas prestaciones a través del Seguro de Riesgos de Trabajo.</div>
+    </div>
+  </div>
+
+  <!-- CLASIFICACIÓN -->
+  <div id="clasificacion" class="section-anchor" style="margin-top:2.5rem">
+    <div class="section-badge sb-u1">Subtema 2</div>
+    <h3 class="section-title" style="font-size:1.4rem">Clasificación de los Factores de Riesgo</h3>
+    <p class="section-subtitle">Los factores de riesgo son todas las condiciones del trabajo que pueden originar un accidente o enfermedad. Su correcta clasificación es el primer paso del IPERC.</p>
+
+    <div class="tab-bar">
+      <button class="tab-btn active-u1" onclick="openTab('rf','fisicos',this)">⚡ Físicos</button>
+      <button class="tab-btn" onclick="openTab('rf','quimicos',this)">⚗️ Químicos</button>
+      <button class="tab-btn" onclick="openTab('rf','biologicos',this)">🦠 Biológicos</button>
+      <button class="tab-btn" onclick="openTab('rf','ergonomicos',this)">🧬 Ergonómicos</button>
+      <button class="tab-btn" onclick="openTab('rf','psicosociales',this)">🧠 Psicosociales</button>
+      <button class="tab-btn" onclick="openTab('rf','mecanicos',this)">⚙️ Mecánicos/Locativos</button>
+    </div>
+
+    <div id="rf-fisicos" class="tab-panel active">
+      <div class="card-full card-stripe-u1">
+        <h3>⚡ Factores de Riesgo Físico</h3>
+        <p>Son formas de energía presentes en el ambiente de trabajo que pueden causar daño al organismo humano. Son los más comunes en la industria manufacturera, construcción y minería.</p>
+        <table class="class-table">
+          <thead><tr><th>Agente Físico</th><th>Fuentes Típicas en Industria</th><th>Efecto sobre la Salud</th><th>Norma Aplicable</th></tr></thead>
+          <tbody>
+            <tr><td>Ruido</td><td>Compresores, tornos, prensas, fundición</td><td>Hipoacusia, estrés, fatiga, hipertensión</td><td>NOM-011-STPS-2001</td></tr>
+            <tr><td>Vibraciones</td><td>Taladros neumáticos, montacargas, equipos de compactación</td><td>Síndrome de Raynaud, lumbalgia, vasospasmo</td><td>NOM-024-STPS-2001</td></tr>
+            <tr><td>Iluminación</td><td>Talleres sin luz natural, oficinas de pantalla</td><td>Fatiga visual, cefalea, accidentes por poca visibilidad</td><td>NOM-025-STPS-2008</td></tr>
+            <tr><td>Temperatura extrema</td><td>Hornos, cámaras frigoríficas, fundición de metales</td><td>Golpe de calor, hipotermia, quemaduras</td><td>NOM-015-STPS-2001</td></tr>
+            <tr><td>Radiaciones ionizantes</td><td>Gammagrafía industrial, laboratorios radiológicos</td><td>Mutaciones, cáncer, leucemia</td><td>NOM-005-STPS-1998 / CNSNS</td></tr>
+            <tr><td>Radiaciones no ionizantes</td><td>Soldadura (UV), hornos de inducción (RF), pantallas LED</td><td>Fotoqueratitis, cataratas, quemaduras de retina</td><td>ACGIH TLV/BEI</td></tr>
+            <tr><td>Presiones anormales</td><td>Trabajos en caissons, buceo industrial</td><td>Enfermedad de descompresión, barotrauma</td><td>NOM-015 / NIOSH</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="rf-quimicos" class="tab-panel">
+      <div class="card-full card-stripe-u1">
+        <h3>⚗️ Factores de Riesgo Químico</h3>
+        <p>Sustancias o mezclas que por sus propiedades físico-químicas, toxicológicas o inflamables representan riesgo para la salud. La vía de exposición determina el tipo de daño.</p>
+        <table class="class-table">
+          <thead><tr><th>Estado Físico</th><th>Ejemplos Industriales</th><th>Vía de Ingreso</th><th>Efecto Principal</th></tr></thead>
+          <tbody>
+            <tr><td>Gases</td><td>CO (fundición), SO₂ (petroquímica), H₂S (petroleras)</td><td>Inhalación</td><td>Asfixia, irritación, intoxicación sistémica</td></tr>
+            <tr><td>Vapores</td><td>Benceno (pinturas), tolueno (adhesivos), acetona (laboratorios)</td><td>Inhalación, piel</td><td>Hepatotoxicidad, SNC, leucemia (benceno)</td></tr>
+            <tr><td>Polvos</td><td>Sílice libre (minería), asbesto (demolición), algodón (textil)</td><td>Inhalación</td><td>Silicosis, asbestosis, bisinosis</td></tr>
+            <tr><td>Humos metálicos</td><td>Plomo (baterías), manganeso (soldadura), cromo hexavalente</td><td>Inhalación, ingestión</td><td>Saturnismo, parkinsonismo, cáncer pulmonar</td></tr>
+            <tr><td>Neblinas y aerosoles</td><td>Ácidos en galvanoplastia, pesticidas</td><td>Inhalación, piel, ojos</td><td>Quemaduras, irritación, sensibilización</td></tr>
+            <tr><td>Líquidos corrosivos</td><td>HCl, NaOH (industria química), ácido sulfúrico</td><td>Piel, ojos, ingestión</td><td>Quemaduras químicas, ceguera</td></tr>
+          </tbody>
+        </table>
+        <div class="callout callout-warn" style="margin-top:1rem">
+          <span class="callout-icon">⚠️</span>
+          <div><strong>Regla del IDLH:</strong> En México la NOM-010-STPS-2014 establece los valores límite de exposición (VLE). Nunca ingresar a un espacio confinado sin monitoreo de atmósfera. El CO no tiene olor ni color, y es responsable de cientos de muertes laborales anuales en México.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="rf-biologicos" class="tab-panel">
+      <div class="card-full card-stripe-u1">
+        <h3>🦠 Factores de Riesgo Biológico</h3>
+        <p>Microorganismos (bacterias, virus, hongos, parásitos), así como toxinas, alergenos de origen biológico, y condiciones que favorecen su proliferación en el ambiente laboral.</p>
+        <table class="class-table">
+          <thead><tr><th>Agente Biológico</th><th>Sector de Mayor Riesgo</th><th>Enfermedad Laboral</th></tr></thead>
+          <tbody>
+            <tr><td>Mycobacterium tuberculosis</td><td>Salud, penitenciaria, atención de migrantes</td><td>Tuberculosis ocupacional</td></tr>
+            <tr><td>Virus SARS-CoV-2 / Influenza</td><td>Salud, educación, transporte público</td><td>COVID-19 ocupacional (reconocida IMSS desde 2020)</td></tr>
+            <tr><td>Leptospira spp.</td><td>Alcantarillado, agricultura, veterinaria, rastros</td><td>Leptospirosis (síndrome de Weil)</td></tr>
+            <tr><td>Hongos (Aspergillus, Cándida)</td><td>Panadería, farmacéutica, avicultura</td><td>Aspergilosis, dermatomicosis</td></tr>
+            <tr><td>Virus de Hepatitis B/C</td><td>Personal de salud, laboratorios</td><td>Hepatitis crónica, cirrosis, carcinoma hepatocelular</td></tr>
+            <tr><td>Endotoxinas (gramnegativos)</td><td>Mataderos, industria textil</td><td>Fiebre de los molinos, bisinosis</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="rf-ergonomicos" class="tab-panel">
+      <div class="card-full card-stripe-u1">
+        <h3>🧬 Factores de Riesgo Ergonómico</h3>
+        <p>Condiciones del trabajo que exigen al cuerpo humano más allá de sus capacidades biomecánicas o fisiológicas, generando lesiones músculo-esqueléticas (LME). La NOM-036-1-STPS-2018 es la referencia en México.</p>
+        <div class="content-grid" style="margin-top:1rem">
+          <div class="content-card">
+            <div class="card-header"><div class="card-icon ci-u1">💪</div><div class="card-title">Factores Biomecánicos</div></div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Manejo manual de cargas:</strong> levantamiento > 25 kg (hombres) o > 15 kg (mujeres)</li>
+                <li><strong>Posturas forzadas:</strong> flexión de cuello > 30°, tronco > 60°</li>
+                <li><strong>Movimientos repetitivos:</strong> ciclos < 30 seg, > 50% del tiempo</li>
+                <li><strong>Fuerza excesiva:</strong> empujes/jales sobre el umbral NIOSH</li>
+              </ul>
+            </div>
+          </div>
+          <div class="content-card">
+            <div class="card-header"><div class="card-icon ci-u1">🧩</div><div class="card-title">Enfermedades Resultantes</div></div>
+            <div class="card-body">
+              <ul>
+                <li>Síndrome del túnel carpiano (secretarias, ensambladores)</li>
+                <li>Tendinitis y bursitis de hombro (pintores, soldadores)</li>
+                <li>Lumbalgia crónica (conductores, operadores)</li>
+                <li>Epicondilitis lateral ("codo de tenista" industrial)</li>
+                <li>Cervicalgia por pantallas (oficinistas)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="rf-psicosociales" class="tab-panel">
+      <div class="card-full card-stripe-u1">
+        <h3>🧠 Factores de Riesgo Psicosocial (NOM-035-STPS-2018)</h3>
+        <p>Aquellas condiciones presentes en el trabajo que están relacionadas con la organización, el contenido y la realización del trabajo, capaces de afectar el bienestar o la salud (física, psíquica o social) del trabajador, el desarrollo del trabajo o la productividad.</p>
+        <table class="class-table">
+          <thead><tr><th>Dominio</th><th>Factores Específicos</th><th>Efecto en Salud</th></tr></thead>
+          <tbody>
+            <tr><td>Condiciones del ambiente</td><td>Ruido, temperatura, iluminación deficiente como estresores psicosociales</td><td>Irritabilidad, fatiga, dificultad de concentración</td></tr>
+            <tr><td>Carga y ritmo de trabajo</td><td>Sobrecarga cuantitativa/cualitativa, trabajo bajo presión constante</td><td>Burnout, ansiedad, trastornos del sueño</td></tr>
+            <tr><td>Falta de control</td><td>Sin autonomía, sin participación en decisiones, monotonía</td><td>Depresión, desmotivación, ausentismo</td></tr>
+            <tr><td>Violencia laboral</td><td>Acoso laboral (mobbing), acoso sexual, discriminación</td><td>TEPT, depresión grave, ideación suicida</td></tr>
+            <tr><td>Trabajo nocturno / turnos</td><td>Rotación de turnos, jornadas nocturnas prolongadas</td><td>Desincronosis circadiana, enfermedades cardiovasculares</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="rf-mecanicos" class="tab-panel">
+      <div class="card-full card-stripe-u1">
+        <h3>⚙️ Factores Mecánicos y Locativos</h3>
+        <p>Condiciones peligrosas inherentes a las máquinas, herramientas, instalaciones o al entorno físico del trabajo. Causan la mayoría de los accidentes de trabajo.</p>
+        <table class="class-table">
+          <thead><tr><th>Tipo</th><th>Peligro</th><th>Mecanismo de lesión</th><th>Control típico</th></tr></thead>
+          <tbody>
+            <tr><td>Mecánico</td><td>Partes móviles de máquinas sin guardar</td><td>Atrapamiento, corte, aplastamiento</td><td>Resguardos fijos, LOTO (NOM-004-STPS-1999)</td></tr>
+            <tr><td>Mecánico</td><td>Proyección de fragmentos</td><td>Impacto, perforación ocular</td><td>Pantallas de protección, EPP (NOM-017)</td></tr>
+            <tr><td>Locativo</td><td>Pisos mojados/irregulares</td><td>Caída al mismo nivel</td><td>Recubrimiento antiderrapante, señalización</td></tr>
+            <tr><td>Locativo</td><td>Trabajo en alturas > 1.80 m</td><td>Caída a distinto nivel</td><td>Andamios, arnés, línea de vida (NOM-009-STPS-2011)</td></tr>
+            <tr><td>Eléctrico</td><td>Contacto directo/indirecto con energía eléctrica</td><td>Quemaduras, paro cardiorrespiratorio</td><td>Aislamiento, LOTO, EPP dieléctrico</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESTADÍSTICAS -->
+  <div id="estadisticas" class="section-anchor" style="margin-top:2.5rem">
+    <div class="section-badge sb-u1">Subtema 3</div>
+    <h3 class="section-title" style="font-size:1.4rem">Estadísticas y Casos de Enfermedades de Trabajo</h3>
+    <p class="section-subtitle">Los números revelan la magnitud del problema. Conocer las estadísticas es indispensable para argumentar inversión en prevención.</p>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--u1)">2.8M</div>
+        <div class="stat-label">Muertes laborales anuales en el mundo (OIT, 2022)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--u1)">374M</div>
+        <div class="stat-label">Lesiones no mortales por trabajo cada año</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">340K</div>
+        <div class="stat-label">Muertes anuales por accidentes de trabajo</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--gold)">2.4M</div>
+        <div class="stat-label">Muertes por enfermedades de trabajo (mayor parte)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">4%</div>
+        <div class="stat-label">Del PIB mundial perdido por costos de accidentes y enfermedades laborales</div>
+      </div>
+    </div>
+
+    <!-- Caso Real 1 -->
+    <div class="case-study">
+      <div class="case-header case-header-u1">
+        <div>
+          <div class="case-tag">CASO REAL · ACCIDENTE MASIVO</div>
+          <div class="case-title">Explosión en Fertilizantes West, Texas, EUA (2013)</div>
+          <div class="case-meta">15 muertos, >160 heridos, daños estimados en $100 millones USD</div>
+        </div>
+      </div>
+      <div class="case-body">
+        <h4>Contexto</h4>
+        <p>El 17 de abril de 2013, una planta distribuidora de fertilizantes en West, Texas, sufrió una explosión catastrófica de nitrato de amonio (NH₄NO₃), un agente oxidante que en presencia de fuego genera una detonación equivalente a 7.5 toneladas de TNT.</p>
+
+        <h4>Identificación de factores de riesgo</h4>
+        <ol>
+          <li><strong>Riesgo químico:</strong> Almacenamiento de 270 toneladas de NH₄NO₃ sin las medidas de segregación requeridas por OSHA 29 CFR 1910.109.</li>
+          <li><strong>Riesgo locativo:</strong> La planta estaba a 150 metros de una escuela secundaria y a 300 m de un asilo de ancianos.</li>
+          <li><strong>Falla administrativa:</strong> No se había notificado al Departamento de Seguridad Nacional la cantidad de sustancia peligrosa almacenada desde 2011.</li>
+          <li><strong>Ausencia de gestión del riesgo:</strong> Sin análisis de consecuencias ni plan de emergencia actualizado.</li>
+        </ol>
+
+        <h4>Lecciones para el ingeniero industrial</h4>
+        <ul>
+          <li>La gestión de riesgos químicos requiere inventarios actualizados y comunicación con autoridades (NOM-005-STPS-1998 en México).</li>
+          <li>El análisis de riesgo de proceso (PHA/HAZOP) es obligatorio en plantas con sustancias altamente peligrosas.</li>
+          <li>La "distancia de seguridad" es un concepto cuantificable, no una suposición.</li>
+        </ul>
+        <div class="case-lesson">
+          <strong>📚 Lección normativa:</strong> En México, la NOM-028-STPS-2012 (sistemas para la administración del trabajo en actividades con riesgos por severidad) habría exigido un Análisis de Riesgo de Proceso. La ASEA regula estas instalaciones para hidrocarburos; la SEMARNAT para residuos peligrosos.
+        </div>
+      </div>
+    </div>
+
+    <!-- Caso Real 2 -->
+    <div class="case-study">
+      <div class="case-header case-header-u1">
+        <div>
+          <div class="case-tag">CASO REAL · ENFERMEDAD LABORAL · MÉXICO</div>
+          <div class="case-title">Silicosis en trabajadores de la minería en Zacatecas y San Luis Potosí</div>
+          <div class="case-meta">Problema endémico documentado por el IMSS y la UNAM</div>
+        </div>
+      </div>
+      <div class="case-body">
+        <h4>¿Qué es la silicosis?</h4>
+        <p>Neumoconiosis irreversible causada por la inhalación de partículas de sílice cristalina libre (SiO₂) menores a 10 micrómetros (fracción respirable). Es la neumoconiosis más prevalente del mundo y la causa de muerte laboral por enfermedad crónica más antigua conocida.</p>
+
+        <h4>El problema en México</h4>
+        <p>En estados mineros como Zacatecas, Sonora y San Luis Potosí, estudios del IMSS reportan que hasta el <strong>30-40% de los mineros</strong> con más de 20 años de exposición presentan algún grado de silicosis. La enfermedad tiene <strong>período de latencia de 10 a 30 años</strong>, lo que dificulta el diagnóstico temprano y el reconocimiento como enfermedad de trabajo.</p>
+
+        <h4>Factores que agravan el problema</h4>
+        <ul>
+          <li>Minería artesanal sin ventilación forzada ni supresión de polvo con agua</li>
+          <li>Uso de perforación en seco (práctica prohibida que persiste)</li>
+          <li>Sub-notificación: muchos casos son atendidos como "enfisema" o EPOC</li>
+          <li>Falta de espirometría periódica en la vigilancia médica</li>
+          <li>Norma NOM-010-STPS-2014 establece VLE = 0.05 mg/m³ (fracción respirable), pero el monitoreo es escaso</li>
+        </ul>
+
+        <h4>Medidas de control (jerarquía)</h4>
+        <ol>
+          <li><strong>Eliminación/Sustitución:</strong> Reemplazar sílice por materiales menos tóxicos donde sea posible</li>
+          <li><strong>Ingeniería:</strong> Perforación húmeda, ventilación forzada, captadores de polvo, cabinas presurizadas</li>
+          <li><strong>Administrativo:</strong> Rotación, reducción de jornada en zona de polvo, vigilancia médica semestral</li>
+          <li><strong>EPP:</strong> Respiradores P100 o mayor, como <em>último recurso complementario</em></li>
+        </ol>
+        <div class="case-lesson">
+          <strong>📚 Lección:</strong> La silicosis es prevenible al 100% con los controles adecuados, pero no tiene cura. El ingeniero de seguridad debe priorizar controles de ingeniería sobre el EPP. La vigilancia médica periódica (radiografía de tórax + espirometría) permite detectar casos tempranos y retirar al trabajador de la exposición antes de que el daño sea irreversible.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FACTORES HIGIÉNICOS -->
+  <div id="factores" class="section-anchor" style="margin-top:2.5rem">
+    <div class="section-badge sb-u1">Subtema 4</div>
+    <h3 class="section-title" style="font-size:1.4rem">Factores de Riesgo Higiénico</h3>
+    <p class="section-subtitle">La higiene industrial es la disciplina que identifica, evalúa y controla los agentes ambientales del trabajo que puedan causar enfermedad. Sus factores de riesgo son físicos, químicos y biológicos.</p>
+
+    <div class="highlight-box">
+      <h3>¿Qué es la Higiene Industrial?</h3>
+      <p>La American Industrial Hygiene Association (AIHA) define la Higiene Industrial como <em>"la ciencia y arte dedicada al reconocimiento, evaluación y control de aquellos factores o tensiones ambientales que se originan en o por el lugar de trabajo, que pueden causar enfermedades, daños a la salud, incomodidades e ineficiencia entre los trabajadores o entre los ciudadanos de la comunidad."</em></p>
+    </div>
+
+    <div class="accordion">
+      <div class="acc-item open">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>🌡️ Factores Higiénicos Físicos — Definición y Control</span>
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>Son las formas de energía presentes en el ambiente de trabajo. Su evaluación requiere mediciones instrumentales y comparación con valores límite establecidos.</p>
+          <p><strong>Principio de evaluación:</strong> Concentración medida vs. Valor Límite de Exposición (VLE). En México, los VLE se basan en los TLV de la ACGIH y están incorporados en las NOMs correspondientes.</p>
+          <ul>
+            <li><strong>Ruido:</strong> Dosimetría de 8 h (TWA). VLE: 90 dB(A) para jornada de 8 h (NOM-011). Con cada 5 dB de incremento, la dosis máxima se reduce a la mitad (regla de los 5 dB en México).</li>
+            <li><strong>Calor:</strong> Índice TGBH (Temperatura Globo Bulbo Húmedo). VLE según carga de trabajo (ligera, moderada, pesada) y régimen trabajo/descanso (NOM-015).</li>
+            <li><strong>Iluminación:</strong> Se mide en lux con luxómetro. Nivel mínimo por tipo de tarea según NOM-025 (ej. trabajo fino de precisión = 1000 lux mínimo).</li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>⚗️ Factores Higiénicos Químicos — Muestreo y Análisis</span>
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>La evaluación de agentes químicos implica muestreo de aire en la zona de respiración del trabajador, análisis en laboratorio certificado y comparación con VLE (ppm, mg/m³, f/cc).</p>
+          <p><strong>Tipos de VLE (ACGIH / NOM-010):</strong></p>
+          <ul>
+            <li><strong>TLV-TWA:</strong> Concentración media ponderada en el tiempo para 8 h/día, 40 h/semana</li>
+            <li><strong>TLV-STEL:</strong> Concentración máxima por 15 minutos consecutivos, máximo 4 veces/turno</li>
+            <li><strong>TLV-C:</strong> Concentración que nunca debe excederse, ni instantáneamente</li>
+          </ul>
+          <p><strong>Ejemplo de cálculo — mezcla de solventes:</strong> Tolueno (50 ppm / VLE 50) + Xileno (30 ppm / VLE 100) = 50/50 + 30/100 = 1.0 + 0.3 = 1.3 → <strong>SUPERA EL VLE</strong> (debe ser ≤ 1).</p>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>🦠 Factores Higiénicos Biológicos — Evaluación y Prevención</span>
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>La evaluación biológica es más compleja que la química o física. Se basa en: <strong>a)</strong> identificación del agente biológico, <strong>b)</strong> vía de transmisión, <strong>c)</strong> receptividad del trabajador (vacunación, inmunidad).</p>
+          <p><strong>Clasificación por grupo de riesgo (NOM-087-SEMARNAT-SSA1-2002 / OMS):</strong></p>
+          <ul>
+            <li><strong>Grupo 1:</strong> Escasa probabilidad de causar enfermedad en el ser humano sano</li>
+            <li><strong>Grupo 2:</strong> Puede causar enfermedad; existen vacuna o tratamiento eficaz. Ej: Salmonella</li>
+            <li><strong>Grupo 3:</strong> Enfermedad grave; tratamiento disponible pero riesgo de diseminación bajo. Ej: M. tuberculosis</li>
+            <li><strong>Grupo 4:</strong> Enfermedad grave, sin tratamiento, alto riesgo de diseminación. Ej: virus Ébola (instalaciones BSL-4)</li>
+          </ul>
+          <p><strong>Controles fundamentales:</strong> Vacunación (hepatitis B, influenza, COVID), barreras de ingeniería (cabinas de seguridad biológica), EPP apropiado al grupo de riesgo, desinfección de superficies y gestión de residuos peligrosos biológico-infecciosos (RPBI).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /unidad1 -->
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════════════════════════
+     UNIDAD 2: HIGIENE INDUSTRIAL
+══════════════════════════════════════════════════════════════════ -->
+<div id="unidad2" class="unit-section section-anchor">
+  <div class="section-badge sb-u2">🔬 Unidad 2</div>
+  <h2 class="section-title">Higiene Industrial</h2>
+  <p class="section-subtitle">Ciencia aplicada al estudio de los agentes ambientales presentes en el trabajo: toxicología industrial, control del ambiente laboral, y los efectos del ruido y las vibraciones.</p>
+
+  <div class="objetivos-block">
+    <div class="obj-card obj-card-u2">
+      <h4>📌 Contenido temático</h4>
+      <ul>
+        <li>Características de la toxicología industrial</li>
+        <li>Características del control ambiental</li>
+        <li>Exposición laboral al ruido</li>
+        <li>Exposición laboral a vibraciones</li>
+      </ul>
+    </div>
+    <div class="obj-card obj-card-u2">
+      <h4>🎯 Objetivo de aprendizaje</h4>
+      <ul>
+        <li>Describir los fundamentos de la toxicología laboral</li>
+        <li>Evaluar los riesgos de la exposición al ruido y vibraciones</li>
+        <li>Desarrollar estrategias de mitigación de efectos en la salud</li>
+        <li>Aplicar los criterios de la NOM-011-STPS y NOM-024-STPS</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- TOXICOLOGÍA -->
+  <div id="toxicologia" class="section-anchor">
+    <div class="section-badge sb-u2">Subtema 1</div>
+    <h3 class="section-title" style="font-size:1.4rem">Características de la Toxicología Industrial</h3>
+
+    <div class="definition-block" style="background: linear-gradient(135deg, #0d3b2a, #1a5c3a);">
+      <div class="def-label">Paracelsus (siglo XVI) — Principio fundamental</div>
+      <div class="def-text">"Omnia venenosa sunt, nec sine veneno quicquam existit, sola dosis facit venenum."<br><span style="font-size:0.9rem;opacity:0.8">"Todo es veneno, nada existe sin veneno; solamente la dosis hace que una cosa no sea veneno."</span></div>
+      <div class="def-source">Base de la toxicología moderna: la dosis-respuesta es la relación central del estudio toxicológico.</div>
+    </div>
+
+    <div class="content-grid">
+      <div class="content-card card-stripe-u2">
+        <div class="card-header">
+          <div class="card-icon ci-u2">🎯</div>
+          <div class="card-title">¿Qué estudia la Toxicología Industrial?</div>
+        </div>
+        <div class="card-body">
+          <p>Rama de la toxicología que estudia los efectos nocivos de los agentes químicos y físicos presentes en el entorno laboral sobre la salud humana.</p>
+          <ul>
+            <li>Identificación del agente tóxico y sus propiedades</li>
+            <li>Vías de ingreso al organismo</li>
+            <li>Mecanismo de acción toxicológica</li>
+            <li>Relación dosis-respuesta</li>
+            <li>Efectos agudos, subagudos y crónicos</li>
+            <li>Biomarcadores de exposición y efecto</li>
+            <li>Valores límite de exposición ocupacional (VLE)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="content-card card-stripe-u2">
+        <div class="card-header">
+          <div class="card-icon ci-u2">🚪</div>
+          <div class="card-title">Vías de Ingreso al Organismo</div>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li>🫁 <strong>Inhalatoria (principal):</strong> partículas < 10 µm llegan a alvéolos pulmonares; absorción rápida y directa al torrente sanguíneo</li>
+            <li>🖐 <strong>Dérmica:</strong> fundamental en disolventes liposolubles (benceno, plaguicidas organofosforados) que penetran la barrera cutánea</li>
+            <li>👄 <strong>Digestiva:</strong> hábito de comer en el área de trabajo, no lavarse las manos antes de comer, ingesta accidental</li>
+            <li>💉 <strong>Parenteral:</strong> heridas abiertas, inoculación accidental (principalmente riesgo biológico)</li>
+          </ul>
+          <p style="margin-top:0.75rem;font-size:0.76rem;color:var(--muted)">La vía inhalatoria es la principal en HI porque el trabajador respira entre 10-20 L/aire por minuto durante toda la jornada.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tox-cards">
+      <div class="tox-card">
+        <div class="tox-emoji">⚡</div>
+        <h4>Toxicidad Aguda</h4>
+        <p>Efectos adversos producidos después de una exposición única o múltiple en 24 horas. Dosis alta, tiempo corto.</p>
+        <span class="tox-tag tag-agudo">AGUDO</span>
+      </div>
+      <div class="tox-card">
+        <div class="tox-emoji">⏳</div>
+        <h4>Toxicidad Crónica</h4>
+        <p>Efectos por exposición repetida durante la vida laboral. Dosis baja, tiempo largo. El más frecuente en HI.</p>
+        <span class="tox-tag tag-cronico">CRÓNICO</span>
+      </div>
+      <div class="tox-card">
+        <div class="tox-emoji">🎯</div>
+        <h4>Efecto Local</h4>
+        <p>Daño en el sitio de contacto. Ej: quemaduras por ácidos en piel, irritación de mucosas por gases.</p>
+        <span class="tox-tag tag-local">LOCAL</span>
+      </div>
+      <div class="tox-card">
+        <div class="tox-emoji">🌊</div>
+        <h4>Efecto Sistémico</h4>
+        <p>El tóxico se absorbe, distribuye a órganos distantes y causa daño. Ej: plomo → sistema nervioso central.</p>
+        <span class="tox-tag tag-sistemico">SISTÉMICO</span>
+      </div>
+      <div class="tox-card">
+        <div class="tox-emoji">🧪</div>
+        <h4>Sinergia Toxicológica</h4>
+        <p>El efecto combinado de dos o más agentes supera la suma de sus efectos individuales. Ej: alcohol + tolueno.</p>
+        <span class="tox-tag tag-agudo">SINERGIA</span>
+      </div>
+      <div class="tox-card">
+        <div class="tox-emoji">📈</div>
+        <h4>Curva Dosis-Respuesta</h4>
+        <p>Relación fundamental: a mayor dosis, mayor probabilidad de efecto adverso. Base de los VLE.</p>
+        <span class="tox-tag tag-cronico">CUANTITATIVA</span>
+      </div>
+    </div>
+
+    <!-- Caso de toxicología -->
+    <div class="case-study">
+      <div class="case-header case-header-u2">
+        <div>
+          <div class="case-tag">CASO REAL · INTOXICACIÓN LABORAL · HISTÓRICO</div>
+          <div class="case-title">Intoxicación masiva por plomo en trabajadores de industria de baterías, México</div>
+          <div class="case-meta">Problema reportado por el IMSS y COFEPRIS | Zona metropolitana del Valle de México</div>
+        </div>
+      </div>
+      <div class="case-body">
+        <h4>El agente: Plomo (Pb)</h4>
+        <p>Metal pesado sin función biológica conocida. La industria de baterías de ácido-plomo, el reciclaje de baterías y la fabricación de pinturas son las principales fuentes de exposición ocupacional en México.</p>
+
+        <h4>Mecanismo toxicológico</h4>
+        <p>El plomo entra principalmente por inhalación de vapores y polvo, y por vía digestiva (manos contaminadas). En sangre se une a eritrocitos; en tejidos se acumula en huesos (97% del total corporal), donde puede actuar como reservorio durante décadas.</p>
+
+        <h4>Efectos por sistema</h4>
+        <ul>
+          <li><strong>SNC:</strong> Encefalopatía, déficit cognitivo, neuropatía periférica, "muñeca caída" (parálisis de extensores)</li>
+          <li><strong>Hematológico:</strong> Anemia hemolítica (inhibe la biosíntesis del grupo hemo)</li>
+          <li><strong>Renal:</strong> Nefropatía crónica intersticial, gota saturnina</li>
+          <li><strong>Reproductivo:</strong> Abortos espontáneos, oligospermia, teratogénesis</li>
+        </ul>
+
+        <h4>Vigilancia biológica</h4>
+        <p>El indicador de exposición es la <strong>Plombemia (Pb en sangre)</strong>. VLE biológico en México (NOM-010): &lt; 30 µg/dL (trabajadores). OMS considera efectos subclínicos por encima de 10 µg/dL. En recicladores informales de baterías en México, se han encontrado niveles de 50-80 µg/dL.</p>
+
+        <div class="case-lesson">
+          <strong>📚 Lección del caso:</strong> La toxicología industrial no solo estudia el efecto agudo; el plomo es un ejemplo paradigmático de toxicidad crónica con bioacumulación. La vigilancia médica específica (plombemia, ALA-U, ZPP) y el monitoreo ambiental periódico son indispensables, no opcionales. El Ingeniero Industrial debe conocer los indicadores biológicos de exposición de los agentes que maneja su planta.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTROL AMBIENTAL -->
+  <div id="control-ambiental" class="section-anchor" style="margin-top:2.5rem">
+    <div class="section-badge sb-u2">Subtema 2</div>
+    <h3 class="section-title" style="font-size:1.4rem">Características del Control Ambiental</h3>
+    <p class="section-subtitle">El control ambiental es el conjunto de medidas técnicas aplicadas al medio de trabajo para eliminar o reducir la presencia de agentes nocivos antes de que lleguen al trabajador.</p>
+
+    <div class="card-full card-stripe-u2" style="margin-bottom:1.5rem">
+      <h3>Estrategia de Control — "Sobre la Fuente, en el Medio, en el Receptor"</h3>
+      <p>La jerarquía de controles aplicada a la higiene industrial sigue el mismo principio que en seguridad: siempre preferir intervenir sobre la fuente de contaminación antes que sobre el receptor (trabajador).</p>
+    </div>
+
+    <div class="tab-bar">
+      <button class="tab-btn active-u2" onclick="openTab('ca','fuente',this)">🔧 Sobre la Fuente</button>
+      <button class="tab-btn" onclick="openTab('ca','medio',this)">💨 En el Medio</button>
+      <button class="tab-btn" onclick="openTab('ca','receptor',this)">👷 En el Receptor</button>
+    </div>
+
+    <div id="ca-fuente" class="tab-panel active">
+      <div class="card-full card-stripe-u2">
+        <h3>🔧 Control sobre la Fuente Contaminante</h3>
+        <p>La acción más eficaz. Se elimina o reduce el agente nocivo directamente en el origen.</p>
+        <ol class="step-list u2">
+          <li><div class="step-content"><strong>Eliminación:</strong> Suprimir completamente el proceso o material peligroso. Ej: eliminar el desbaste en seco sustituyendo por mecanizado con refrigerante.</div></li>
+          <li><div class="step-content"><strong>Sustitución:</strong> Reemplazar por un agente de menor toxicidad. Ej: sustituir benceno como disolvente por heptano (menor toxicidad hematológica). Ej: pintura a base de agua en lugar de pintura con disolventes aromáticos.</div></li>
+          <li><div class="step-content"><strong>Modificación del proceso:</strong> Cambiar el método de trabajo. Ej: galvanoplastia con ánodo insoluble (reduce emisión de cromo) vs. ánodo soluble; aplicación de pinturas por pulverización electrostática en lugar de aerosol convencional (reduce 60-80% el overspray).</div></li>
+          <li><div class="step-content"><strong>Encerramiento/Confinamiento de la fuente:</strong> Operar el proceso en sistema cerrado. Ej: reactores cerrados en la industria farmacéutica; cabinas de pintura con extracción localizada; guanteras en laboratorios de radioisótopos.</div></li>
+          <li><div class="step-content"><strong>Mantenimiento preventivo:</strong> Fugas de agentes químicos por equipos deteriorados son fuente de contaminación. Un programa de mantenimiento predictivo/preventivo reduce emisiones fugitivas.</div></li>
+        </ol>
+      </div>
+    </div>
+
+    <div id="ca-medio" class="tab-panel">
+      <div class="card-full card-stripe-u2">
+        <h3>💨 Control en el Medio de Transmisión</h3>
+        <p>Cuando no es posible actuar suficientemente sobre la fuente, se interrumpe o reduce la propagación del contaminante en el ambiente de trabajo.</p>
+
+        <div class="content-grid" style="margin-top:1rem">
+          <div class="content-card">
+            <div class="card-header"><div class="card-icon ci-u2">💨</div><div class="card-title">Ventilación Industrial</div></div>
+            <div class="card-body">
+              <p><strong>Dilución (VGD):</strong> Introduce aire limpio para diluir el contaminante. Aplicable cuando la toxicidad es baja y la generación es uniforme. Requiere gran caudal de aire.</p>
+              <p style="margin-top:0.6rem"><strong>Extracción localizada (LEV):</strong> Captura el contaminante en el origen antes de que se disperse en el ambiente. Mucho más eficiente que la dilución. Componentes: campana captadora → ductos → limpiador de aire → ventilador → descarga.</p>
+              <p style="margin-top:0.6rem;font-size:0.76rem;color:var(--muted)"><em>Regla práctica: el flujo de captura debe superar la velocidad de captura mínima (vc) del contaminante. Para solventes: vc = 0.25-0.5 m/s; para polvo industrial: 1.0-2.5 m/s.</em></p>
+            </div>
+          </div>
+          <div class="content-card">
+            <div class="card-header"><div class="card-icon ci-u2">🏗️</div><div class="card-title">Barreras y Distancia</div></div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Barreras físicas:</strong> Mamparas, cabinas de vidrio, paneles acústicos para ruido</li>
+                <li><strong>Distancia:</strong> El nivel de ruido decrece 6 dB al duplicar la distancia a la fuente (campo libre)</li>
+                <li><strong>Orientación:</strong> Colocar la fuente a favor del viento respecto a las zonas habitadas</li>
+                <li><strong>Automatización:</strong> Robots en soldadura, pintura o manejo de ácidos, retiran al trabajador de la zona de riesgo</li>
+                <li><strong>Superficies absorbentes:</strong> Paneles de espuma acústica, techos con material fonoabsorbente</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="ca-receptor" class="tab-panel">
+      <div class="card-full card-stripe-u2">
+        <h3>👷 Control sobre el Receptor (Trabajador)</h3>
+        <p>Último recurso en la jerarquía. No elimina ni reduce el contaminante; solo protege al trabajador individual. Siempre debe complementarse con controles de fuente y medio.</p>
+
+        <div class="content-grid" style="margin-top:1rem">
+          <div class="content-card">
+            <div class="card-header"><div class="card-icon ci-u2">🥽</div><div class="card-title">Equipo de Protección Personal (EPP)</div></div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Respiratoria:</strong> Media cara N95/P100 para polvo; cara completa con cartucho para vapores; SCBA para IDLH</li>
+                <li><strong>Auditiva:</strong> Tapones de inserción (NRR 25-33 dB) o orejeras (NRR 25-30 dB) — ver sección de ruido</li>
+                <li><strong>Dérmica:</strong> Guantes de nitrilo, neopreno o butilo según el agente; overol Tyvek; cremas barrera</li>
+                <li><strong>Ocular:</strong> Gafas de seguridad, goggles de salpicaduras, pantalla facial</li>
+              </ul>
+              <p style="margin-top:0.75rem"><strong>Marco normativo:</strong> NOM-017-STPS-2008 — Selección, uso y manejo en los centros de trabajo.</p>
+            </div>
+          </div>
+          <div class="content-card">
+            <div class="card-header"><div class="card-icon ci-u2">🏥</div><div class="card-title">Vigilancia Médica y Controles Administrativos</div></div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Exámenes médicos periódicos:</strong> espirometría (exposición a polvo), audiometría (ruido), perfil bioquímico de órgano blanco</li>
+                <li><strong>Rotación de puestos:</strong> Reducir el tiempo de exposición individual</li>
+                <li><strong>Capacitación:</strong> El trabajador informado es el primer control</li>
+                <li><strong>Vigilancia biológica:</strong> Monitoreo de biomarcadores en sangre/orina</li>
+                <li><strong>Higiene personal:</strong> Lavado de manos, prohibición de alimentos en áreas de trabajo</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RUIDO -->
+  <div id="ruido" class="section-anchor" style="margin-top:2.5rem">
+    <div class="section-badge sb-u2">Subtema 3</div>
+    <h3 class="section-title" style="font-size:1.4rem">Exposición Laboral al Ruido</h3>
+    <p class="section-subtitle">La hipoacusia inducida por ruido (NIHL) es la enfermedad de trabajo más frecuente en el mundo. Es 100% prevenible y completamente irreversible. (NOM-011-STPS-2001)</p>
+
+    <div class="content-grid">
+      <div class="content-card card-stripe-u2">
+        <div class="card-header">
+          <div class="card-icon ci-u2">🎵</div>
+          <div class="card-title">Fundamentos del Ruido Industrial</div>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li><strong>Definición:</strong> Sonido no deseado que puede causar daño. Se mide en decibeles (dB) con escala logarítmica.</li>
+            <li><strong>Escala dB(A):</strong> Pondera la frecuencia en función de la sensibilidad del oído humano (3-4 kHz es el rango más vulnerable)</li>
+            <li><strong>Duplicación:</strong> Cada 3 dB duplica la energía sonora (ISO 9612); cada 5 dB en el criterio mexicano (NOM-011)</li>
+            <li><strong>Ruido continuo:</strong> Nivel prácticamente constante. Ej: compresores, ventiladores</li>
+            <li><strong>Ruido impacto:</strong> Picos > 140 dB(A) de duración &lt;1 segundo. Ej: prensas, disparos. Efecto traumático inmediato</li>
+          </ul>
+        </div>
+      </div>
+      <div class="content-card card-stripe-u2">
+        <div class="card-header">
+          <div class="card-icon ci-u2">👂</div>
+          <div class="card-title">Mecanismo de Daño Auditivo</div>
+        </div>
+        <div class="card-body">
+          <p>Las células ciliadas externas de la cóclea (oído interno) son las primeras en dañarse. Son irreemplazables en humanos adultos.</p>
+          <ol style="padding-left:1rem; margin-top:0.5rem">
+            <li style="margin-bottom:0.35rem">Exposición a ruido excesivo → vibración mecánica intensa</li>
+            <li style="margin-bottom:0.35rem">Fatiga metabólica de células ciliadas → TTS (umbral temporal)</li>
+            <li style="margin-bottom:0.35rem">Exposición repetida → PTS (umbral permanente) → NIHL</li>
+            <li style="margin-bottom:0.35rem">Muesca de 4 kHz en audiograma: signo patognomónico</li>
+            <li>Progresión lenta hacia frecuencias de conversación (2-3 kHz)</li>
+          </ol>
+          <p style="margin-top:0.75rem;font-size:0.76rem;color:var(--muted)">TTS = Temporary Threshold Shift; PTS = Permanent Threshold Shift; NIHL = Noise-Induced Hearing Loss</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabla de VLE ruido -->
+    <div class="card-full" style="margin-bottom:1.5rem">
+      <h3 style="margin-bottom:1rem">⚖️ Valores Límite de Exposición — NOM-011-STPS-2001</h3>
+      <table class="noise-table">
+        <thead>
+          <tr>
+            <th>Nivel de Ruido [dB(A)]</th>
+            <th>Tiempo máximo de exposición / turno</th>
+            <th>Equivalente en jornada 8h</th>
+            <th>Clasificación</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>≤ 85</strong></td>
+            <td>8 horas (jornada completa)</td>
+            <td>100% del tiempo</td>
+            <td><span class="risk-level rl-ok">ACEPTABLE</span></td>
+          </tr>
+          <tr>
+            <td><strong>90</strong></td>
+            <td>8 horas</td>
+            <td>100% del tiempo</td>
+            <td><span class="risk-level rl-ok">VLE MÁXIMO</span></td>
+          </tr>
+          <tr>
+            <td><strong>95</strong></td>
+            <td>4 horas</td>
+            <td>50% del tiempo</td>
+            <td><span class="risk-level rl-caution">PRECAUCIÓN</span></td>
+          </tr>
+          <tr>
+            <td><strong>100</strong></td>
+            <td>2 horas</td>
+            <td>25% del tiempo</td>
+            <td><span class="risk-level rl-caution">PRECAUCIÓN</span></td>
+          </tr>
+          <tr>
+            <td><strong>105</strong></td>
+            <td>1 hora</td>
+            <td>12.5% del tiempo</td>
+            <td><span class="risk-level rl-danger">PELIGRO</span></td>
+          </tr>
+          <tr>
+            <td><strong>110</strong></td>
+            <td>30 minutos</td>
+            <td>6.25% del tiempo</td>
+            <td><span class="risk-level rl-danger">PELIGRO</span></td>
+          </tr>
+          <tr>
+            <td><strong>115</strong></td>
+            <td>15 minutos</td>
+            <td>3.1% del tiempo</td>
+            <td><span class="risk-level rl-critical">CRÍTICO</span></td>
+          </tr>
+          <tr>
+            <td><strong>> 115</strong></td>
+            <td>SIN EXPOSICIÓN sin protección auditiva</td>
+            <td>0% sin EPP</td>
+            <td><span class="risk-level rl-critical">PROHIBIDO</span></td>
+          </tr>
+          <tr>
+            <td><strong>≥ 140 (impacto)</strong></td>
+            <td>PROHIBIDA toda exposición</td>
+            <td>Daño inmediato</td>
+            <td><span class="risk-level rl-critical">URGENTE</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.76rem;color:var(--muted);margin-top:0.5rem">Criterio de la NOM-011-STPS-2001: incremento de 5 dB = reducción a la mitad del tiempo de exposición permitido.</p>
+    </div>
+
+    <!-- Calculadora de dosis de ruido -->
+    <div class="calc-box">
+      <h3>🧮 Calculadora de Dosis de Ruido (Criterio NOM-011-STPS-2001)</h3>
+      <p class="calc-desc">Ingresa el nivel de ruido medido en dB(A) y el tiempo real de exposición para calcular la dosis de ruido. Dosis ≤ 1 (100%) = cumple el VLE.</p>
+      <div class="calc-row">
+        <div class="calc-field">
+          <label>Nivel de Ruido [dB(A)]</label>
+          <input type="number" id="db-input" min="70" max="140" value="95" placeholder="Ej: 95">
+        </div>
+        <div class="calc-field">
+          <label>Tiempo de Exposición [horas]</label>
+          <input type="number" id="te-input" min="0.1" max="12" step="0.5" value="6" placeholder="Ej: 6">
+        </div>
+        <div class="calc-field" style="flex:0;min-width:auto">
+          <label>&nbsp;</label>
+          <button class="qbtn qbtn-primary" onclick="calcDosis()">Calcular</button>
+        </div>
+      </div>
+      <div class="calc-result" id="dosis-result">
+        <div>Dosis de Ruido: <span class="result-val" id="dosis-val">—</span></div>
+        <div style="font-size:0.78rem;margin-top:6px;opacity:0.8" id="dosis-msg"></div>
+      </div>
+    </div>
+
+    <!-- Niveles de ruido comunes -->
+    <div class="card-full" style="margin-bottom:1.5rem">
+      <h3>📊 Niveles de Ruido Típicos en la Industria Mexicana</h3>
+      <div style="margin-top:1rem" id="noise-bars-container"></div>
+    </div>
+
+    <!-- Caso Real ruido -->
+    <div class="case-study">
+      <div class="case-header case-header-u2">
+        <div>
+          <div class="case-tag">CASO REAL · HIPOACUSIA LABORAL</div>
+          <div class="case-title">Industria siderúrgica en Monterrey — Programa de conservación auditiva</div>
+          <div class="case-meta">Caso documentado en la literatura de Salud Ocupacional en México</div>
+        </div>
+      </div>
+      <div class="case-body">
+        <h4>Situación inicial</h4>
+        <p>Una planta de laminación en frío de acero en la Zona Metropolitana de Monterrey realizó un estudio higiénico y encontró que el 68% de los puestos de trabajo en producción superaban el VLE de 90 dB(A) de la NOM-011-STPS-2001, con picos de hasta 108 dB(A) en las áreas de cizallado y prensado.</p>
+
+        <h4>Audiometría de línea base</h4>
+        <p>De 340 trabajadores evaluados (todos con más de 5 años en el puesto), el <strong>41% presentaba hipoacusia bilateral en frecuencias altas</strong> (4 kHz), confirmada como NIHL por los criterios de la AAOO. El 12% tenía ya compromiso en frecuencias de conversación (2 kHz).</p>
+
+        <h4>Programa de Conservación Auditiva (PCA) implementado</h4>
+        <ol>
+          <li><strong>Control de ingeniería:</strong> Cabinas acústicas en las máquinas más ruidosas (reducción de 8-12 dB); reemplazo de engranajes rectos por helicoidales (−6 dB); mantenimiento de rodamientos (−3 dB).</li>
+          <li><strong>Control administrativo:</strong> Rotación de puestos para reducir exposición individual; señalización de zonas con > 85 dB.</li>
+          <li><strong>EPP:</strong> Tapones de espuma de tipo push-in (NRR 33) + capacitación en colocación correcta; verificación del factor de atenuación real (Real-Ear Attenuation at Threshold, REAT).</li>
+          <li><strong>Vigilancia médica:</strong> Audiometría anual; marcadores de exposición.</li>
+        </ol>
+
+        <h4>Resultado a 3 años</h4>
+        <p>Reducción del 60% en casos nuevos de NIHL. Los controles de ingeniería fueron los más eficaces: una inversión de $120,000 pesos en aislamiento acústico de máquinas evitó costos estimados de $8.5 millones en incapacidades y reemplazos laborales (retorno de inversión: 71:1).</p>
+
+        <div class="case-lesson">
+          <strong>📚 Lección:</strong> El uso correcto de los tapones auditivos en el mundo real reduce el ruido mucho menos de lo que indica el NRR teórico. Estudios NIOSH muestran que los usuarios típicos logran apenas el 25-50% de la atenuación nominal. Por eso los controles de ingeniería son irreemplazables. Nunca depender exclusivamente del EPP cuando se superan los VLE.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIBRACIONES -->
+  <div id="vibraciones" class="section-anchor" style="margin-top:2.5rem">
+    <div class="section-badge sb-u2">Subtema 4</div>
+    <h3 class="section-title" style="font-size:1.4rem">Exposición Laboral a Vibraciones</h3>
+    <p class="section-subtitle">Las vibraciones mecánicas transmitidas al cuerpo humano por herramientas, vehículos y plataformas generan un espectro de enfermedades músculo-esqueléticas y vasculares reconocidas en México por el IMSS.</p>
+
+    <div class="content-grid">
+      <div class="content-card card-stripe-u2">
+        <div class="card-header">
+          <div class="card-icon ci-u2">🤝</div>
+          <div class="card-title">Vibración Mano-Brazo (VMB)</div>
+        </div>
+        <div class="card-body">
+          <p><strong>Fuentes:</strong> Taladros y martillos neumáticos, esmeriles, sierras de cadena, remachadoras neumáticas, lijadoras orbitales.</p>
+          <p style="margin-top:0.6rem"><strong>Norma:</strong> NOM-024-STPS-2001 / ISO 5349-1:2001</p>
+          <p style="margin-top:0.6rem"><strong>VLE:</strong> A(8) = 5 m/s² (nivel de acción: 2.5 m/s²)</p>
+          <p style="margin-top:0.6rem"><strong>Enfermedades:</strong></p>
+          <ul style="margin-top:0.35rem">
+            <li>Síndrome de Raynaud ocupacional (dedo blanco)</li>
+            <li>Síndrome del túnel carpiano</li>
+            <li>Osteoartritis de codo y muñeca</li>
+            <li>Periartritis de hombro</li>
+            <li>Neuropatía periférica vibratoria</li>
+          </ul>
+        </div>
+      </div>
+      <div class="content-card card-stripe-u2">
+        <div class="card-header">
+          <div class="card-icon ci-u2">🚜</div>
+          <div class="card-title">Vibración de Cuerpo Completo (VCC)</div>
+        </div>
+        <div class="card-body">
+          <p><strong>Fuentes:</strong> Montacargas, tractores, excavadoras, compactadoras, camiones de transporte en carreteras irregulares, plataformas vibratorias.</p>
+          <p style="margin-top:0.6rem"><strong>Norma:</strong> ISO 2631-1:1997</p>
+          <p style="margin-top:0.6rem"><strong>VLE:</strong> A(8) = 1.15 m/s² eje Z (vertical) | Nivel de acción: 0.5 m/s²</p>
+          <p style="margin-top:0.6rem"><strong>Enfermedades:</strong></p>
+          <ul style="margin-top:0.35rem">
+            <li>Lumbalgia crónica (principal patología)</li>
+            <li>Hernia discal lumbar (L4-L5, L5-S1)</li>
+            <li>Espondilolistesis</li>
+            <li>Trastornos gastrointestinales (VCC a frecuencias 4-8 Hz, resonancia abdominal)</li>
+            <li>Disfunción vestibular (mareo, náuseas)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion">
+      <div class="acc-item open">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>📐 Cómo evaluar la exposición a vibraciones — Paso a paso</span>
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p><strong>Objetivo:</strong> Calcular la vibración diaria equivalente A(8) en m/s² para comparar con el VLE.</p>
+          <ol class="step-list u2" style="margin-top:1rem">
+            <li><div class="step-content"><strong>Identificar los ejes de medición:</strong> VMB → ejes X, Y, Z en la empuñadura. VCC → ejes X (dorso-ventral), Y (lateral), Z (axial) en la interfaz cuerpo-asiento.</div></li>
+            <li><div class="step-content"><strong>Medir la aceleración ponderada en frecuencia:</strong> Con acelerómetro triaxial según ISO 8041. El instrumento calcula la aceleración ponderada en frecuencia aw en cada eje (m/s²).</div></li>
+            <li><div class="step-content"><strong>Calcular el vector resultante (VMB):</strong> ahv = √(1.4a²wx + 1.4a²wy + a²wz) — Las componentes X e Y se ponderan con factor 1.4 por ser transversales a los huesos.</div></li>
+            <li><div class="step-content"><strong>Calcular A(8) — vibración diaria equivalente:</strong> A(8) = ahv × √(T/T₀) donde T = tiempo real de exposición en horas y T₀ = 8 horas.</div></li>
+            <li><div class="step-content"><strong>Comparar con VLE:</strong> Si A(8) > 5 m/s² (VMB) o > 1.15 m/s² (VCC), supera el VLE → acción correctiva inmediata.</div></li>
+          </ol>
+          <div class="callout callout-info" style="margin-top:1rem">
+            <span class="callout-icon">📌</span>
+            <div><strong>Ejemplo VMB:</strong> Operador de taladro neumático, medición: ahv = 8 m/s², tiempo de uso = 3 h/turno. A(8) = 8 × √(3/8) = 8 × 0.612 = <strong>4.9 m/s²</strong> → Justo bajo el VLE de 5 m/s², pero supera el nivel de acción (2.5) → requiere controles.</div>
+          </div>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>🛡️ Medidas de control para vibraciones en la industria</span>
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p><strong>Para Vibración Mano-Brazo:</strong></p>
+          <ul>
+            <li>Seleccionar herramientas con menor emisión vibratoria (catálogos de vibración del fabricante)</li>
+            <li>Mantenimiento preventivo (cuchillas afiladas, balanceo de discos, reemplazar embragues desgastados)</li>
+            <li>Mangos y empuñaduras con materiales amortiguadores (goma viscoelástica)</li>
+            <li>Guantes antivibratorios (EN ISO 10819) — <em>reducen solo 30-50% de la vibración a frecuencias altas</em></li>
+            <li>Control administrativo: tiempo máximo de uso continuo de 30 min; pausas de 10 min cada hora</li>
+            <li>Vigilancia médica: evaluación vascular periódica (Test de Allen, pletismografía, escala de Stockholm)</li>
+          </ul>
+          <p style="margin-top:0.75rem"><strong>Para Vibración de Cuerpo Completo:</strong></p>
+          <ul>
+            <li>Asientos con suspensión activa o pasiva (reduce hasta 50% la VCC transmitida)</li>
+            <li>Mantenimiento de vías de circulación (pavimentación, relleno de baches)</li>
+            <li>Velocidad de circulación reducida en pisos irregulares</li>
+            <li>Alternancia de conductores; rotación de puestos</li>
+            <li>Ejercicios de movilidad lumbar como medida complementaria</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Caso vibraciones -->
+    <div class="case-study">
+      <div class="case-header case-header-u2">
+        <div>
+          <div class="case-tag">CASO REAL · SÍNDROME DE RAYNAUD OCUPACIONAL</div>
+          <div class="case-title">Síndrome del dedo blanco en operadores de cinceles neumáticos — Industria de la construcción</div>
+          <div class="case-meta">Reportado por el NIOSH y casos análogos en obras de infraestructura en México</div>
+        </div>
+      </div>
+      <div class="case-body">
+        <h4>Descripción del problema</h4>
+        <p>Trabajadores de demolición que utilizan cinceles neumáticos (jackhammers) con aceleración medida de 12-20 m/s², 4-6 horas por día. Después de 2-5 años de exposición, varios trabajadores reportan episodios de palidez y entumecimiento en dedos, especialmente en clima frío.</p>
+
+        <h4>Patogenia del Síndrome de Raynaud Ocupacional</h4>
+        <p>La vibración a frecuencias de 20-1000 Hz daña los vasos sanguíneos digitales y los nervios periféricos. El resultado es un vasospasmo desproporcionado al frío (Sistema Nervioso Simpático hiperactivo), que produce la secuencia característica:</p>
+        <ol>
+          <li><strong>Fase blanca (isquemia):</strong> vasospasmo → palidez → entumecimiento</li>
+          <li><strong>Fase azul (cianosis):</strong> éxtasis venosa → coloración azulada</li>
+          <li><strong>Fase roja (hiperemia):</strong> vasodilatación reactiva → dolor urente</li>
+        </ol>
+
+        <h4>Clasificación de Stockholm para VMB</h4>
+        <table class="class-table" style="margin-top:1rem">
+          <thead><tr><th>Estadio</th><th>Grado</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>Sin síntomas</td><td>Sin episodios de blanquecimiento</td></tr>
+            <tr><td>1</td><td>Leve</td><td>Episodios ocasionales, un dedo afectado</td></tr>
+            <tr><td>2</td><td>Moderado</td><td>Episodios frecuentes, falange distal/media de 2+ dedos</td></tr>
+            <tr><td>3</td><td>Severo</td><td>Episodios frecuentes, todos los dedos, cambios tróficos de piel</td></tr>
+            <tr><td>4</td><td>Muy severo</td><td>Síntomas persistentes, gangrena digital</td></tr>
+          </tbody>
+        </table>
+        <div class="case-lesson">
+          <strong>📚 Lección:</strong> En este caso, la herramienta generaba A(8) = 12 × √(5/8) = 9.5 m/s², casi el doble del VLE de 5 m/s². La sustitución por rompedor eléctrico anti-vibratorio y la rotación de personal cada 30 minutos logró bajar A(8) a 3.8 m/s². Los estadios 1 y 2 de Stockholm son reversibles si se retira al trabajador de la exposición; los estadios 3 y 4 son irreversibles.
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /unidad2 -->
+
+<!-- ══ EVALUACIÓN ══════════════════════════════════════════════════ -->
+<hr class="section-divider">
+<div id="evaluacion" class="section-anchor">
+  <div class="section-badge" style="background:var(--gold);color:#fff">✏️ Autoevaluación</div>
+  <h2 class="section-title">Autoevaluación — Riesgos e Higiene Industrial</h2>
+  <p class="section-subtitle">Responde las siguientes preguntas para verificar tu comprensión de los temas de clase. Inmediatamente recibirás retroalimentación.</p>
+
+  <div class="quiz-wrap">
+    <div class="quiz-header">
+      <h3>📝 Quiz de comprensión</h3>
+      <div class="quiz-progress" id="quiz-prog">Pregunta 1 de 10</div>
+    </div>
+    <div class="quiz-body" id="quiz-body">
+      <div class="quiz-question" id="q-text"></div>
+      <div class="quiz-options" id="q-opts"></div>
+      <div class="quiz-feedback" id="q-feedback"></div>
+      <div class="quiz-nav">
+        <button class="qbtn qbtn-primary" id="btn-check" onclick="checkAnswer()">Verificar</button>
+        <button class="qbtn qbtn-outline" id="btn-next" onclick="nextQuestion()" disabled>Siguiente →</button>
+      </div>
+    </div>
+    <div class="quiz-score" id="quiz-score">
+      <div class="score-circle" id="score-circle"></div>
+      <h3 style="font-family:var(--font-display);font-size:1.4rem;margin-bottom:0.5rem" id="score-title"></h3>
+      <p id="score-msg" style="font-size:0.85rem;color:var(--slate);margin-bottom:1.5rem"></p>
+      <button class="qbtn qbtn-primary" onclick="restartQuiz()">🔄 Reintentar</button>
+    </div>
+  </div>
+</div>
+
+<div style="text-align:center;padding:3rem 0 2rem;border-top:1px solid var(--border);margin-top:3rem">
+  <p style="font-family:var(--font-display);font-size:1.1rem;color:var(--ink);margin-bottom:0.3rem">MGV Consultoría e Ingeniería</p>
+  <p style="font-size:0.78rem;color:var(--muted)">Seguridad e Higiene Industrial · Carrera de Ingeniería Industrial · Clase elaborada por Ing. Marcos G. Victorino</p>
+  <p style="font-size:0.72rem;color:var(--muted);margin-top:0.3rem">Sustentada en: LFT, NOM-011, NOM-024, NOM-010, NOM-025, NOM-017-STPS | ISO 45001 | ACGIH TLV/BEI | ISO 9612 | ISO 5349</p>
+</div>
+
+</main>
+
+<script>
+// ══ TABS ══════════════════════════════════════════════════════════
+function openTab(group, id, btn) {
+  document.querySelectorAll(`[id^="${group}-"]`).forEach(p => p.classList.remove('active'));
+  document.getElementById(`${group}-${id}`).classList.add('active');
+  const bar = btn.closest('.tab-bar');
+  bar.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-u1','active-u2'));
+  const isU2 = btn.closest('.unit-section')?.id === 'unidad2';
+  btn.classList.add(isU2 ? 'active-u2' : 'active-u1');
+}
+
+// ══ ACCORDION ═════════════════════════════════════════════════════
+function toggleAcc(btn) {
+  const item = btn.closest('.acc-item');
+  item.classList.toggle('open');
+}
+
+// ══ NOISE BARS ════════════════════════════════════════════════════
+const noiseSources = [
+  {label:'Conversación normal', db:60, color:'#2d7a2d'},
+  {label:'Área de oficinas abiertas', db:70, color:'#5da032'},
+  {label:'Aspiradora industrial', db:78, color:'#8fbc14'},
+  {label:'VLE México — NOM-011 (8h)', db:90, color:'#e09900'},
+  {label:'Esmeriladora angular', db:94, color:'#d45f00'},
+  {label:'Compresor de pistones', db:97, color:'#c03c00'},
+  {label:'Prensa mecánica', db:101, color:'#b02020'},
+  {label:'Cincel neumático (taladro)', db:108, color:'#8b0000'},
+  {label:'Sierra de banda metálica (cercanía)', db:112, color:'#6d0000'},
+];
+
+function buildNoiseBars() {
+  const c = document.getElementById('noise-bars-container');
+  if (!c) return;
+  noiseSources.forEach(({label, db, color}) => {
+    const pct = Math.round((db - 55) / (115 - 55) * 100);
+    c.innerHTML += `
+      <div class="exposure-bar">
+        <div class="exposure-label">
+          <span>${label}</span><span>${db} dB(A)</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:${pct}%;background:${color}"></div>
+        </div>
+      </div>`;
+  });
+}
+
+// ══ DOSIS CALCULATOR ══════════════════════════════════════════════
+function calcDosis() {
+  const db = parseFloat(document.getElementById('db-input').value);
+  const te = parseFloat(document.getElementById('te-input').value);
+  if (isNaN(db) || isNaN(te) || db < 70 || te <= 0) {
+    alert('Ingresa valores válidos: dB entre 70-140, tiempo > 0');
+    return;
+  }
+  // NOM-011: T permitido = 8 / 2^((db-90)/5) horas
+  let tPermitido;
+  if (db < 90) {
+    tPermitido = 8;
+  } else {
+    tPermitido = 8 / Math.pow(2, (db - 90) / 5);
+  }
+  const dosis = te / tPermitido;
+  const dosisPct = (dosis * 100).toFixed(1);
+  const cumple = dosis <= 1.0;
+
+  const res = document.getElementById('dosis-result');
+  const valEl = document.getElementById('dosis-val');
+  const msgEl = document.getElementById('dosis-msg');
+
+  valEl.textContent = `${dosisPct}% (${dosis.toFixed(2)})`;
+  valEl.style.color = dosis > 1 ? '#ff8a80' : '#a5d6a7';
+  msgEl.textContent = cumple
+    ? `✓ Cumple NOM-011-STPS-2001. T permisible = ${tPermitido.toFixed(1)} h/turno. Margen restante: ${((1-dosis)*100).toFixed(1)}%`
+    : `✗ SUPERA el VLE. T permisible = ${tPermitido.toFixed(1)} h. Reducir exposición en ${((dosis-1)*100).toFixed(1)}% o implementar controles.`;
+  res.classList.add('show');
+}
+
+// ══ QUIZ ══════════════════════════════════════════════════════════
+const quizData = [
+  {
+    q: "Según la Ley Federal del Trabajo (Art. 473), ¿qué son los riesgos de trabajo?",
+    opts: [
+      "Solo los accidentes que ocurren dentro de las instalaciones de la empresa",
+      "Los accidentes y enfermedades a que están expuestos los trabajadores en ejercicio o con motivo del trabajo",
+      "Únicamente las enfermedades crónicas derivadas de actividades laborales prolongadas",
+      "Los riesgos de transporte al lugar de trabajo"
+    ],
+    correct: 1,
+    feedback: "La LFT en su Art. 473 define los riesgos de trabajo como los ACCIDENTES Y ENFERMEDADES, ambos, a que están expuestos los trabajadores en ejercicio o con motivo del trabajo. Es una definición amplia que incluye ambas categorías."
+  },
+  {
+    q: "Un trabajador de soldadura ha estado expuesto a manganeso durante 12 años y desarrolla síntomas de parkinsonismo. ¿Qué tipo de riesgo y efecto toxicológico corresponde?",
+    opts: [
+      "Riesgo físico; efecto agudo local",
+      "Riesgo químico; efecto crónico sistémico",
+      "Riesgo biológico; efecto subagudo sistémico",
+      "Riesgo ergonómico; efecto agudo local"
+    ],
+    correct: 1,
+    feedback: "El manganeso es un metal pesado (riesgo QUÍMICO). La exposición prolongada de 12 años produce un efecto CRÓNICO. El parkinsonismo es un daño al sistema nervioso central, un órgano distante al pulmón (puerta de entrada), por lo tanto es un efecto SISTÉMICO. Respuesta: riesgo químico, efecto crónico sistémico."
+  },
+  {
+    q: "¿Cuál es el Valor Límite de Exposición (VLE) para ruido continuo en una jornada de 8 horas según la NOM-011-STPS-2001?",
+    opts: ["85 dB(A)", "90 dB(A)", "95 dB(A)", "100 dB(A)"],
+    correct: 1,
+    feedback: "La NOM-011-STPS-2001 establece el VLE de 90 dB(A) para una jornada completa de 8 horas. Los 85 dB(A) son el nivel a partir del cual se exige el Programa de Conservación Auditiva, pero NO son el VLE. A 95 dB solo se permiten 4 horas de exposición."
+  },
+  {
+    q: "Un ingeniero calcula la dosis de ruido de un operador de prensas: nivel medido = 100 dB(A), tiempo de exposición = 3 horas. Aplicando la NOM-011 (criterio de 5 dB), ¿la dosis supera el VLE?",
+    opts: [
+      "No, la dosis es 0.75 (75%) — dentro del límite",
+      "Sí, la dosis es 1.5 (150%) — supera el VLE",
+      "No, la dosis es 0.50 (50%) — dentro del límite",
+      "Sí, la dosis es 2.0 (200%) — supera el VLE"
+    ],
+    correct: 1,
+    feedback: "A 100 dB(A), el tiempo permisible según NOM-011 (criterio 5 dB) es: T = 8/2^((100-90)/5) = 8/2^2 = 8/4 = 2 horas. Dosis = 3h / 2h = 1.5 = 150%. SUPERA el VLE (que es ≤ 1.0 o 100%). El trabajador debe ser reubicado o se deben implementar controles."
+  },
+  {
+    q: "¿Cuál es el principio fundamental de la toxicología, enunciado por Paracelsus?",
+    opts: [
+      "Todo agente químico es tóxico por definición en cualquier concentración",
+      "Solo los agentes con número CAS registrado representan riesgo toxicológico",
+      "La dosis hace el veneno: todo es tóxico a dosis suficiente y nada lo es a dosis suficientemente baja",
+      "Los agentes biológicos tienen mayor toxicidad que los químicos"
+    ],
+    correct: 2,
+    feedback: "El principio de Paracelsus ('sola dosis facit venenum') es el fundamento de toda la toxicología: la diferencia entre un medicamento y un veneno es la dosis. El agua en exceso puede ser tóxica (hiponatremia dilucional). La dosis-respuesta es la relación central de la toxicología industrial."
+  },
+  {
+    q: "Un trabajador de galvanoplastia necesita protección respiratoria contra nieblas ácidas. Según la jerarquía de controles, ¿qué medida tiene mayor eficacia y debe priorizarse?",
+    opts: [
+      "Equipar al trabajador con mascarilla N95 como medida principal",
+      "Instalar extracción localizada (LEV) directamente sobre los baños de galvanizado",
+      "Rotar al trabajador cada 2 horas para reducir su exposición",
+      "Publicar avisos de riesgo químico en el área de trabajo"
+    ],
+    correct: 1,
+    feedback: "La jerarquía de controles prioriza: 1. Eliminación, 2. Sustitución, 3. Controles de ingeniería (MEJOR RESPUESTA: extracción localizada LEV), 4. Controles administrativos (rotación), 5. EPP (última opción). La extracción localizada captura el contaminante en el origen antes de que se disperse, siendo mucho más eficaz que el EPP, que solo protege al trabajador individual y cuya eficacia depende del uso correcto."
+  },
+  {
+    q: "¿Cuál es la enfermedad ocupacional más frecuente en el mundo según la OIT?",
+    opts: [
+      "Lumbalgias por sobreesfuerzo",
+      "Dermatitis de contacto profesional",
+      "Hipoacusia inducida por ruido (NIHL)",
+      "Intoxicación aguda por plaguicidas"
+    ],
+    correct: 2,
+    feedback: "La Hipoacusia Inducida por Ruido (Noise-Induced Hearing Loss, NIHL) es consistentemente la enfermedad laboral más frecuente en el mundo, afectando a más de 250 millones de trabajadores según la OIT. Es 100% prevenible con los controles adecuados y 100% irreversible una vez establecida, lo que hace crítica la prevención."
+  },
+  {
+    q: "Un operador de montacargas en un almacén trabaja 8 horas/día y tiene medición de vibración de cuerpo completo A(8) = 1.5 m/s². Según la normatividad, ¿qué aplica?",
+    opts: [
+      "Cumple la normatividad; no requiere acción",
+      "Supera el VLE de 1.15 m/s²; requiere acción correctiva urgente",
+      "Está en la zona de precaución (entre 0.5 y 1.15 m/s²); monitorear",
+      "El dato no es suficiente; se necesita medir más ejes"
+    ],
+    correct: 1,
+    feedback: "Para vibración de cuerpo completo (ISO 2631-1): Nivel de acción = 0.5 m/s², VLE = 1.15 m/s². Con A(8) = 1.5 m/s², el operador SUPERA el VLE. Se requieren acciones correctivas inmediatas: revisión del estado del asiento del montacargas, verificación de pavimento, posible sustitución de equipo. Los daños asociados incluyen lumbalgia crónica y hernia discal."
+  },
+  {
+    q: "¿Qué es la silicosis y cuál es su principal característica como enfermedad laboral?",
+    opts: [
+      "Inflamación aguda del pulmón por hongos; es tratable con antifúngicos",
+      "Neumoconiosis irreversible por inhalación de sílice cristalina; prevenible pero sin cura",
+      "Enfermedad viral de los mineros; se previene con vacunación",
+      "Intoxicación química reversible por exposición a sílice en forma líquida"
+    ],
+    correct: 1,
+    feedback: "La silicosis es una NEUMOCONIOSIS (enfermedad pulmonar por polvo) causada por la inhalación de sílice cristalina libre (SiO₂ en su fracción respirable). Sus características clave: IRREVERSIBLE (no tiene tratamiento curativo), PROGRESIVA aun después de cesar la exposición, PREVENIBLE con controles de ingeniería (ventilación, perforación húmeda). Tiene período de latencia de 10-30 años. Es la neumoconiosis más antigua conocida."
+  },
+  {
+    q: "En la evaluación de una mezcla de solventes, se mide: Tolueno 40 ppm (VLE = 50 ppm) y Xileno 60 ppm (VLE = 100 ppm). Asumiendo efecto aditivo, ¿el ambiente cumple el criterio de mezcla?",
+    opts: [
+      "Sí, porque individualmente ambos están bajo su VLE respectivo",
+      "No es posible saberlo sin conocer la temperatura del ambiente",
+      "No, porque la suma de fracciones individuales = 40/50 + 60/100 = 0.8 + 0.6 = 1.4 > 1",
+      "Sí, porque la suma aritmética de concentraciones es 100 ppm < 150 ppm VLE combinado"
+    ],
+    correct: 2,
+    feedback: "Para mezclas con efecto aditivo (ACGIH / NOM-010): Σ(Ci/VLEi) ≤ 1.0. Cálculo: 40/50 + 60/100 = 0.80 + 0.60 = 1.40. Como 1.40 > 1.0, la mezcla SUPERA el VLE aunque individualmente cada componente esté por debajo de su VLE individual. Este criterio es fundamental para solventes orgánicos que comparten el mismo órgano blanco (SNC, hígado)."
+  }
+];
+
+let currentQ = 0, score = 0, answered = false;
+
+function renderQuestion() {
+  const q = quizData[currentQ];
+  document.getElementById('quiz-prog').textContent = `Pregunta ${currentQ+1} de ${quizData.length}`;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('q-feedback').className = 'quiz-feedback';
+  document.getElementById('q-feedback').textContent = '';
+  document.getElementById('btn-next').disabled = true;
+  document.getElementById('btn-check').disabled = false;
+  answered = false;
+
+  const opts = document.getElementById('q-opts');
+  opts.innerHTML = q.opts.map((o, i) => `
+    <div class="quiz-opt" data-idx="${i}" onclick="selectOpt(this)">
+      <div class="quiz-opt-dot"></div>
+      <span>${o}</span>
+    </div>`).join('');
+}
+
+function selectOpt(el) {
+  if (answered) return;
+  document.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function checkAnswer() {
+  if (answered) return;
+  const sel = document.querySelector('.quiz-opt.selected');
+  if (!sel) { alert('Selecciona una opción primero'); return; }
+  answered = true;
+  const idx = parseInt(sel.dataset.idx);
+  const correct = quizData[currentQ].correct;
+  const fb = document.getElementById('q-feedback');
+
+  document.querySelectorAll('.quiz-opt').forEach((o, i) => {
+    if (i === correct) o.classList.add('correct');
+    else if (i === idx && idx !== correct) o.classList.add('wrong');
+    o.onclick = null;
+  });
+
+  if (idx === correct) { score++; fb.className = 'quiz-feedback ok show'; fb.textContent = '✓ ¡Correcto! ' + quizData[currentQ].feedback; }
+  else { fb.className = 'quiz-feedback fail show'; fb.textContent = '✗ Incorrecto. ' + quizData[currentQ].feedback; }
+
+  document.getElementById('btn-check').disabled = true;
+  const isLast = currentQ === quizData.length - 1;
+  const btn = document.getElementById('btn-next');
+  btn.disabled = false;
+  btn.textContent = isLast ? 'Ver resultado →' : 'Siguiente →';
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= quizData.length) {
+    showScore(); return;
+  }
+  renderQuestion();
+}
+
+function showScore() {
+  document.getElementById('quiz-body').style.display = 'none';
+  const sc = document.getElementById('quiz-score');
+  sc.classList.add('show');
+  const pct = Math.round(score / quizData.length * 100);
+  document.getElementById('score-circle').textContent = `${pct}%`;
+  document.getElementById('score-circle').style.borderColor = pct >= 70 ? 'var(--u2)' : pct >= 50 ? 'var(--gold)' : 'var(--u1)';
+  document.getElementById('score-circle').style.color = pct >= 70 ? 'var(--u2)' : pct >= 50 ? 'var(--gold)' : 'var(--u1)';
+
+  let title, msg;
+  if (pct >= 90) { title = '¡Excelente dominio del tema!'; msg = `Respondiste ${score} de ${quizData.length} correctamente. Tienes una comprensión sólida de los riesgos profesionales e higiene industrial.`; }
+  else if (pct >= 70) { title = 'Buen desempeño'; msg = `${score}/${quizData.length} respuestas correctas. Revisa los temas donde tuviste errores y consolida tu aprendizaje.`; }
+  else if (pct >= 50) { title = 'Desempeño en desarrollo'; msg = `${score}/${quizData.length}. Recomendamos repasar las secciones de riesgos higiénicos y los cálculos de dosis de ruido.`; }
+  else { title = 'Repasa el material de la clase'; msg = `${score}/${quizData.length}. Te recomendamos volver a leer cada sección y apoyarte en los casos prácticos para reforzar conceptos.`; }
+
+  document.getElementById('score-title').textContent = title;
+  document.getElementById('score-msg').textContent = msg;
+}
+
+function restartQuiz() {
+  currentQ = 0; score = 0; answered = false;
+  document.getElementById('quiz-score').classList.remove('show');
+  document.getElementById('quiz-body').style.display = 'block';
+  renderQuestion();
+}
+
+// ══ INIT ══════════════════════════════════════════════════════════
+buildNoiseBars();
+renderQuestion();
+
+// Animate bars after DOM ready
+setTimeout(() => {
+  document.querySelectorAll('.bar-fill').forEach(b => {
+    const w = b.style.width;
+    b.style.width = '0';
+    setTimeout(() => b.style.width = w, 100);
+  });
+}, 300);
+</script>
+</body>
+</html>
