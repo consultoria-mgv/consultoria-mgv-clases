@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IPERC Lab · MGV Consultoría — Análisis de Riesgos Laborales</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ─────────────────────────────────────────────────── */
+:root{
+  /* ── Fondos: gris azulado oscuro-medio, no negro puro ── */
+  --ink:#1C2333;
+  --ink2:#242E42;
+  --ink3:#2E3A50;
+  --panel:#2A3547;
+  --glass:rgba(255,255,255,0.06);
+  --border:rgba(255,255,255,0.15);
+  --border2:rgba(255,255,255,0.28);
+
+  /* ── Textos: alto contraste garantizado ── */
+  --muted:#9BADC4;      /* texto secundario — WCAG AA sobre --panel */
+  --body:#C4D4E5;       /* texto cuerpo — claro y legible */
+  --text:#E8F0F8;       /* texto principal — casi blanco */
+  --white:#F5F9FF;      /* titulares y énfasis */
+
+  /* ── Colores de acento: más saturados/brillantes ── */
+  --teal:#00D4AF;  --teal2:#00F0C8;  --teal-d:rgba(0,212,175,0.18);
+  --amber:#F5A800; --amber2:#FFBE2E; --amber-d:rgba(245,168,0,0.18);
+  --rose:#F43F5E;  --rose2:#FF6B80;  --rose-d:rgba(244,63,94,0.18);
+  --blue:#4A90E2;  --blue2:#72AFFF;  --blue-d:rgba(74,144,226,0.18);
+  --violet:#9B72FF; --violet2:#B899FF; --violet-d:rgba(155,114,255,0.18);
+  --grn:#2ECC71;   --grn2:#52E88D;   --grn-d:rgba(46,204,113,0.18);
+
+  --lv1:#00D4AF; --lv2:#F5A800; --lv3:#9B72FF;
+
+  --r:12px; --r2:8px; --r3:20px;
+  --ff:'Syne',sans-serif;
+  --fb:'DM Sans',sans-serif;
+  --fm:'JetBrains Mono',monospace;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--fb);background:var(--ink);color:var(--body);line-height:1.85;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--ink)}::-webkit-scrollbar-thumb{background:#4A5870;border-radius:3px}
+
+/* ── NOISE OVERLAY ──────────────────────────────────────────── */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  opacity:0.4}
+
+/* ── NAV ────────────────────────────────────────────────────── */
+#nav{position:sticky;top:0;z-index:100;
+  background:rgba(28,35,51,0.96);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);padding:0 2rem}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:0;height:58px;overflow-x:auto}
+.nav-logo{font-family:var(--ff);font-size:1.05rem;font-weight:800;color:var(--white);
+  display:flex;align-items:center;gap:8px;margin-right:2rem;white-space:nowrap}
+.nav-logo-dot{width:9px;height:9px;border-radius:50%;background:var(--teal);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+.nav-btn{font-family:var(--fb);font-size:0.90rem;font-weight:500;padding:6px 14px;
+  border:none;background:none;cursor:pointer;color:var(--muted);
+  border-bottom:2px solid transparent;transition:all 0.15s;white-space:nowrap;height:58px}
+.nav-btn:hover{color:var(--text)}
+.nav-btn.active{color:var(--white);border-bottom-color:var(--teal)}
+.nav-badge{display:inline-block;background:var(--teal);color:var(--ink);
+  border-radius:10px;font-size:0.75rem;font-weight:700;padding:1px 6px;margin-left:5px}
+
+/* ── HERO ───────────────────────────────────────────────────── */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;
+  background:radial-gradient(ellipse 80% 60% at 60% 30%, rgba(0,201,167,0.06) 0%, transparent 70%),
+             radial-gradient(ellipse 50% 40% at 20% 70%, rgba(59,130,246,0.05) 0%, transparent 60%)}
+.hero-inner{max-width:1200px;margin:0 auto;padding:6rem 2rem 4rem;display:grid;
+  grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+@media(max-width:800px){.hero-inner{grid-template-columns:1fr}}
+
+.hero-tag{font-family:var(--fm);font-size:0.92rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--teal);border:1px solid rgba(0,201,167,0.3);padding:5px 14px;border-radius:20px;
+  display:inline-flex;align-items:center;gap:8px;margin-bottom:1.5rem;background:var(--teal-d)}
+.hero-tag::before{content:'';width:6px;height:6px;background:var(--teal);border-radius:50%}
+
+.hero h1{font-family:var(--ff);font-size:clamp(2.2rem,4.5vw,3.8rem);font-weight:800;
+  line-height:1.08;color:var(--white);margin-bottom:1rem}
+.hero h1 em{font-style:italic;color:var(--teal);font-weight:600}
+
+.hero-sub{font-size:1.05rem;color:var(--text);line-height:1.85;margin-bottom:2rem;max-width:480px}
+
+.hero-btns{display:flex;flex-wrap:wrap;gap:10px}
+.btn-primary{font-family:var(--fb);font-weight:600;font-size:1.0rem;
+  background:var(--teal);color:var(--ink);border:none;padding:12px 24px;
+  border-radius:var(--r2);cursor:pointer;transition:all 0.2s}
+.btn-primary:hover{background:var(--teal2);transform:translateY(-2px)}
+.btn-outline{font-family:var(--fb);font-weight:500;font-size:1.0rem;
+  background:transparent;color:var(--text);border:1px solid var(--border2);padding:12px 24px;
+  border-radius:var(--r2);cursor:pointer;transition:all 0.2s}
+.btn-outline:hover{background:var(--glass);border-color:var(--teal);color:var(--teal)}
+
+/* Hero visual – IPERC table preview */
+.hero-visual{position:relative}
+.hero-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);
+  overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.5)}
+.hero-card-header{background:var(--ink2);padding:0.9rem 1.2rem;
+  display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
+.hc-dot{width:10px;height:10px;border-radius:50%}
+.hero-card-body{padding:1rem}
+.mini-row{display:grid;grid-template-columns:1fr 0.6fr 0.6fr 0.8fr;gap:6px;margin-bottom:5px}
+.mini-cell{background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:5px;
+  padding:5px 8px;font-size:0.88rem;color:var(--text);font-family:var(--fm)}
+.mini-cell.head{background:var(--ink2);color:var(--muted);font-size:0.96rem;letter-spacing:0.06em;text-transform:uppercase}
+.mini-cell.risk-a{background:var(--rose-d);border-color:rgba(244,63,94,0.3);color:var(--rose2)}
+.mini-cell.risk-m{background:var(--amber-d);border-color:rgba(245,158,11,0.3);color:var(--amber2)}
+.mini-cell.risk-b{background:var(--grn-d);border-color:rgba(34,197,94,0.3);color:var(--grn2)}
+
+/* ── SECTION SHELLS ─────────────────────────────────────────── */
+.page{display:none;max-width:1200px;margin:0 auto;padding:3rem 2rem 5rem;animation:fadeIn 0.35s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── SECTION LABEL ──────────────────────────────────────────── */
+.sec-label{display:inline-flex;align-items:center;gap:7px;font-family:var(--fm);
+  font-size:0.77rem;letter-spacing:0.12em;text-transform:uppercase;
+  padding:4px 12px;border-radius:20px;margin-bottom:0.85rem;font-weight:600}
+.sl-teal{background:rgba(0,212,175,0.2);color:#00F0CB;border:1px solid rgba(0,212,175,0.4)}
+.sl-amber{background:rgba(245,168,0,0.2);color:#FFD166;border:1px solid rgba(245,168,0,0.4)}
+.sl-violet{background:rgba(155,114,255,0.2);color:#C8A8FF;border:1px solid rgba(155,114,255,0.4)}
+.sl-rose{background:rgba(244,63,94,0.2);color:#FF8FA0;border:1px solid rgba(244,63,94,0.4)}
+.sl-grn{background:rgba(46,204,113,0.2);color:#72F5A2;border:1px solid rgba(46,204,113,0.4)}
+
+.page-title{font-family:var(--ff);font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;
+  color:var(--white);margin-bottom:0.4rem;line-height:1.15}
+.page-sub{font-size:1.02rem;color:var(--text);margin-bottom:2.5rem;max-width:680px;line-height:1.8}
+
+/* ── CARDS ──────────────────────────────────────────────────── */
+.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);
+  padding:1.5rem;transition:border-color 0.2s}
+.card-accent-t{border-top:2px solid var(--teal)}
+.card-accent-a{border-top:2px solid var(--amber)}
+.card-accent-v{border-top:2px solid var(--violet)}
+.card-accent-r{border-top:2px solid var(--rose)}
+.card-accent-g{border-top:2px solid var(--grn)}
+.card:hover{border-color:var(--border2)}
+.card h3{font-family:var(--ff);font-size:1rem;font-weight:700;color:var(--white);margin-bottom:0.5rem}
+.card p{font-size:0.96rem;color:var(--text);line-height:1.7}
+.card ul{padding-left:1.1rem;font-size:0.96rem;color:var(--text);line-height:1.82;margin-top:0.4rem}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
+@media(max-width:700px){.grid2,.grid3,.grid4{grid-template-columns:1fr}}
+@media(max-width:900px){.grid3{grid-template-columns:1fr 1fr}.grid4{grid-template-columns:1fr 1fr}}
+
+.full-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);
+  padding:2rem;margin-bottom:1.5rem}
+.full-card h3{font-family:var(--ff);font-size:1.1rem;color:var(--white);margin-bottom:0.75rem;font-weight:700}
+.full-card p{font-size:0.97rem;color:var(--text);line-height:1.78;margin-bottom:0.75rem}
+.full-card p:last-child{margin-bottom:0}
+.full-card ul,.full-card ol{padding-left:1.2rem;font-size:0.96rem;color:var(--text);line-height:1.87;margin-bottom:0.75rem}
+.full-card strong{color:var(--text)}
+
+/* ── CALLOUT ────────────────────────────────────────────────── */
+.callout{display:flex;gap:14px;padding:1.1rem 1.4rem;border-radius:var(--r2);margin-bottom:1.25rem;font-size:0.96rem;line-height:1.72}
+.c-teal{background:rgba(0,212,175,0.16);border:1.5px solid rgba(0,212,175,0.4);color:#7FFDE8}
+.c-amber{background:rgba(245,168,0,0.16);border:1.5px solid rgba(245,168,0,0.45);color:#FFD166}
+.c-rose{background:rgba(244,63,94,0.16);border:1.5px solid rgba(244,63,94,0.45);color:#FF9BAD}
+.c-grn{background:rgba(46,204,113,0.16);border:1.5px solid rgba(46,204,113,0.4);color:#72F5A2}
+.callout-icon{font-size:1.25rem;flex-shrink:0;margin-top:1px}
+
+/* ── STEP FLOW ──────────────────────────────────────────────── */
+.step-flow{counter-reset:steps;list-style:none;padding:0;margin-bottom:1.5rem}
+.step-flow li{counter-increment:steps;display:flex;gap:1rem;margin-bottom:1rem;align-items:flex-start}
+.step-flow li::before{content:counter(steps);display:flex;align-items:center;justify-content:center;
+  min-width:30px;height:30px;border-radius:50%;font-weight:700;font-size:0.90rem;flex-shrink:0;
+  margin-top:2px;font-family:var(--fm)}
+.sf-teal li::before{background:var(--teal-d);color:var(--teal);border:1px solid rgba(0,201,167,0.3)}
+.sf-amber li::before{background:var(--amber-d);color:var(--amber);border:1px solid rgba(245,158,11,0.3)}
+.sf-violet li::before{background:var(--violet-d);color:var(--violet);border:1px solid rgba(139,92,246,0.3)}
+.step-content{font-size:0.97rem;color:var(--text);line-height:1.75}
+.step-content strong{color:var(--text);display:block;margin-bottom:2px}
+
+/* ── TABLES ─────────────────────────────────────────────────── */
+.t-wrap{overflow-x:auto;border-radius:var(--r);margin-bottom:1.5rem;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:0.93rem;background:var(--ink2)}
+thead{background:var(--ink3)}
+thead th{padding:10px 14px;text-align:left;color:var(--muted);font-weight:600;
+  font-size:0.96rem;letter-spacing:0.05em;text-transform:uppercase;border-bottom:1px solid var(--border2)}
+tbody tr{border-bottom:1px solid var(--border);transition:background 0.1s}
+tbody tr:hover{background:rgba(255,255,255,0.05)}
+tbody td{padding:11px 14px;color:var(--text);vertical-align:top;line-height:1.6;font-size:0.92rem}
+tbody td:first-child{color:var(--white);font-weight:600}
+.risk-i{background:rgba(244,63,94,0.15);color:var(--rose2);border:1px solid rgba(244,63,94,0.3);
+  padding:2px 8px;border-radius:4px;font-weight:700;font-family:var(--fm);font-size:0.94rem;white-space:nowrap}
+.risk-a{background:rgba(244,63,94,0.1);color:#ff8a80;padding:2px 8px;border-radius:4px;font-weight:700;font-family:var(--fm);font-size:0.94rem}
+.risk-m{background:var(--amber-d);color:var(--amber2);padding:2px 8px;border-radius:4px;font-weight:700;font-family:var(--fm);font-size:0.94rem}
+.risk-b{background:rgba(34,197,94,0.1);color:var(--grn2);padding:2px 8px;border-radius:4px;font-weight:700;font-family:var(--fm);font-size:0.94rem}
+.risk-t{background:rgba(0,201,167,0.1);color:var(--teal2);padding:2px 8px;border-radius:4px;font-weight:700;font-family:var(--fm);font-size:0.94rem}
+
+/* ── MATRIX VISUAL ──────────────────────────────────────────── */
+.matrix-grid{display:grid;grid-template-columns:60px repeat(5,1fr);gap:3px;margin-bottom:1.5rem}
+.mx-head{background:var(--ink2);color:var(--muted);font-size:0.90rem;font-family:var(--fm);
+  display:flex;align-items:center;justify-content:center;padding:8px 4px;border-radius:4px;text-align:center}
+.mx-cell{display:flex;align-items:center;justify-content:center;padding:12px 6px;border-radius:5px;
+  font-size:0.90rem;font-weight:700;font-family:var(--fm);flex-direction:column;gap:2px;cursor:default}
+.mx-t{background:#1e4535;color:#52E88D}
+.mx-b{background:#1a3828;color:#72F5A2}
+.mx-m{background:#3d2e05;color:#FFD166}
+.mx-a{background:#421818;color:#FF9090}
+.mx-i{background:#610d0d;color:#FFB3C0}
+
+/* ── ACCORDION ──────────────────────────────────────────────── */
+.acc{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);
+  margin-bottom:6px;overflow:hidden}
+.acc-head{width:100%;display:flex;justify-content:space-between;align-items:center;
+  padding:1rem 1.25rem;background:none;border:none;cursor:pointer;font-family:var(--fb);
+  font-size:1.0rem;font-weight:600;color:var(--white);text-align:left;transition:background 0.15s}
+.acc-head:hover{background:var(--glass)}
+.acc-arrow{font-size:0.94rem;color:var(--muted);transition:transform 0.2s;flex-shrink:0}
+.acc.open .acc-arrow{transform:rotate(180deg)}
+.acc-body{display:none;padding:0 1.25rem 1.25rem;font-size:0.96rem;color:var(--text);line-height:1.78}
+.acc.open .acc-body{display:block}
+.acc-body ul{padding-left:1.1rem;margin-top:0.5rem}
+.acc-body li{margin-bottom:0.4rem;color:var(--text)}
+.acc-body strong{color:var(--white)}
+
+/* ── HIERARCHY PYRAMID ──────────────────────────────────────── */
+.pyramid{margin:1.5rem 0}
+.pyr-level{display:flex;align-items:center;gap:10px;margin-bottom:5px}
+.pyr-bar{height:44px;border-radius:6px;display:flex;align-items:center;padding:0 1rem;
+  font-size:0.94rem;font-weight:600;flex:1;transition:filter 0.2s}
+.pyr-bar:hover{filter:brightness(1.15)}
+.pyr-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:0.96rem;font-weight:800;font-family:var(--fm);flex-shrink:0}
+.p1{background:rgba(34,197,94,0.18);color:var(--grn2);border:1px solid rgba(34,197,94,0.3)}
+.p2{background:rgba(34,197,94,0.13);color:#a3e8b0}
+.p3{background:rgba(59,130,246,0.18);color:var(--blue2);border:1px solid rgba(59,130,246,0.3)}
+.p4{background:rgba(245,158,11,0.18);color:var(--amber2);border:1px solid rgba(245,158,11,0.3)}
+.p5{background:rgba(244,63,94,0.18);color:var(--rose2);border:1px solid rgba(244,63,94,0.3)}
+.pn1{background:var(--grn-d);color:var(--grn)}
+.pn2{background:var(--grn-d);color:var(--grn)}
+.pn3{background:var(--blue-d);color:var(--blue)}
+.pn4{background:var(--amber-d);color:var(--amber)}
+.pn5{background:var(--rose-d);color:var(--rose)}
+
+/* ── INTERACTIVE IPERC BUILDER ──────────────────────────────── */
+.builder{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:1.5rem}
+.builder-header{background:var(--ink2);padding:1rem 1.5rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem}
+.builder-title{font-family:var(--ff);font-size:0.95rem;font-weight:700;color:var(--white)}
+.builder-body{padding:1.5rem}
+
+.step-indicator{display:flex;gap:0;margin-bottom:2rem;overflow-x:auto}
+.si-item{display:flex;align-items:center;flex:1;min-width:0}
+.si-dot{width:32px;height:32px;border-radius:50%;border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:0.96rem;font-weight:700;
+  font-family:var(--fm);flex-shrink:0;background:var(--ink2);color:var(--muted);transition:all 0.3s;cursor:pointer}
+.si-dot.done{border-color:var(--teal);background:var(--teal-d);color:var(--teal)}
+.si-dot.active{border-color:var(--teal);background:var(--teal);color:var(--ink);box-shadow:0 0 0 4px var(--teal-d)}
+.si-line{flex:1;height:2px;background:var(--border);transition:background 0.3s;min-width:10px}
+.si-line.done{background:var(--teal)}
+
+.build-step{display:none;animation:fadeIn 0.3s ease}
+.build-step.active{display:block}
+
+.field{margin-bottom:1.1rem}
+.field label{display:block;font-size:0.96rem;font-weight:600;color:var(--body);
+  margin-bottom:5px;text-transform:uppercase;letter-spacing:0.07em;font-family:var(--fm)}
+.field input,.field select,.field textarea{width:100%;padding:10px 13px;border-radius:var(--r2);
+  border:1px solid var(--border2);background:var(--ink2);font-family:var(--fb);font-size:0.97rem;
+  color:var(--white);transition:border-color 0.15s;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--teal)}
+.field select option{background:var(--ink2)}
+.field textarea{min-height:70px}
+
+.fields-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:600px){.fields-row{grid-template-columns:1fr}}
+
+.nr-display{background:var(--ink2);border:1.5px solid var(--border2);border-radius:var(--r2);
+  padding:1.25rem;text-align:center;margin-bottom:1.25rem}
+.nr-num{font-family:var(--ff);font-size:3rem;font-weight:800;line-height:1}
+.nr-label{font-size:0.93rem;color:var(--body);margin-top:6px;font-family:var(--fm)}
+.nr-trivial{color:var(--teal2)}
+.nr-bajo{color:var(--grn2)}
+.nr-medio{color:var(--amber2)}
+.nr-alto{color:var(--rose2)}
+.nr-intolerable{color:#ff4466}
+
+.btn-step{font-family:var(--fb);font-weight:600;font-size:0.97rem;padding:10px 22px;
+  border-radius:var(--r2);border:none;cursor:pointer;transition:all 0.15s}
+.btn-next{background:var(--teal);color:var(--ink)}
+.btn-next:hover{background:var(--teal2);transform:translateY(-1px)}
+.btn-prev{background:transparent;color:var(--body);border:1px solid var(--border2)}
+.btn-prev:hover{background:var(--glass);color:var(--text)}
+.btn-reset{background:transparent;color:var(--rose);border:1px solid rgba(244,63,94,0.3);font-size:0.90rem;padding:7px 14px}
+.btn-reset:hover{background:var(--rose-d)}
+
+.result-card{background:var(--ink3);border:1.5px solid var(--border2);border-radius:var(--r);
+  padding:1.5rem;margin-bottom:1rem}
+.rc-row{display:grid;grid-template-columns:160px 1fr;gap:0.5rem;margin-bottom:0.6rem;align-items:baseline}
+.rc-label{font-size:0.96rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;font-family:var(--fm)}
+.rc-value{font-size:1.0rem;color:var(--text)}
+
+/* ── FORMULA BOX ─────────────────────────────────────────────── */
+.formula{background:var(--ink);border:1.5px solid var(--border2);border-radius:var(--r2);
+  padding:1.25rem 1.5rem;font-family:var(--fm);font-size:1.02rem;color:var(--teal2);
+  letter-spacing:0.04em;margin:1rem 0;overflow-x:auto}
+.formula .fn{color:var(--text);font-size:1rem;font-weight:700}
+.formula .note{display:block;font-size:0.96rem;color:var(--muted);margin-top:6px;font-family:var(--fb)}
+
+/* ── CASE STUDY ──────────────────────────────────────────────── */
+.case{border-radius:var(--r);overflow:hidden;margin-bottom:2rem;border:1px solid var(--border2)}
+.case-head{padding:1.25rem 1.75rem}
+.case-head.teal{background:linear-gradient(135deg,rgba(0,201,167,0.15),rgba(0,201,167,0.05));
+  border-bottom:1px solid rgba(0,201,167,0.2)}
+.case-head.amber{background:linear-gradient(135deg,rgba(245,158,11,0.15),rgba(245,158,11,0.05));
+  border-bottom:1px solid rgba(245,158,11,0.2)}
+.case-head.violet{background:linear-gradient(135deg,rgba(139,92,246,0.15),rgba(139,92,246,0.05));
+  border-bottom:1px solid rgba(139,92,246,0.2)}
+.case-tag{font-family:var(--fm);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;
+  padding:3px 9px;border-radius:3px;font-weight:700;display:inline-block;margin-bottom:0.5rem}
+.ct-t{background:var(--teal-d);color:var(--teal)}
+.ct-a{background:var(--amber-d);color:var(--amber)}
+.ct-v{background:var(--violet-d);color:var(--violet)}
+.case-title{font-family:var(--ff);font-size:1rem;color:var(--white);font-weight:700}
+.case-meta{font-size:0.98rem;color:var(--muted);font-family:var(--fm);margin-top:3px}
+.case-body{background:var(--panel);padding:1.75rem}
+.case-body h4{font-size:1.05rem;font-weight:700;color:var(--white);margin:1.35rem 0 0.55rem}
+.case-body h4:first-child{margin-top:0}
+.case-body p{font-size:0.97rem;color:var(--text);line-height:1.78;margin-bottom:0.75rem}
+.case-body ol,.case-body ul{padding-left:1.2rem;font-size:0.96rem;color:var(--text);line-height:1.87;margin-bottom:0.75rem}
+.case-lesson{background:var(--ink);border:1px solid var(--border);border-radius:var(--r2);
+  padding:1rem 1.25rem;margin-top:1.25rem;font-size:0.8rem;color:var(--body)}
+.case-lesson strong{color:var(--amber2)}
+
+/* ── QUIZ ────────────────────────────────────────────────────── */
+.quiz-wrap{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.quiz-top{background:var(--ink2);padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem}
+.quiz-top h2{font-family:var(--ff);font-size:1.05rem;color:var(--white);font-weight:700}
+.quiz-prog-text{font-family:var(--fm);font-size:0.92rem;color:var(--muted)}
+.quiz-progbar-wrap{background:var(--ink2);padding:0 1.5rem 0;border-bottom:1px solid var(--border)}
+.quiz-progbar{width:100%;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.quiz-progfill{height:100%;background:var(--teal);border-radius:2px;transition:width 0.4s ease;width:0%}
+.quiz-body{padding:2rem}
+.quiz-q{font-weight:600;font-size:1.06rem;color:var(--white);margin-bottom:0.65rem;line-height:1.62}
+.quiz-ctx{font-size:0.92rem;color:var(--body);margin-bottom:1.25rem;background:var(--ink2);
+  border:1px solid var(--border);padding:0.75rem 1rem;border-radius:var(--r2);
+  line-height:1.65;font-family:var(--fm)}
+.quiz-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:1.25rem}
+.quiz-opt{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;border-radius:var(--r2);
+  border:1.5px solid var(--border2);cursor:pointer;font-size:0.97rem;color:var(--text);
+  background:var(--ink2);transition:all 0.15s;line-height:1.5;user-select:none}
+.quiz-opt:hover:not(.qcorrect):not(.qwrong){border-color:var(--teal);color:var(--text);background:var(--teal-d)}
+.quiz-opt.qselected{border-color:var(--teal);color:var(--text);background:var(--teal-d)}
+.quiz-opt.qcorrect{border-color:var(--teal);background:rgba(0,201,167,0.15);color:#5eead4;cursor:default}
+.quiz-opt.qwrong{border-color:var(--rose);background:rgba(244,63,94,0.15);color:#fda4af;cursor:default}
+.quiz-dot{width:18px;height:18px;border-radius:50%;border:2px solid currentColor;flex-shrink:0;
+  margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;transition:all 0.15s}
+.quiz-feedback{display:none;padding:1.1rem 1.4rem;border-radius:var(--r2);font-size:0.97rem;
+  margin-bottom:1.1rem;line-height:1.7;animation:feedIn 0.25s ease}
+.quiz-feedback.show{display:block}
+@keyframes feedIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.qf-ok{background:rgba(0,201,167,0.1);border:1.5px solid rgba(0,201,167,0.35);color:#5eead4}
+.qf-fail{background:rgba(244,63,94,0.15);border:1.5px solid rgba(244,63,94,0.45);color:#FFB3C0}
+.quiz-nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.qbtn-p{padding:10px 22px;border-radius:var(--r2);border:none;font-family:var(--fb);
+  font-weight:600;font-size:0.95rem;cursor:pointer;transition:all 0.15s;background:var(--teal);color:var(--ink)}
+.qbtn-p:hover:not(:disabled){background:var(--teal2);transform:translateY(-1px)}
+.qbtn-s{padding:10px 22px;border-radius:var(--r2);font-family:var(--fb);font-weight:500;
+  font-size:0.95rem;cursor:pointer;transition:all 0.15s;background:transparent;
+  color:var(--body);border:1.5px solid var(--border2)}
+.qbtn-s:hover:not(:disabled){border-color:var(--teal);color:var(--teal)}
+.qbtn-p:disabled,.qbtn-s:disabled{opacity:0.35;cursor:not-allowed;transform:none}
+.quiz-hint{font-size:0.98rem;color:var(--muted);font-style:italic}
+.quiz-score{display:none;text-align:center;padding:3rem 2rem}
+.quiz-score.show{display:block}
+.qs-ring{width:110px;height:110px;border-radius:50%;border:4px solid;
+  display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem}
+.qs-pct{font-family:var(--ff);font-size:2.2rem;font-weight:800}
+.qs-title{font-family:var(--ff);font-size:1.4rem;color:var(--white);margin-bottom:0.5rem;font-weight:700}
+.qs-msg{font-size:0.99rem;color:var(--text);margin-bottom:2rem;line-height:1.75}
+
+/* ── LEVEL TABS ──────────────────────────────────────────────── */
+.level-tabs{display:flex;gap:8px;margin-bottom:2.5rem;flex-wrap:wrap}
+.level-tab{font-family:var(--fb);font-size:0.94rem;font-weight:600;padding:9px 20px;
+  border-radius:var(--r3);border:1.5px solid var(--border2);background:var(--ink2);
+  color:var(--muted);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:8px}
+.level-tab:hover{color:var(--text);border-color:var(--teal)}
+.level-tab.lv1.active{background:var(--teal-d);border-color:var(--teal);color:var(--teal)}
+.level-tab.lv2.active{background:var(--amber-d);border-color:var(--amber);color:var(--amber)}
+.level-tab.lv3.active{background:var(--violet-d);border-color:var(--violet);color:var(--violet)}
+.level-tab .lt-dot{width:8px;height:8px;border-radius:50%}
+.lv1 .lt-dot{background:var(--teal)}
+.lv2 .lt-dot{background:var(--amber)}
+.lv3 .lt-dot{background:var(--violet)}
+
+.level-panel{display:none;animation:fadeIn 0.3s ease}
+.level-panel.active{display:block}
+
+/* ── DIVIDER ─────────────────────────────────────────────────── */
+.divider{border:none;border-top:1px solid var(--border);margin:3rem 0}
+
+/* ── HIGHLIGHT BOX ───────────────────────────────────────────── */
+.hbox{background:linear-gradient(135deg,var(--ink2),var(--panel));border:1px solid var(--border2);
+  border-radius:var(--r);padding:2rem;margin-bottom:2rem;position:relative;overflow:hidden}
+.hbox::after{content:'';position:absolute;right:-30px;top:-30px;width:140px;height:140px;
+  border-radius:50%;background:radial-gradient(circle,rgba(0,201,167,0.06) 0%,transparent 70%)}
+.hbox h3{font-family:var(--ff);font-size:1.15rem;color:var(--white);margin-bottom:0.5rem;font-weight:700}
+.hbox p{font-size:0.98rem;color:var(--text);line-height:1.78}
+
+/* ── RISK BADGE ──────────────────────────────────────────────── */
+.rbadge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:4px;
+  font-family:var(--fm);font-size:0.92rem;font-weight:700}
+
+/* ── TABS (content) ──────────────────────────────────────────── */
+.tab-bar{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--border);margin-bottom:1.5rem}
+.tab-btn{font-family:var(--fb);font-size:0.8rem;font-weight:500;padding:9px 16px;background:none;
+  border:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;
+  transition:all 0.15s;position:relative;bottom:-1px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.at{color:var(--teal);border-bottom-color:var(--teal);background:var(--teal-d);border-radius:6px 6px 0 0}
+.tab-btn.aa{color:var(--amber);border-bottom-color:var(--amber);background:var(--amber-d);border-radius:6px 6px 0 0}
+.tab-btn.av{color:var(--violet);border-bottom-color:var(--violet);background:var(--violet-d);border-radius:6px 6px 0 0}
+.tabp{display:none}.tabp.active{display:block}
+
+/* ── SCENARIO CARD ───────────────────────────────────────────── */
+.scenario{background:var(--panel);border:1px solid var(--border2);border-radius:var(--r);
+  padding:1.5rem;margin-bottom:1rem;transition:border-color 0.2s}
+.scenario:hover{border-color:var(--teal)}
+.sc-icon{font-size:2rem;margin-bottom:0.75rem}
+.sc-title{font-family:var(--ff);font-size:0.95rem;font-weight:700;color:var(--white);margin-bottom:0.3rem}
+.sc-body{font-size:0.8rem;color:var(--body);line-height:1.65}
+
+/* ── FLOATING SCROLL INDICATOR ───────────────────────────────── */
+.scroll-hint{position:fixed;bottom:2rem;right:2rem;background:var(--teal);color:var(--ink);
+  width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;cursor:pointer;box-shadow:0 4px 20px rgba(0,201,167,0.3);
+  transition:transform 0.2s;z-index:50;border:none}
+.scroll-hint:hover{transform:translateY(-3px)}
+
+/* ── SHAKE ───────────────────────────────────────────────────── */
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+
+@media(max-width:600px){
+  .hero-inner{padding:4rem 1.5rem 3rem}
+  .page{padding:2rem 1rem 4rem}
+  .fields-row{grid-template-columns:1fr}
+  .mini-row{grid-template-columns:1fr 0.5fr}
+}
+</style>
+</head>
+<body>
+
+<!-- INSTITUTIONAL TOP BAR -->
+<div id="topbar" style="background:#131C2B;border-bottom:1px solid rgba(0,212,175,0.2);padding:7px 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px">
+  <div style="display:flex;align-items:center;gap:14px">
+    <div style="display:flex;align-items:center;gap:9px">
+      <a href="https://consultoria-mgv.github.io/consultoria-mgv/#sectores" target="_blank" style="display:flex;flex-shrink:0;border-radius:6px;overflow:hidden;transition:opacity 0.2s" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'"><a href="https://consultoria-mgv.github.io/consultoria-mgv/#sectores" target="_blank" title="MGV Consultoría e Ingeniería" style="display:flex;flex-shrink:0;border-radius:7px;overflow:hidden;transition:opacity 0.18s" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'"><img src="data:image/png;base64,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" alt="MGV Consultoría e Ingeniería" width="120" style="display:block;height:auto;border-radius:7px;"></a></a>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.82rem;color:#E8F0F8;line-height:1.2">MGV Consultoría e Ingeniería</div>
+        <div style="font-size:0.70rem;color:#9BADC4;line-height:1.2">Seguridad · Higiene · Medio Ambiente</div>
+      </div>
+    </div>
+    <div style="width:1px;height:28px;background:rgba(255,255,255,0.12);display:none" class="tb-sep"></div>
+    <div style="font-size:0.70rem;color:#9BADC4;font-family:'JetBrains Mono',monospace;display:none" id="tb-materia">Materia: Seguridad e Higiene Industrial</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+    <a href="https://consultoria-mgv.github.io/consultoria-mgv/#sectores" target="_blank" style="font-size:0.72rem;color:#00D4AF;text-decoration:none;font-family:'JetBrains Mono',monospace;transition:color 0.15s" onmouseover="this.style.color='#00F0CB'" onmouseout="this.style.color='#00D4AF'">consultoria-mgv.github.io ↗</a>
+    <div style="background:rgba(0,212,175,0.15);border:1px solid rgba(0,212,175,0.3);color:#00D4AF;font-size:0.68rem;font-weight:700;padding:3px 9px;border-radius:4px;font-family:'JetBrains Mono',monospace;letter-spacing:0.06em">ING. INDUSTRIAL · M.I.</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-inner">
+    <div class="nav-logo" style="gap:10px"><a href="https://consultoria-mgv.github.io/consultoria-mgv/#sectores" target="_blank" style="display:flex;align-items:center;border-radius:5px;overflow:hidden;flex-shrink:0;transition:opacity 0.2s" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'"><span style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:#E8F0F8;letter-spacing:-0.3px">IPERC<span style="color:#00D4AF">Lab</span></span></a></div>
+    <button class="nav-btn active" onclick="showPage('home')">Inicio</button>
+    <button class="nav-btn" onclick="showPage('fundamentos')">Fundamentos</button>
+    <button class="nav-btn" onclick="showPage('niveles')">Niveles <span class="nav-badge">3</span></button>
+    <button class="nav-btn" onclick="showPage('builder')">Constructor</button>
+    <button class="nav-btn" onclick="showPage('evaluacion')">Evaluación ✓</button>
+  </div>
+</nav>
+
+<!-- HERO PAGE -->
+<div id="page-home">
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag">Seguridad e Higiene Industrial</div>
+      <h1>Aprende a elaborar un análisis<br><em>IPERC</em><br>paso a paso</h1>
+      <p class="hero-sub">Identificación de Peligros, Evaluación y Control de Riesgos. Del nivel básico al avanzado, con casos reales y práctica interactiva.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="showPage('fundamentos')">Comenzar desde cero →</button>
+        <button class="btn-outline" onclick="showPage('niveles')">Ver los tres niveles</button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card">
+        <div class="hero-card-header">
+          <div class="hc-dot" style="background:#ff5f57"></div>
+          <div class="hc-dot" style="background:#ffbd2e"></div>
+          <div class="hc-dot" style="background:#28c840"></div>
+          <span style="font-family:var(--fm);font-size:0.94rem;color:var(--muted);margin-left:8px">IPERC — Planta de manufactura</span>
+        </div>
+        <div class="hero-card-body">
+          <div class="mini-row">
+            <div class="mini-cell head">Peligro</div>
+            <div class="mini-cell head">P</div>
+            <div class="mini-cell head">C</div>
+            <div class="mini-cell head">Nivel</div>
+          </div>
+          <div class="mini-row">
+            <div class="mini-cell">Ruido industrial</div>
+            <div class="mini-cell">4</div>
+            <div class="mini-cell">3</div>
+            <div class="mini-cell risk-a">ALTO 12</div>
+          </div>
+          <div class="mini-row">
+            <div class="mini-cell">Piso mojado</div>
+            <div class="mini-cell">3</div>
+            <div class="mini-cell">2</div>
+            <div class="mini-cell risk-m">MEDIO 6</div>
+          </div>
+          <div class="mini-row">
+            <div class="mini-cell">Vapores solvente</div>
+            <div class="mini-cell">5</div>
+            <div class="mini-cell">5</div>
+            <div class="mini-cell risk-i">INTOL 25</div>
+          </div>
+          <div class="mini-row">
+            <div class="mini-cell">Iluminación baja</div>
+            <div class="mini-cell">2</div>
+            <div class="mini-cell">2</div>
+            <div class="mini-cell risk-b">BAJO 4</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- FUNDAMENTOS PAGE -->
+<div id="page-fundamentos" class="page" style="display:none">
+  <div class="sec-label sl-teal">📘 Módulo 1</div>
+  <h1 class="page-title">Fundamentos del IPERC</h1>
+  <p class="page-sub">Todo lo que necesitas saber antes de elaborar tu primer análisis de riesgos laborales. Basado en la NOM-030-STPS-2009 y la ISO 45001:2018.</p>
+
+  <div class="hbox">
+    <h3>¿Qué es el IPERC?</h3>
+    <p>El IPERC (Identificación de Peligros, Evaluación y Control de Riesgos) es la herramienta central de la gestión de seguridad ocupacional. Permite al higienista y al ingeniero industrial identificar sistemáticamente qué puede causar daño en un puesto de trabajo, cuánto riesgo representa ese peligro y qué controles se deben implementar para proteger al trabajador.</p>
+  </div>
+
+  <div class="grid3">
+    <div class="card card-accent-t">
+      <div class="card-icon" style="font-size:1.8rem;margin-bottom:0.6rem">🔍</div>
+      <h3>I — Identificación</h3>
+      <p>Reconocer todos los peligros presentes en el área de trabajo: físicos, químicos, biológicos, ergonómicos, mecánicos, eléctricos, psicosociales y locativos.</p>
+    </div>
+    <div class="card card-accent-a">
+      <div class="card-icon" style="font-size:1.8rem;margin-bottom:0.6rem">⚖️</div>
+      <h3>E — Evaluación</h3>
+      <p>Estimar la magnitud del riesgo con base en la probabilidad de que ocurra y las consecuencias del daño. El resultado es el Nivel de Riesgo (NR = P × C).</p>
+    </div>
+    <div class="card card-accent-v">
+      <div class="card-icon" style="font-size:1.8rem;margin-bottom:0.6rem">🛡️</div>
+      <h3>C — Control</h3>
+      <p>Implementar medidas preventivas y correctivas siguiendo la jerarquía de controles hasta llevar el riesgo a un nivel aceptable.</p>
+    </div>
+  </div>
+
+  <div class="sec-label sl-teal" style="margin-top:2rem">Conceptos clave</div>
+  <h2 style="font-family:var(--ff);font-size:1.3rem;color:var(--white);margin-bottom:1.25rem;font-weight:700">Peligro vs. Riesgo — La distinción fundamental</h2>
+
+  <div class="grid2">
+    <div class="full-card" style="border-left:3px solid var(--amber)">
+      <h3>⚡ Peligro</h3>
+      <p><strong>Definición:</strong> Fuente o situación con potencial para causar daño en términos de lesiones, enfermedades, daños a la propiedad o al ambiente laboral.</p>
+      <p><strong>Características:</strong></p>
+      <ul>
+        <li>Es una condición objetiva y medible</li>
+        <li>Existe independientemente de si hay trabajadores expuestos</li>
+        <li>Se puede eliminar en la fuente</li>
+      </ul>
+      <p style="font-size:1.0rem;color:var(--muted);font-style:italic;margin-top:0.75rem">Ejemplo: Un piso mojado ES el peligro (condición física)</p>
+    </div>
+    <div class="full-card" style="border-left:3px solid var(--rose)">
+      <h3>🎲 Riesgo</h3>
+      <p><strong>Definición:</strong> Combinación de la probabilidad de que ocurra un evento peligroso y la severidad de sus consecuencias sobre la salud del trabajador.</p>
+      <p><strong>Características:</strong></p>
+      <ul>
+        <li>Depende de la exposición al peligro</li>
+        <li>Es cuantificable: NR = Probabilidad × Consecuencia</li>
+        <li>Se puede reducir, nunca eliminar totalmente</li>
+      </ul>
+      <p style="font-size:1.0rem;color:var(--muted);font-style:italic;margin-top:0.75rem">Ejemplo: El riesgo es caer (probabilidad + consecuencia del piso mojado)</p>
+    </div>
+  </div>
+
+  <div class="sec-label sl-amber" style="margin-top:2rem">Clasificación de peligros</div>
+  <div class="tab-bar">
+    <button class="tab-btn at" onclick="openTab('pfis','fis',this)">⚡ Físicos</button>
+    <button class="tab-btn" onclick="openTab('pfis','quim',this)">⚗️ Químicos</button>
+    <button class="tab-btn" onclick="openTab('pfis','bio',this)">🦠 Biológicos</button>
+    <button class="tab-btn" onclick="openTab('pfis','ergo',this)">💪 Ergonómicos</button>
+    <button class="tab-btn" onclick="openTab('pfis','mec',this)">⚙️ Mecánicos</button>
+    <button class="tab-btn" onclick="openTab('pfis','psi',this)">🧠 Psicosociales</button>
+  </div>
+
+  <div id="pfis-fis" class="tabp active">
+    <div class="t-wrap"><table>
+      <thead><tr><th>Agente físico</th><th>Fuentes típicas</th><th>Efecto en salud</th><th>Norma MX</th></tr></thead>
+      <tbody>
+        <tr><td>Ruido industrial</td><td>Prensas, compresores, tornos, soldadura</td><td>Hipoacusia bilateral permanente</td><td>NOM-011-STPS-2001</td></tr>
+        <tr><td>Vibraciones (VMB)</td><td>Taladros, motosierras, cinceles neumáticos</td><td>Síndrome de Raynaud, neuropatía</td><td>NOM-024-STPS-2001</td></tr>
+        <tr><td>Temperatura extrema</td><td>Hornos, fundición, cámaras frigoríficas</td><td>Golpe de calor, hipotermia</td><td>NOM-015-STPS-2001</td></tr>
+        <tr><td>Iluminación deficiente</td><td>Almacenes, naves sin ventanas, turnos nocturnos</td><td>Fatiga visual, accidentes</td><td>NOM-025-STPS-2008</td></tr>
+        <tr><td>Radiaciones no ionizantes</td><td>Soldadura (UV), láseres industriales</td><td>Quemaduras, fotoqueratitis</td><td>ACGIH TLV</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div id="pfis-quim" class="tabp">
+    <div class="t-wrap"><table>
+      <thead><tr><th>Estado</th><th>Agentes</th><th>Vía ingreso</th><th>Efecto principal</th></tr></thead>
+      <tbody>
+        <tr><td>Gases</td><td>CO, SO₂, H₂S, cloro</td><td>Inhalatoria</td><td>Asfixia, intoxicación sistémica</td></tr>
+        <tr><td>Vapores</td><td>Benceno, tolueno, xileno, acetona</td><td>Inhalación/piel</td><td>Hepatotoxicidad, SNC, leucemia</td></tr>
+        <tr><td>Polvos</td><td>Sílice, asbesto, algodón, madera</td><td>Inhalatoria</td><td>Silicosis, asbestosis, fibrosis</td></tr>
+        <tr><td>Humos metálicos</td><td>Plomo, manganeso, cromo VI</td><td>Inhalación</td><td>Saturnismo, parkinsonismo</td></tr>
+        <tr><td>Nieblas ácidas</td><td>HCl, H₂SO₄ en galvanoplastia</td><td>Piel/ojos</td><td>Quemaduras químicas</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div id="pfis-bio" class="tabp">
+    <div class="t-wrap"><table>
+      <thead><tr><th>Agente</th><th>Sector de riesgo</th><th>Enfermedad</th></tr></thead>
+      <tbody>
+        <tr><td>M. tuberculosis</td><td>Salud, penitenciarias</td><td>Tuberculosis ocupacional</td></tr>
+        <tr><td>Leptospira spp.</td><td>Alcantarillado, agricultura</td><td>Leptospirosis (sínd. de Weil)</td></tr>
+        <tr><td>VHB/VHC</td><td>Personal de salud</td><td>Hepatitis crónica, cirrosis</td></tr>
+        <tr><td>Endotoxinas</td><td>Mataderos, textil</td><td>Bisinosis, fiebre de molinos</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div id="pfis-ergo" class="tabp">
+    <div class="t-wrap"><table>
+      <thead><tr><th>Factor</th><th>Actividades</th><th>Lesión MSE</th><th>Norma</th></tr></thead>
+      <tbody>
+        <tr><td>Manejo manual de cargas >25 kg</td><td>Almacenistas, cargadores</td><td>Lumbalgia, hernia discal</td><td>NOM-036-1-STPS-2018</td></tr>
+        <tr><td>Movimientos repetitivos</td><td>Ensamble, empaque, costura</td><td>Síndrome del túnel carpiano</td><td>NOM-036-1-STPS-2018</td></tr>
+        <tr><td>Postura forzada</td><td>Pintores, soldadores aéreos</td><td>Tendinitis, bursitis de hombro</td><td>ISO 11228</td></tr>
+        <tr><td>Trabajo con pantallas</td><td>Oficinistas, cajeros</td><td>Cervicalgia, fatiga visual</td><td>NOM-036-2-STPS</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div id="pfis-mec" class="tabp">
+    <div class="t-wrap"><table>
+      <thead><tr><th>Tipo</th><th>Peligro</th><th>Lesión típica</th><th>Control</th></tr></thead>
+      <tbody>
+        <tr><td>Mecánico</td><td>Partes móviles sin resguardar</td><td>Atrapamiento, amputación</td><td>Guardas + LOTO (NOM-004)</td></tr>
+        <tr><td>Locativo</td><td>Pisos mojados, desniveles</td><td>Caídas mismo nivel</td><td>Antiderrapante + señalización</td></tr>
+        <tr><td>Altura</td><td>Trabajo a >1.8 m</td><td>Caída distinto nivel</td><td>Arnés + línea de vida (NOM-009)</td></tr>
+        <tr><td>Eléctrico</td><td>Contacto directo/indirecto</td><td>Quemadura, paro cardíaco</td><td>LOTO, aislamiento, EPP dieléctrico</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div id="pfis-psi" class="tabp">
+    <div class="t-wrap"><table>
+      <thead><tr><th>Factor</th><th>Manifestación</th><th>Efecto</th><th>Norma</th></tr></thead>
+      <tbody>
+        <tr><td>Sobrecarga de trabajo</td><td>Horas excesivas, plazos imposibles</td><td>Burnout, ansiedad, estrés</td><td>NOM-035-STPS-2018</td></tr>
+        <tr><td>Violencia laboral</td><td>Acoso, discriminación (mobbing)</td><td>TEPT, depresión</td><td>NOM-035-STPS-2018</td></tr>
+        <tr><td>Turno nocturno</td><td>Trabajo de noche rotativo</td><td>Trastornos circadianos</td><td>OIT C-148</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="sec-label sl-violet">Jerarquía de controles</div>
+  <h2 style="font-family:var(--ff);font-size:1.3rem;color:var(--white);margin-bottom:0.4rem;font-weight:700">ISO 45001:2018 / NOM-030-STPS-2009</h2>
+  <p style="font-size:0.98rem;color:var(--body);margin-bottom:1.5rem">Los controles se aplican en orden de eficacia. Siempre empieza por eliminar el peligro en la fuente antes de llegar al EPP — nunca comiences por el EPP.</p>
+
+  <div class="pyramid">
+    <div class="pyr-level"><div class="pyr-num pn1">1</div><div class="pyr-bar p1" style="width:95%"><strong>ELIMINACIÓN</strong> — Suprimir físicamente el peligro. Ej: eliminar la perforación en seco → máx. eficacia</div></div>
+    <div class="pyr-level"><div class="pyr-num pn2">2</div><div class="pyr-bar p2" style="width:88%"><strong>SUSTITUCIÓN</strong> — Reemplazar por algo menos peligroso. Ej: benceno → heptano como solvente</div></div>
+    <div class="pyr-level"><div class="pyr-num pn3">3</div><div class="pyr-bar p3" style="width:80%"><strong>CONTROLES DE INGENIERÍA</strong> — Aislar al trabajador. Ej: cabinas acústicas, extracción localizada</div></div>
+    <div class="pyr-level"><div class="pyr-num pn4">4</div><div class="pyr-bar p4" style="width:70%"><strong>CONTROLES ADMINISTRATIVOS</strong> — Cambios en el trabajo. Ej: rotación, capacitación, señalización</div></div>
+    <div class="pyr-level"><div class="pyr-num pn5">5</div><div class="pyr-bar p5" style="width:60%"><strong>EPP</strong> — Último recurso. Casco, guantes, respirador (NOM-017-STPS-2008)</div></div>
+  </div>
+
+  <div class="callout c-amber">
+    <span class="callout-icon">⚠️</span>
+    <div><strong>Regla de oro:</strong> El EPP no elimina el peligro, solo protege al trabajador portador. Si puedes eliminar o sustituir, siempre es preferible antes que depender del EPP.</div>
+  </div>
+
+  <div style="text-align:right;margin-top:2rem">
+    <button class="btn-primary" onclick="showPage('niveles')">Continuar a los tres niveles →</button>
+  </div>
+</div>
+
+<!-- NIVELES PAGE -->
+<div id="page-niveles" class="page" style="display:none">
+  <div class="sec-label sl-teal">📊 Análisis por niveles</div>
+  <h1 class="page-title">IPERC en tres niveles</h1>
+  <p class="page-sub">Cada nivel aplica una metodología más rigurosa. El mismo caso de estudio (Planta de Manufactura de Autopartes) se analiza con creciente profundidad.</p>
+
+  <div class="level-tabs">
+    <button class="level-tab lv1 active" onclick="showLevel('lv1',this)"><div class="lt-dot"></div>Nivel Básico</button>
+    <button class="level-tab lv2" onclick="showLevel('lv2',this)"><div class="lt-dot"></div>Nivel Intermedio</button>
+    <button class="level-tab lv3" onclick="showLevel('lv3',this)"><div class="lt-dot"></div>Nivel Avanzado</button>
+  </div>
+
+  <!-- NIVEL BÁSICO -->
+  <div id="level-lv1" class="level-panel active">
+    <div class="case">
+      <div class="case-head teal">
+        <div class="case-tag ct-t">NIVEL BÁSICO · CASO DE ESTUDIO</div>
+        <div class="case-title">Taller de soldadura — METALWORKS S.A. de C.V., Tlalnepantla, Edo. Méx.</div>
+        <div class="case-meta">Industria metalmecánica | 45 trabajadores | Turno de 8 horas | NOM-030-STPS-2009</div>
+      </div>
+      <div class="case-body">
+        <h4>Descripción del área</h4>
+        <p>Taller de 600 m² donde se realizan operaciones de soldadura MIG/MAG sobre estructuras metálicas. Los operadores trabajan 8 horas continuas. El área tiene ventilación natural insuficiente (solo 3 ventanas laterales). Se identifican vapores metálicos, ruido de esmerilado y trabajo en posturas forzadas.</p>
+
+        <h4>Paso 1: Identificar los peligros</h4>
+        <div class="t-wrap"><table>
+          <thead><tr><th>N°</th><th>Peligro identificado</th><th>Tipo</th><th>Área/Puesto</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Humos de soldadura (Mn, Cr, Fe)</td><td>Químico</td><td>Soldadores</td></tr>
+            <tr><td>2</td><td>Radiación UV por arco eléctrico</td><td>Físico</td><td>Soldadores + vecinos</td></tr>
+            <tr><td>3</td><td>Ruido de esmeriladora angular</td><td>Físico</td><td>Todo el taller</td></tr>
+            <tr><td>4</td><td>Proyección de partículas calientes</td><td>Mecánico</td><td>Soldadores</td></tr>
+            <tr><td>5</td><td>Postura forzada en soldadura aérea</td><td>Ergonómico</td><td>Soldadores</td></tr>
+            <tr><td>6</td><td>Contacto con superficies calientes</td><td>Físico</td><td>Todo el taller</td></tr>
+          </tbody>
+        </table></div>
+
+        <h4>Paso 2: Evaluar el riesgo — Método NR = P × C</h4>
+
+        <div class="grid2">
+          <div class="full-card" style="border-left:3px solid var(--teal)">
+            <h3>Escala de Probabilidad (P)</h3>
+            <div class="t-wrap" style="margin-bottom:0"><table>
+              <thead><tr><th>Valor</th><th>Nivel</th><th>Criterio</th></tr></thead>
+              <tbody>
+                <tr><td><strong>1</strong></td><td>Casi nunca</td><td>Una vez al año o menos</td></tr>
+                <tr><td><strong>2</strong></td><td>Raramente</td><td>Pocas veces al año</td></tr>
+                <tr><td><strong>3</strong></td><td>Ocasional</td><td>Una vez al mes</td></tr>
+                <tr><td><strong>4</strong></td><td>Frecuente</td><td>Una vez a la semana</td></tr>
+                <tr><td><strong>5</strong></td><td>Continuo</td><td>Diario durante la jornada</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+          <div class="full-card" style="border-left:3px solid var(--amber)">
+            <h3>Escala de Consecuencia (C)</h3>
+            <div class="t-wrap" style="margin-bottom:0"><table>
+              <thead><tr><th>Valor</th><th>Nivel</th><th>Criterio</th></tr></thead>
+              <tbody>
+                <tr><td><strong>1</strong></td><td>Insignificante</td><td>Sin lesión o primeros auxilios</td></tr>
+                <tr><td><strong>2</strong></td><td>Leve</td><td>Lesión que no requiere incapacidad</td></tr>
+                <tr><td><strong>3</strong></td><td>Moderado</td><td>Incapacidad temporal &lt;30 días</td></tr>
+                <tr><td><strong>4</strong></td><td>Grave</td><td>Incapacidad permanente parcial</td></tr>
+                <tr><td><strong>5</strong></td><td>Catastrófico</td><td>Muerte o IP total</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+        </div>
+
+        <div class="formula">
+          <div class="fn">NR = P × C</div>
+          <span class="note">Trivial: 1–4 | Bajo: 5–8 | Medio: 9–12 | Alto: 13–20 | Intolerable: 21–25</span>
+        </div>
+
+        <h4>Paso 3: Tabla IPERC completa — Nivel Básico</h4>
+        <div class="t-wrap"><table>
+          <thead><tr><th>Peligro</th><th>P</th><th>C</th><th>NR</th><th>Nivel</th><th>Control propuesto</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Humos de soldadura</td>
+              <td>5</td><td>4</td>
+              <td><span class="rbadge risk-i">20</span></td>
+              <td><span class="risk-a">ALTO</span></td>
+              <td>Extracción localizada + respirador P100 (NOM-017)</td>
+            </tr>
+            <tr>
+              <td>Radiación UV arc</td>
+              <td>5</td><td>3</td>
+              <td><span class="rbadge risk-a">15</span></td>
+              <td><span class="risk-a">ALTO</span></td>
+              <td>Biombos opacos + careta de soldadura careta auto-oscureciente</td>
+            </tr>
+            <tr>
+              <td>Ruido esmeriladora</td>
+              <td>4</td><td>3</td>
+              <td><span class="rbadge risk-m">12</span></td>
+              <td><span class="risk-m">MEDIO</span></td>
+              <td>Tapones auditivos NRR ≥ 25 dB + rotación (NOM-011)</td>
+            </tr>
+            <tr>
+              <td>Proyección de partículas</td>
+              <td>4</td><td>3</td>
+              <td><span class="rbadge risk-m">12</span></td>
+              <td><span class="risk-m">MEDIO</span></td>
+              <td>Pantalla facial + guantes de cuero cromo</td>
+            </tr>
+            <tr>
+              <td>Postura forzada</td>
+              <td>5</td><td>2</td>
+              <td><span class="rbadge risk-m">10</span></td>
+              <td><span class="risk-m">MEDIO</span></td>
+              <td>Evaluación ergonómica REBA + pausas activas cada 50 min</td>
+            </tr>
+            <tr>
+              <td>Superficies calientes</td>
+              <td>3</td><td>2</td>
+              <td><span class="rbadge risk-b">6</span></td>
+              <td><span class="risk-b">BAJO</span></td>
+              <td>Señalización + guantes termo-resistentes tipo B</td>
+            </tr>
+          </tbody>
+        </table></div>
+
+        <div class="callout c-teal">
+          <span class="callout-icon">✅</span>
+          <div><strong>Regla básica:</strong> En el nivel básico, el IPERC identifica todos los peligros y asigna valores P y C por criterio experto u observación directa. Se prioriza por el NR más alto para asignar controles primero.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NIVEL INTERMEDIO -->
+  <div id="level-lv2" class="level-panel">
+    <div class="case">
+      <div class="case-head amber">
+        <div class="case-tag ct-a">NIVEL INTERMEDIO · MISMO CASO + RIESGO RESIDUAL</div>
+        <div class="case-title">METALWORKS — IPERC con control verificado y riesgo residual</div>
+        <div class="case-meta">Se añaden: controles implementados, riesgo residual (NR') y responsables con fecha límite</div>
+      </div>
+      <div class="case-body">
+        <h4>¿Qué agrega el nivel intermedio?</h4>
+        <p>A diferencia del nivel básico, el IPERC intermedio evalúa el riesgo DESPUÉS de implementar los controles. Esto permite verificar si los controles son suficientes o si se necesitan medidas adicionales. Se añaden columnas de <strong>Control implementado</strong>, <strong>P' residual</strong>, <strong>C' residual</strong>, <strong>NR' residual</strong>, <strong>Responsable</strong> y <strong>Fecha compromiso</strong>.</p>
+
+        <h4>Criterio de aceptabilidad del riesgo residual</h4>
+        <div class="grid3">
+          <div class="card card-accent-g"><h3>Aceptable</h3><p>NR' ≤ 4 (Trivial/Bajo). Requiere monitoreo periódico únicamente.</p></div>
+          <div class="card card-accent-a"><h3>Con gestión</h3><p>NR' 5–12 (Bajo/Medio). Controles vigentes + programa de revisión.</p></div>
+          <div class="card card-accent-r"><h3>No aceptable</h3><p>NR' > 12 (Alto/Intolerable). Requiere acción correctiva inmediata.</p></div>
+        </div>
+
+        <h4>IPERC Intermedio — Con riesgo residual</h4>
+        <div class="t-wrap"><table>
+          <thead>
+            <tr>
+              <th>Peligro</th>
+              <th>P</th><th>C</th><th>NR ini.</th>
+              <th>Control implementado</th>
+              <th>P'</th><th>C'</th><th>NR'</th>
+              <th>Responsable</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Humos de soldadura</td>
+              <td>5</td><td>4</td><td><span class="risk-a">20</span></td>
+              <td>Extractor LEV instalado + resp. P100 + monitoreo semestral</td>
+              <td>2</td><td>3</td><td><span class="risk-b">6</span></td>
+              <td>Jefe SST / 30 días</td>
+            </tr>
+            <tr>
+              <td>Radiación UV</td>
+              <td>5</td><td>3</td><td><span class="risk-a">15</span></td>
+              <td>Biombos instalados + carteles obligatorios + revisión EPP</td>
+              <td>2</td><td>2</td><td><span class="risk-t">4</span></td>
+              <td>Supervisión / inmediato</td>
+            </tr>
+            <tr>
+              <td>Ruido esmeriladora</td>
+              <td>4</td><td>3</td><td><span class="risk-m">12</span></td>
+              <td>Tapones NRR 33 + PCA + audiometría anual</td>
+              <td>2</td><td>3</td><td><span class="risk-b">6</span></td>
+              <td>Higienista / 60 días</td>
+            </tr>
+            <tr>
+              <td>Proyección de partículas</td>
+              <td>4</td><td>3</td><td><span class="risk-m">12</span></td>
+              <td>Pantallas faciales EN 166 + guantes cuero Cr + señalización</td>
+              <td>2</td><td>2</td><td><span class="risk-t">4</span></td>
+              <td>Supervisión / 15 días</td>
+            </tr>
+            <tr>
+              <td>Postura forzada</td>
+              <td>5</td><td>2</td><td><span class="risk-m">10</span></td>
+              <td>Plataformas ajustables + pausas 10 min cada hora + ejercicios</td>
+              <td>3</td><td>2</td><td><span class="risk-b">6</span></td>
+              <td>CSST / 90 días</td>
+            </tr>
+          </tbody>
+        </table></div>
+
+        <div class="callout c-amber">
+          <span class="callout-icon">💡</span>
+          <div><strong>Clave del nivel intermedio:</strong> El NR' de los humos bajó de 20 (ALTO) a 6 (BAJO) tras instalar el extractor LEV. Esto demuestra que el control fue efectivo. Si el NR' hubiera quedado en 15, significaría que los controles son insuficientes y habría que subir en la jerarquía de controles.</div>
+        </div>
+
+        <h4>Matriz de prioridad visual</h4>
+        <p style="font-size:0.94rem;color:var(--body);margin-bottom:1rem">Lee la matriz como: Probabilidad (filas, de 5 arriba a 1 abajo) × Consecuencia (columnas, 1 izquierda a 5 derecha)</p>
+        <div class="matrix-grid">
+          <div class="mx-head">P↓ / C→</div>
+          <div class="mx-head">1<br>Insig.</div>
+          <div class="mx-head">2<br>Leve</div>
+          <div class="mx-head">3<br>Mod.</div>
+          <div class="mx-head">4<br>Grave</div>
+          <div class="mx-head">5<br>Catast.</div>
+          <div class="mx-head">5 Cont.</div>
+          <div class="mx-b">5<br>BAJO</div>
+          <div class="mx-m">10<br>MEDIO</div>
+          <div class="mx-a">15<br>ALTO</div>
+          <div class="mx-a">20<br>ALTO</div>
+          <div class="mx-i">25<br>INTOL</div>
+          <div class="mx-head">4 Frec.</div>
+          <div class="mx-t">4<br>TRIV</div>
+          <div class="mx-b">8<br>BAJO</div>
+          <div class="mx-m">12<br>MEDIO</div>
+          <div class="mx-a">16<br>ALTO</div>
+          <div class="mx-a">20<br>ALTO</div>
+          <div class="mx-head">3 Ocas.</div>
+          <div class="mx-t">3<br>TRIV</div>
+          <div class="mx-b">6<br>BAJO</div>
+          <div class="mx-m">9<br>MEDIO</div>
+          <div class="mx-m">12<br>MEDIO</div>
+          <div class="mx-a">15<br>ALTO</div>
+          <div class="mx-head">2 Raro</div>
+          <div class="mx-t">2<br>TRIV</div>
+          <div class="mx-t">4<br>TRIV</div>
+          <div class="mx-b">6<br>BAJO</div>
+          <div class="mx-b">8<br>BAJO</div>
+          <div class="mx-m">10<br>MEDIO</div>
+          <div class="mx-head">1 C.Nca</div>
+          <div class="mx-t">1<br>TRIV</div>
+          <div class="mx-t">2<br>TRIV</div>
+          <div class="mx-t">3<br>TRIV</div>
+          <div class="mx-t">4<br>TRIV</div>
+          <div class="mx-b">5<br>BAJO</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NIVEL AVANZADO -->
+  <div id="level-lv3" class="level-panel">
+    <div class="case">
+      <div class="case-head violet">
+        <div class="case-tag ct-v">NIVEL AVANZADO · ANÁLISIS CUANTITATIVO + ISO 45001</div>
+        <div class="case-title">METALWORKS — IPERC cuantitativo con índices Fine-Kinney y programa de seguimiento</div>
+        <div class="case-meta">Método Fine-Kinney: NR = P × E × C | Seguimiento, indicadores KPI y auditoría de cumplimiento</div>
+      </div>
+      <div class="case-body">
+        <h4>¿Por qué Fine-Kinney en el nivel avanzado?</h4>
+        <p>El método Fine-Kinney añade una tercera variable: la <strong>Exposición (E)</strong>, que cuantifica con qué frecuencia el trabajador está en contacto con el peligro. Esto da un resultado más preciso que el método P×C, especialmente en industrias de proceso continuo.</p>
+
+        <div class="grid3">
+          <div class="full-card" style="border-left:3px solid var(--violet)">
+            <h3>Probabilidad (P)</h3>
+            <ul>
+              <li>10 — Casi seguro (ocurre con frecuencia)</li>
+              <li>6 — Bastante posible</li>
+              <li>3 — Posible / inusual</li>
+              <li>1 — Remotamente posible</li>
+              <li>0.5 — Concebible pero improbable</li>
+              <li>0.1 — Prácticamente imposible</li>
+            </ul>
+          </div>
+          <div class="full-card" style="border-left:3px solid var(--teal)">
+            <h3>Exposición (E)</h3>
+            <ul>
+              <li>10 — Continuamente</li>
+              <li>6 — Frecuentemente (diario)</li>
+              <li>3 — Ocasionalmente (semanal)</li>
+              <li>2 — De vez en cuando (mensual)</li>
+              <li>1 — Raramente (anual)</li>
+              <li>0.5 — Muy raramente</li>
+            </ul>
+          </div>
+          <div class="full-card" style="border-left:3px solid var(--amber)">
+            <h3>Consecuencia (C)</h3>
+            <ul>
+              <li>100 — Catástrofe, muertes múltiples</li>
+              <li>40 — Desastre, varias muertes</li>
+              <li>15 — Muy serio, una muerte</li>
+              <li>7 — Serio, lesión grave</li>
+              <li>3 — Importante, lesión incapacitante</li>
+              <li>1 — Notable, primeros auxilios</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="formula">
+          <div class="fn">NR = P × E × C</div>
+          <span class="note">Trivial &lt;20 | Aceptable 20-70 | Moderado 70-200 | Sustancial 200-400 | Alto &gt;400</span>
+        </div>
+
+        <h4>IPERC Fine-Kinney — METALWORKS Soldadura</h4>
+        <div class="t-wrap"><table>
+          <thead><tr><th>Peligro</th><th>P</th><th>E</th><th>C</th><th>NR</th><th>Nivel</th><th>Control principal</th><th>KPI de seguimiento</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Humos de soldadura (Mn)</td>
+              <td>6</td><td>10</td><td>15</td>
+              <td><span class="rbadge risk-i">900</span></td>
+              <td><span class="risk-i">ALTO</span></td>
+              <td>LEV + monitoreo Mn sangre &lt;0.05 mg/L (BEI ACGIH)</td>
+              <td>Plombemia semestral; eficiencia extractor &gt;90%</td>
+            </tr>
+            <tr>
+              <td>Radiación UV arco eléctrico</td>
+              <td>6</td><td>10</td><td>7</td>
+              <td><span class="rbadge risk-a">420</span></td>
+              <td><span class="risk-a">ALTO</span></td>
+              <td>Biombos ISO 4850 + careta auto-oscureciente DIN 11+</td>
+              <td>Revisión EPP mensual; incidentes oculares = 0</td>
+            </tr>
+            <tr>
+              <td>Ruido &gt;90 dB(A)</td>
+              <td>3</td><td>10</td><td>7</td>
+              <td><span class="rbadge risk-m">210</span></td>
+              <td><span class="risk-m">SUST.</span></td>
+              <td>Audiometría anual (NOM-011) + PCA + tapones NRR 33</td>
+              <td>Dosimetría trimestral; TLV 90 dB/8h cumplimiento 100%</td>
+            </tr>
+            <tr>
+              <td>Postura forzada crónica</td>
+              <td>3</td><td>10</td><td>3</td>
+              <td><span class="rbadge risk-m">90</span></td>
+              <td><span class="risk-m">MOD.</span></td>
+              <td>Evaluación REBA anual + plataformas + fisioterap. preventiva</td>
+              <td>Score REBA &lt;7; ausentismo MSE &lt;2%</td>
+            </tr>
+            <tr>
+              <td>Proyección de partículas</td>
+              <td>3</td><td>6</td><td>3</td>
+              <td><span class="rbadge risk-b">54</span></td>
+              <td><span class="risk-b">ACEPT.</span></td>
+              <td>EPP en marcha + señalización (NOM-017)</td>
+              <td>Incidentes por proyección = 0/mes</td>
+            </tr>
+          </tbody>
+        </table></div>
+
+        <h4>Indicadores KPI del programa de SST (ISO 45001:2018 cl. 9.1)</h4>
+        <div class="grid4">
+          <div class="card card-accent-v"><div style="font-family:var(--ff);font-size:2rem;color:var(--violet2);font-weight:800">0</div><p>Accidentes incapacitantes / mes<br><span style="color:var(--muted);font-size:0.96rem">Meta: cero eventos</span></p></div>
+          <div class="card card-accent-t"><div style="font-family:var(--ff);font-size:2rem;color:var(--teal);font-weight:800">≤ 4</div><p>NR' residual máximo aceptable<br><span style="color:var(--muted);font-size:0.96rem">Después de controles</span></p></div>
+          <div class="card card-accent-a"><div style="font-family:var(--ff);font-size:2rem;color:var(--amber);font-weight:800">100%</div><p>Controles verificados en plazo<br><span style="color:var(--muted);font-size:0.96rem">Auditoría trimestral</span></p></div>
+          <div class="card card-accent-g"><div style="font-family:var(--ff);font-size:2rem;color:var(--grn);font-weight:800">2×/año</div><p>Frecuencia mínima revisión IPERC<br><span style="color:var(--muted);font-size:0.96rem">O ante cambio en el proceso</span></p></div>
+        </div>
+
+        <div class="callout c-teal">
+          <span class="callout-icon">🎯</span>
+          <div><strong>Nivel avanzado — Diferenciador clave:</strong> Se integran indicadores de desempeño (KPI) al IPERC, vinculando cada peligro con su métrica de control. Esto convierte el IPERC en un instrumento vivo de gestión, no solo un documento estático. Conforme a ISO 45001:2018 cláusula 9.1.</div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" onclick="toggleAcc(this)"><span>🔬 Criterios de aceptabilidad Fine-Kinney con criterio de acción</span><span class="acc-arrow">▼</span></button>
+          <div class="acc-body">
+            <div class="t-wrap"><table>
+              <thead><tr><th>Rango NR</th><th>Nivel</th><th>Acción requerida</th><th>Plazo</th></tr></thead>
+              <tbody>
+                <tr><td>&lt; 20</td><td><span class="risk-t">TRIVIAL</span></td><td>Sin acción; monitoreo periódico programado</td><td>Monitoreo</td></tr>
+                <tr><td>20–70</td><td><span class="risk-b">ACEPTABLE</span></td><td>Mantener controles existentes; revisión anual</td><td>12 meses</td></tr>
+                <tr><td>70–200</td><td><span class="risk-m">MODERADO</span></td><td>Establecer controles adicionales con responsable</td><td>30 días</td></tr>
+                <tr><td>200–400</td><td><span class="risk-a">SUSTANCIAL</span></td><td>Acción correctiva urgente; notificar CSST</td><td>48 horas</td></tr>
+                <tr><td>&gt; 400</td><td><span class="risk-i">ALTO</span></td><td>Paro de actividad hasta implementar control</td><td>Inmediato</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BUILDER PAGE -->
+<div id="page-builder" class="page" style="display:none">
+  <div class="sec-label sl-grn">🛠️ Práctica interactiva</div>
+  <h1 class="page-title">Constructor de IPERC</h1>
+  <p class="page-sub">Registra un peligro real paso a paso. El sistema calcula el Nivel de Riesgo automáticamente y te sugiere los controles adecuados.</p>
+
+  <div class="builder">
+    <div class="builder-header">
+      <div class="builder-title">Nuevo registro IPERC — Método P × C</div>
+      <button class="btn-step btn-reset" onclick="resetBuilder()">↺ Reiniciar</button>
+    </div>
+    <div class="builder-body">
+      <!-- Step indicator -->
+      <div class="step-indicator" id="si-bar">
+        <div class="si-item"><div class="si-dot active" id="si1" onclick="goToStep(1)">1</div><div class="si-line" id="sl1"></div></div>
+        <div class="si-item"><div class="si-dot" id="si2" onclick="goToStep(2)">2</div><div class="si-line" id="sl2"></div></div>
+        <div class="si-item"><div class="si-dot" id="si3" onclick="goToStep(3)">3</div><div class="si-line" id="sl3"></div></div>
+        <div class="si-item"><div class="si-dot" id="si4" onclick="goToStep(4)">4</div><div class="si-line" id="sl4"></div></div>
+        <div class="si-item"><div class="si-dot" id="si5">5</div></div>
+      </div>
+      <div style="display:flex;gap:8px;font-size:0.96rem;color:var(--muted);margin-bottom:1.75rem;font-family:var(--fm);flex-wrap:wrap">
+        <span>1·Contexto</span><span>→</span><span>2·Peligro</span><span>→</span>
+        <span>3·Evaluación</span><span>→</span><span>4·Controles</span><span>→</span><span>5·Resultado</span>
+      </div>
+
+      <!-- Step 1: Contexto -->
+      <div class="build-step active" id="bs1">
+        <h3 style="font-family:var(--ff);font-size:1rem;color:var(--white);margin-bottom:1.25rem;font-weight:700">Paso 1 — Contexto del puesto de trabajo</h3>
+        <div class="fields-row">
+          <div class="field"><label>Empresa / Organización</label><input type="text" id="f-empresa" placeholder="Ej: METALWORKS S.A. de C.V."></div>
+          <div class="field"><label>Área / Proceso</label><input type="text" id="f-area" placeholder="Ej: Taller de soldadura"></div>
+        </div>
+        <div class="fields-row">
+          <div class="field"><label>Puesto de trabajo</label><input type="text" id="f-puesto" placeholder="Ej: Soldador MIG/MAG"></div>
+          <div class="field"><label>Número de trabajadores expuestos</label><input type="number" id="f-ntrab" placeholder="Ej: 12" min="1"></div>
+        </div>
+        <div class="field"><label>Actividad específica analizada</label>
+          <textarea id="f-actividad" placeholder="Describe la tarea o actividad donde se realiza el análisis..."></textarea>
+        </div>
+        <div style="text-align:right">
+          <button class="btn-step btn-next" onclick="nextStep(1)">Siguiente → Identificar peligro</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Peligro -->
+      <div class="build-step" id="bs2">
+        <h3 style="font-family:var(--ff);font-size:1rem;color:var(--white);margin-bottom:1.25rem;font-weight:700">Paso 2 — Identificación del peligro</h3>
+        <div class="fields-row">
+          <div class="field">
+            <label>Tipo de peligro</label>
+            <select id="f-tipo">
+              <option value="">Selecciona el tipo...</option>
+              <option>Físico (ruido, temperatura, radiación, vibración)</option>
+              <option>Químico (gases, vapores, polvos, humos)</option>
+              <option>Biológico (bacterias, virus, hongos)</option>
+              <option>Ergonómico (posturas, esfuerzos, repetición)</option>
+              <option>Mecánico (máquinas, herramientas, proyectiles)</option>
+              <option>Eléctrico (contacto directo/indirecto)</option>
+              <option>Locativo (pisos, escaleras, altura)</option>
+              <option>Psicosocial (carga de trabajo, acoso)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Agente específico</label>
+            <input type="text" id="f-agente" placeholder="Ej: Humos de manganeso en soldadura MIG">
+          </div>
+        </div>
+        <div class="field">
+          <label>Evento peligroso (¿qué puede pasar?)</label>
+          <input type="text" id="f-evento" placeholder="Ej: Inhalación de humos con alto contenido de manganeso durante soldadura continua">
+        </div>
+        <div class="field">
+          <label>Daño potencial para la salud</label>
+          <input type="text" id="f-dano" placeholder="Ej: Manganismo, síndrome parkinsoniano, lesión pulmonar crónica">
+        </div>
+        <div style="display:flex;gap:8px;justify-content:space-between">
+          <button class="btn-step btn-prev" onclick="prevStep(2)">← Anterior</button>
+          <button class="btn-step btn-next" onclick="nextStep(2)">Siguiente → Evaluar riesgo</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Evaluación -->
+      <div class="build-step" id="bs3">
+        <h3 style="font-family:var(--ff);font-size:1rem;color:var(--white);margin-bottom:1.25rem;font-weight:700">Paso 3 — Evaluación del riesgo</h3>
+        <div class="fields-row">
+          <div class="field">
+            <label>Probabilidad (P) — ¿Con qué frecuencia ocurre el peligro?</label>
+            <select id="f-prob" onchange="calcNR()">
+              <option value="">Selecciona P...</option>
+              <option value="1">1 — Casi nunca (1 vez al año o menos)</option>
+              <option value="2">2 — Raramente (pocas veces al año)</option>
+              <option value="3">3 — Ocasional (una vez al mes)</option>
+              <option value="4">4 — Frecuente (una vez a la semana)</option>
+              <option value="5">5 — Continuo (diario durante la jornada)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Consecuencia (C) — ¿Cuál es el daño si ocurre?</label>
+            <select id="f-cons" onchange="calcNR()">
+              <option value="">Selecciona C...</option>
+              <option value="1">1 — Insignificante (sin lesión)</option>
+              <option value="2">2 — Leve (no requiere incapacidad)</option>
+              <option value="3">3 — Moderado (IT &lt; 30 días)</option>
+              <option value="4">4 — Grave (incapacidad permanente parcial)</option>
+              <option value="5">5 — Catastrófico (muerte o IP total)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="nr-display" id="nr-display">
+          <div class="nr-num nr-trivial" id="nr-val">—</div>
+          <div class="nr-label" id="nr-level">Selecciona P y C para calcular</div>
+        </div>
+
+        <div id="nr-guide" style="display:none">
+          <div class="t-wrap"><table>
+            <thead><tr><th>Nivel de Riesgo</th><th>Rango NR</th><th>Acción requerida</th></tr></thead>
+            <tbody>
+              <tr><td><span class="risk-t">TRIVIAL</span></td><td>1–4</td><td>Sin acción inmediata. Monitoreo periódico</td></tr>
+              <tr><td><span class="risk-b">BAJO</span></td><td>5–8</td><td>Controles planificados. Responsable y fecha</td></tr>
+              <tr><td><span class="risk-m">MEDIO</span></td><td>9–12</td><td>Controles adicionales. Supervisión obligatoria</td></tr>
+              <tr><td><span class="risk-a">ALTO</span></td><td>13–20</td><td>Acción urgente ≤ 48 h. Notificar a CSST</td></tr>
+              <tr><td><span class="risk-i">INTOLERABLE</span></td><td>21–25</td><td>PARO INMEDIATO. No reanudar sin control</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+
+        <div style="display:flex;gap:8px;justify-content:space-between">
+          <button class="btn-step btn-prev" onclick="prevStep(3)">← Anterior</button>
+          <button class="btn-step btn-next" id="btn-to-4" onclick="nextStep(3)" disabled>Siguiente → Definir controles</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Controles -->
+      <div class="build-step" id="bs4">
+        <h3 style="font-family:var(--ff);font-size:1rem;color:var(--white);margin-bottom:1.25rem;font-weight:700">Paso 4 — Medidas de control</h3>
+
+        <div class="callout c-teal" style="margin-bottom:1.25rem">
+          <span class="callout-icon">💡</span>
+          <div>Aplica la jerarquía de controles. Completa primero las opciones de mayor eficacia (eliminación/sustitución/ingeniería) antes de llegar al EPP.</div>
+        </div>
+
+        <ol class="step-flow sf-teal">
+          <li><div class="step-content">
+            <strong>Control de Eliminación/Sustitución</strong>
+            <div class="field" style="margin-top:6px"><input type="text" id="f-c1" placeholder="¿Puedes eliminar el peligro? ¿Sustituir por algo menos peligroso? (o N/A)"></div>
+          </div></li>
+          <li><div class="step-content">
+            <strong>Control de Ingeniería</strong>
+            <div class="field" style="margin-top:6px"><input type="text" id="f-c2" placeholder="Ej: Extracción localizada, cabinas acústicas, guardas, automatización..."></div>
+          </div></li>
+          <li><div class="step-content">
+            <strong>Control Administrativo</strong>
+            <div class="field" style="margin-top:6px"><input type="text" id="f-c3" placeholder="Ej: Rotación de personal, capacitación, procedimientos, señalización..."></div>
+          </div></li>
+          <li><div class="step-content">
+            <strong>EPP (último recurso)</strong>
+            <div class="field" style="margin-top:6px"><input type="text" id="f-c4" placeholder="Ej: Respirador P100, orejeras NRR 33, guantes de cuero cromo (NOM-017)..."></div>
+          </div></li>
+        </ol>
+
+        <div class="fields-row">
+          <div class="field"><label>Responsable del control</label><input type="text" id="f-resp" placeholder="Ej: Jefe de SST / Supervisor"></div>
+          <div class="field"><label>Fecha límite de implementación</label><input type="date" id="f-fecha"></div>
+        </div>
+
+        <div style="display:flex;gap:8px;justify-content:space-between">
+          <button class="btn-step btn-prev" onclick="prevStep(4)">← Anterior</button>
+          <button class="btn-step btn-next" onclick="nextStep(4)">Ver resultado →</button>
+        </div>
+      </div>
+
+      <!-- Step 5: Resultado -->
+      <div class="build-step" id="bs5">
+        <h3 style="font-family:var(--ff);font-size:1rem;color:var(--white);margin-bottom:1.25rem;font-weight:700">Paso 5 — Registro IPERC completado</h3>
+        <div class="result-card" id="result-output"></div>
+        <div class="callout c-grn">
+          <span class="callout-icon">✅</span>
+          <div>Tu registro IPERC está completo. En la práctica real, este registro se revisa por la CSST (Comisión de Seguridad e Higiene), se actualiza cuando cambia el proceso y se audita conforme a ISO 45001:2018 cláusula 6.1.2.</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn-step btn-prev" onclick="prevStep(5)">← Editar controles</button>
+          <button class="btn-step btn-next" onclick="resetBuilder()">+ Nuevo registro</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- EVALUACIÓN PAGE -->
+<div id="page-evaluacion" class="page" style="display:none">
+  <div class="sec-label sl-rose">✏️ Evaluación</div>
+  <h1 class="page-title">Autoevaluación IPERC</h1>
+  <p class="page-sub">20 reactivos de dificultad progresiva. Selecciona tu respuesta y verifica inmediatamente. Cubre los tres niveles del análisis IPERC.</p>
+
+  <div class="quiz-wrap" id="quiz-wrap">
+    <div class="quiz-top">
+      <h2>📝 Evaluación — IPERC: Identificación, Evaluación y Control de Riesgos</h2>
+      <span class="quiz-prog-text" id="qprog">Reactivo 1 de 20</span>
+    </div>
+    <div class="quiz-progbar-wrap">
+      <div class="quiz-progbar"><div class="quiz-progfill" id="qprogfill"></div></div>
+    </div>
+    <div class="quiz-body" id="qbody">
+      <div class="quiz-q" id="qq"></div>
+      <div class="quiz-ctx" id="qctx" style="display:none"></div>
+      <div class="quiz-opts" id="qopts"></div>
+      <div class="quiz-feedback" id="qfb"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <div class="quiz-nav">
+          <button class="qbtn-p" id="qbtn-check" onclick="checkQ()" disabled>Verificar</button>
+          <button class="qbtn-s" id="qbtn-next" onclick="nextQ()" disabled>Siguiente →</button>
+        </div>
+        <span class="quiz-hint" id="qhint">← Selecciona una opción</span>
+      </div>
+    </div>
+    <div class="quiz-score" id="qscore">
+      <div class="qs-ring" id="qs-ring"><span class="qs-pct" id="qs-pct"></span></div>
+      <div class="qs-title" id="qs-title"></div>
+      <div class="qs-msg" id="qs-msg"></div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="qbtn-p" onclick="restartQ()">🔄 Reintentar</button>
+        <button class="qbtn-s" onclick="showPage('niveles')">📖 Repasar niveles</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="scroll-hint" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba">↑</button>
+
+<script>
+/* ═══ NAVIGATION ══════════════════════════════════════════════ */
+function showPage(id) {
+  // Hide hero
+  document.getElementById('page-home').style.display = 'none';
+  // Hide all pages
+  document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
+  // Update nav
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+  if (id === 'home') {
+    document.getElementById('page-home').style.display = '';
+    document.querySelectorAll('.nav-btn')[0].classList.add('active');
+    return;
+  }
+
+  const page = document.getElementById('page-' + id);
+  if (page) {
+    page.style.display = '';
+    setTimeout(() => page.classList.add('active'), 10);
+  }
+  const navMap = { fundamentos:1, niveles:2, builder:3, evaluacion:4 };
+  if (navMap[id] !== undefined) {
+    document.querySelectorAll('.nav-btn')[navMap[id]].classList.add('active');
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ═══ TABS ═══════════════════════════════════════════════════ */
+function openTab(group, id, btn) {
+  document.querySelectorAll('[id^="' + group + '-"]').forEach(p => p.classList.remove('active'));
+  document.getElementById(group + '-' + id).classList.add('active');
+  const bar = btn.closest('.tab-bar');
+  bar.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('at', 'aa', 'av'); });
+  btn.classList.add('at');
+}
+
+/* ═══ ACCORDION ══════════════════════════════════════════════ */
+function toggleAcc(btn) { btn.closest('.acc').classList.toggle('open'); }
+
+/* ═══ LEVELS ═════════════════════════════════════════════════ */
+function showLevel(id, btn) {
+  document.querySelectorAll('.level-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.level-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('level-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ═══ BUILDER ════════════════════════════════════════════════ */
+let builderStep = 1;
+const totalSteps = 5;
+let nrValue = 0;
+
+function calcNR() {
+  const p = parseInt(document.getElementById('f-prob').value) || 0;
+  const c = parseInt(document.getElementById('f-cons').value) || 0;
+  const nr = p * c;
+  nrValue = nr;
+  const display = document.getElementById('nr-val');
+  const level = document.getElementById('nr-level');
+  const guide = document.getElementById('nr-guide');
+  const btnTo4 = document.getElementById('btn-to-4');
+
+  if (!p || !c) {
+    display.textContent = '—';
+    display.className = 'nr-num nr-trivial';
+    level.textContent = 'Selecciona P y C para calcular';
+    guide.style.display = 'none';
+    btnTo4.disabled = true;
+    return;
+  }
+
+  display.textContent = nr;
+  guide.style.display = 'block';
+  btnTo4.disabled = false;
+
+  let cls, lbl;
+  if (nr <= 4)       { cls = 'nr-trivial';    lbl = 'TRIVIAL — Monitoreo periódico'; }
+  else if (nr <= 8)  { cls = 'nr-bajo';       lbl = 'BAJO — Controles planificados'; }
+  else if (nr <= 12) { cls = 'nr-medio';      lbl = 'MEDIO — Controles adicionales urgentes'; }
+  else if (nr <= 20) { cls = 'nr-alto';       lbl = 'ALTO — Acción en ≤ 48 horas'; }
+  else               { cls = 'nr-intolerable';lbl = 'INTOLERABLE — PARO INMEDIATO'; }
+
+  display.className = 'nr-num ' + cls;
+  level.textContent = 'NR = ' + p + ' × ' + c + ' = ' + nr + ' | ' + lbl;
+}
+
+function goToStep(n) {
+  if (n > builderStep) return; // can only go back
+  setBuilderStep(n);
+}
+
+function nextStep(from) {
+  // Basic validation
+  if (from === 1) {
+    if (!v('f-empresa') || !v('f-area') || !v('f-puesto')) {
+      shake('bs1'); return;
+    }
+  }
+  if (from === 2) {
+    if (!v('f-tipo') || !v('f-agente') || !v('f-evento') || !v('f-dano')) {
+      shake('bs2'); return;
+    }
+  }
+  if (from === 3) {
+    if (!nrValue) { shake('bs3'); return; }
+  }
+  if (from === 4) {
+    buildResult();
+  }
+  setBuilderStep(from + 1);
+}
+
+function prevStep(from) { setBuilderStep(from - 1); }
+
+function v(id) { const el = document.getElementById(id); return el && el.value.trim() !== ''; }
+
+function shake(id) {
+  const el = document.getElementById(id);
+  el.style.animation = 'none';
+  el.offsetHeight;
+  el.style.animation = 'shake 0.35s ease';
+}
+
+function setBuilderStep(n) {
+  builderStep = n;
+  document.querySelectorAll('.build-step').forEach((s, i) => {
+    s.classList.toggle('active', i + 1 === n);
+  });
+  for (let i = 1; i <= totalSteps; i++) {
+    const dot = document.getElementById('si' + i);
+    if (!dot) continue;
+    dot.classList.remove('active', 'done');
+    if (i < n) dot.classList.add('done');
+    else if (i === n) dot.classList.add('active');
+    if (i < totalSteps) {
+      const line = document.getElementById('sl' + i);
+      if (line) line.classList.toggle('done', i < n);
+    }
+  }
+}
+
+function buildResult() {
+  const g = id => document.getElementById(id).value.trim();
+  const nr = nrValue;
+  let nivRisk;
+  if (nr <= 4) nivRisk = '<span class="risk-t">TRIVIAL</span>';
+  else if (nr <= 8) nivRisk = '<span class="risk-b">BAJO</span>';
+  else if (nr <= 12) nivRisk = '<span class="risk-m">MEDIO</span>';
+  else if (nr <= 20) nivRisk = '<span class="risk-a">ALTO</span>';
+  else nivRisk = '<span class="risk-i">INTOLERABLE</span>';
+
+  const html = `
+    <div style="margin-bottom:0.75rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border)">
+      <div style="font-family:var(--fm);font-size:0.90rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.25rem">Registro IPERC generado</div>
+    </div>
+    <div class="rc-row"><span class="rc-label">Empresa</span><span class="rc-value">${g('f-empresa')}</span></div>
+    <div class="rc-row"><span class="rc-label">Área / Proceso</span><span class="rc-value">${g('f-area')}</span></div>
+    <div class="rc-row"><span class="rc-label">Puesto</span><span class="rc-value">${g('f-puesto')}</span></div>
+    <div class="rc-row"><span class="rc-label">Trabajadores exp.</span><span class="rc-value">${g('f-ntrab') || '—'}</span></div>
+    <div class="rc-row"><span class="rc-label">Tipo de peligro</span><span class="rc-value">${g('f-tipo')}</span></div>
+    <div class="rc-row"><span class="rc-label">Agente</span><span class="rc-value">${g('f-agente')}</span></div>
+    <div class="rc-row"><span class="rc-label">Evento peligroso</span><span class="rc-value">${g('f-evento')}</span></div>
+    <div class="rc-row"><span class="rc-label">Daño potencial</span><span class="rc-value">${g('f-dano')}</span></div>
+    <div class="rc-row"><span class="rc-label">P × C</span><span class="rc-value">${g('f-prob').split(' ')[0]} × ${g('f-cons').split(' ')[0]} = <strong style="font-family:var(--fm);font-size:1.1rem">${nr}</strong></span></div>
+    <div class="rc-row"><span class="rc-label">Nivel de Riesgo</span><span class="rc-value">${nivRisk}</span></div>
+    ${g('f-c1') ? `<div class="rc-row"><span class="rc-label">Control 1 (Elim/Sus)</span><span class="rc-value">${g('f-c1')}</span></div>` : ''}
+    ${g('f-c2') ? `<div class="rc-row"><span class="rc-label">Control 2 (Ing.)</span><span class="rc-value">${g('f-c2')}</span></div>` : ''}
+    ${g('f-c3') ? `<div class="rc-row"><span class="rc-label">Control 3 (Admin.)</span><span class="rc-value">${g('f-c3')}</span></div>` : ''}
+    ${g('f-c4') ? `<div class="rc-row"><span class="rc-label">Control 4 (EPP)</span><span class="rc-value">${g('f-c4')}</span></div>` : ''}
+    <div class="rc-row"><span class="rc-label">Responsable</span><span class="rc-value">${g('f-resp') || '—'}</span></div>
+    <div class="rc-row"><span class="rc-label">Fecha límite</span><span class="rc-value">${g('f-fecha') || '—'}</span></div>
+  `;
+  document.getElementById('result-output').innerHTML = html;
+}
+
+function resetBuilder() {
+  ['f-empresa','f-area','f-puesto','f-ntrab','f-actividad',
+   'f-tipo','f-agente','f-evento','f-dano',
+   'f-c1','f-c2','f-c3','f-c4','f-resp','f-fecha'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.getElementById('f-prob').value = '';
+  document.getElementById('f-cons').value = '';
+  nrValue = 0;
+  document.getElementById('nr-val').textContent = '—';
+  document.getElementById('nr-val').className = 'nr-num nr-trivial';
+  document.getElementById('nr-level').textContent = 'Selecciona P y C para calcular';
+  document.getElementById('nr-guide').style.display = 'none';
+  document.getElementById('btn-to-4').disabled = true;
+  setBuilderStep(1);
+}
+
+/* ═══ QUIZ DATA ══════════════════════════════════════════════ */
+const QD = [
+  // Básico
+  {q:"¿Cuál es la diferencia fundamental entre un PELIGRO y un RIESGO en el análisis IPERC?",
+   opts:["Son sinónimos: ambos se refieren a condiciones que causan daño",
+         "El peligro es la fuente potencial de daño; el riesgo es la probabilidad × consecuencia de que ese peligro cause daño",
+         "El riesgo es la condición objetiva; el peligro es la probabilidad calculada",
+         "El peligro solo aplica a agentes físicos; el riesgo a agentes químicos"],
+   c:1,
+   fb:"✓ CORRECTO. El PELIGRO es la fuente o condición con potencial de causar daño (ej: piso mojado). El RIESGO combina la probabilidad de que ocurra un evento con la severidad de sus consecuencias (NR = P × C). Esta distinción es fundamental para el IPERC."},
+
+  {q:"Un operador trabaja 8 horas al día exponiendo sus manos a vibraciones de una amoladora angular. ¿Qué tipo de peligro representa esto?",
+   opts:["Mecánico, porque se trata de una herramienta",
+         "Locativo, porque la herramienta está en el lugar de trabajo",
+         "Físico (vibración mano-brazo, VMB), regulado por NOM-024-STPS-2001",
+         "Ergonómico, porque el trabajador usa las manos repetitivamente"],
+   c:2,
+   fb:"✓ CORRECTO. La vibración transmitida a través de herramientas manuales es un peligro FÍSICO (vibración mano-brazo, VMB). La NOM-024-STPS-2001 establece el VLE de 5 m/s² para jornadas de 8 h. No confundir con el riesgo ergonómico (que sería la postura forzada asociada)."},
+
+  {q:"Usando el método básico NR = P × C, un soldador está expuesto diariamente a vapores de plomo (P=5) y el daño potencial es una lesión grave/permanente (C=4). ¿Cuál es el NR y su nivel?",
+   opts:["NR=9 → Nivel MEDIO","NR=20 → Nivel ALTO","NR=25 → INTOLERABLE","NR=15 → Nivel ALTO"],
+   c:1,fb:"✓ CORRECTO. NR = P × C = 5 × 4 = 20 → Nivel ALTO (rango 13–20). Requiere acción correctiva urgente en ≤ 48 horas y notificación a la CSST."},
+
+  {q:"¿Qué posición ocupa el EPP (equipo de protección personal) en la jerarquía de controles según ISO 45001:2018?",
+   opts:["Primera posición — es la medida más efectiva porque protege directamente al trabajador",
+         "Segunda posición — después de los controles de ingeniería",
+         "Quinta (última) posición — es el último recurso cuando no es posible reducir el riesgo de otra manera",
+         "La jerarquía no incluye el EPP porque es responsabilidad del trabajador, no del empleador"],
+   c:2,
+   fb:"✓ CORRECTO. El EPP ocupa la 5ª y última posición en la jerarquía de controles: 1.Eliminación → 2.Sustitución → 3.Ingeniería → 4.Administrativo → 5.EPP. Solo protege al portador y no elimina el peligro. NOM-017-STPS-2008 regula su selección y uso en México."},
+
+  {q:"En el IPERC básico de un taller textil se identifican movimientos repetitivos de muñeca durante 8 horas. ¿A qué tipo de peligro corresponde?",
+   opts:["Físico (vibración de baja frecuencia)","Mecánico (por el uso de herramientas)","Ergonómico — regulado por NOM-036-1-STPS-2018","Psicosocial (monotonía laboral)"],
+   c:2,
+   fb:"✓ CORRECTO. Los movimientos repetitivos de muñeca son un factor de riesgo ERGONÓMICO (biomecánico) que puede causar síndrome del túnel carpiano, tendinitis y otras lesiones músculo-esqueléticas. La NOM-036-1-STPS-2018 es la referencia normativa en México."},
+
+  // Intermedio
+  {q:"En el IPERC intermedio se evalúa el 'riesgo residual'. ¿Qué representa este concepto?",
+   ctx:"Un operador de esmeriladora tenía NR=12 (MEDIO). Se instalaron orejeras NRR 33 y se implementó rotación de personal cada 2 horas. La nueva evaluación da P'=2, C'=3.",
+   opts:["El riesgo que queda ANTES de implementar controles","El riesgo que PERMANECE después de implementar los controles (NR' = P' × C' = 6 → BAJO en este caso)",
+         "El riesgo que se elimina con el EPP","La diferencia entre NR inicial y NR final"],
+   c:1,
+   fb:"✓ CORRECTO. El riesgo residual NR' = P' × C' = 2 × 3 = 6 → BAJO. Es el riesgo que permanece DESPUÉS de implementar controles. El objetivo es que NR' ≤ 4 (trivial/bajo). Si NR' sigue siendo ALTO (>12), los controles son insuficientes y hay que subir en la jerarquía."},
+
+  {q:"Según la metodología del IPERC, ¿cuándo debe revisarse o actualizarse obligatoriamente el análisis de riesgos?",
+   opts:["Solo cuando ocurre un accidente de trabajo","Únicamente cuando lo solicite la STPS en una inspección",
+         "Cuando cambia el proceso/equipo, ante accidentes, periódicamente (≥2 veces/año) y cuando lo exija la CSST",
+         "Una sola vez cuando se elabora el programa de seguridad inicial"],
+   c:2,
+   fb:"✓ CORRECTO. El IPERC es un documento vivo que debe actualizarse: a) cuando cambia el proceso, equipos o materiales; b) después de accidentes o incidentes; c) periódicamente (ISO 45001 recomienda al menos 2 veces/año); d) cuando la CSST lo solicite (NOM-019-STPS-2011). No es un documento estático."},
+
+  {q:"Un peligro tiene P=3 (ocasional) y C=4 (grave). Se implementa ventilación localizada que reduce la probabilidad a P'=1. ¿El control es suficiente?",
+   opts:["Sí, porque NR' = 1×4 = 4 → TRIVIAL, lo cual es aceptable",
+         "No, porque aunque NR' baja, la consecuencia sigue siendo grave (C=4) y exige EPP adicional obligatoriamente",
+         "Sí siempre que se haga una revisión anual del sistema de ventilación",
+         "No se puede determinar sin saber el tipo de agente químico"],
+   c:0,
+   fb:"✓ CORRECTO. NR' = P' × C' = 1 × 4 = 4 → TRIVIAL (≤4). Desde el punto de vista del método P×C, el control es SUFICIENTE. Sin embargo, en la práctica buena el ingeniero de SST mantiene el EPP como medida complementaria aunque el NR' sea trivial, especialmente cuando la consecuencia es grave."},
+
+  {q:"¿Cuál es la diferencia principal entre el IPERC intermedio y el básico?",
+   opts:["El intermedio usa el método Fine-Kinney en lugar de P×C",
+         "El intermedio agrega las columnas de Control implementado, Riesgo residual (NR'), Responsable y Fecha compromiso",
+         "El intermedio solo analiza agentes químicos y físicos",
+         "En el intermedio, el IPERC lo elabora solo el médico del trabajo"],
+   c:1,
+   fb:"✓ CORRECTO. El IPERC intermedio mantiene el método P×C pero añade: controles implementados, evaluación del riesgo residual (NR' = P' × C'), responsable del control y fecha compromiso. Esto convierte el IPERC en una herramienta de seguimiento, no solo de diagnóstico."},
+
+  {q:"En el IPERC intermedio, se tiene NR=15 (ALTO) para un agente químico. Tras instalar extracción localizada (LEV), se obtiene NR'=8 (BAJO). ¿Qué acción procede según el criterio de aceptabilidad?",
+   opts:["PARO INMEDIATO — el NR inicial era demasiado alto",
+         "El control es aceptable. Mantener el LEV operativo y verificar eficiencia del sistema periódicamente",
+         "Instalar más controles hasta llevar NR' a 0",
+         "El IPERC se archiva porque el NR' ya no requiere atención"],
+   c:1,
+   fb:"✓ CORRECTO. NR' = 8 → BAJO. Es un nivel de riesgo aceptable bajo gestión. La acción correcta es: mantener el LEV operativo, verificar su eficiencia periódicamente (medición de velocidad de captura, mantenimiento preventivo), y documentar en el IPERC con fecha de revisión. No se archiva; se monitorea."},
+
+  // Avanzado
+  {q:"En el método Fine-Kinney, NR = P × E × C. ¿Qué agrega la variable E que no considera el método básico P×C?",
+   ctx:"Un trabajador opera un taladro neumático 4 horas cada día laboral (E=6, frecuentemente), con probabilidad de accidente P=3 y consecuencia C=7 (serio, lesión grave).",
+   opts:["La exposición (E) mide el tiempo diario que el trabajador está en contacto directo con el peligro, lo que da mayor precisión al cálculo del riesgo",
+         "La E representa la experiencia del trabajador en años",
+         "La E reemplaza a la Consecuencia (C) en el cálculo",
+         "La E solo aplica para agentes físicos como ruido y vibraciones"],
+   c:0,
+   fb:"✓ CORRECTO. En Fine-Kinney, E (Exposición) cuantifica la frecuencia de contacto entre el trabajador y el peligro. Para el ejemplo: NR = 3 × 6 × 7 = 126 → MODERADO (70-200). Esto es más preciso que P×C = 3×7 = 21 (borderline INTOLERABLE vs. ALTO), porque distingue entre contacto continuo y contacto esporádico."},
+
+  {q:"Aplicando Fine-Kinney con P=6 (bastante posible), E=10 (continuamente) y C=15 (muy serio — una muerte), ¿cuál es el NR y qué acción se requiere?",
+   opts:["NR=31 → TRIVIAL, sin acción inmediata",
+         "NR=900 → ALTO, requiere paro inmediato de la actividad hasta implementar controles",
+         "NR=150 → MODERADO, controles en 30 días",
+         "NR=600 → SUSTANCIAL, acción urgente en 48 horas"],
+   c:1,
+   fb:"✓ CORRECTO. NR = P × E × C = 6 × 10 × 15 = 900 → ALTO (>400 en Fine-Kinney). Requiere PARO INMEDIATO de la actividad hasta implementar controles efectivos. Esto corresponde al caso de los humos de manganeso en soldadura continua del caso METALWORKS."},
+
+  {q:"¿Cuál es la correcta interpretación de los indicadores KPI en el IPERC de nivel avanzado (ISO 45001:2018, cl. 9.1)?",
+   opts:["Los KPI son metas de producción que el departamento de SST debe cumplir para el área de manufactura",
+         "Son métricas de desempeño vinculadas a cada peligro que permiten monitorear si los controles están siendo efectivos (ej: plombemia semestral, dosimetría trimestral, incidentes = 0)",
+         "Son indicadores financieros para calcular el costo de los accidentes ante el IMSS",
+         "Los KPI solo aplican en certificaciones ISO y no son obligatorios en México"],
+   c:1,
+   fb:"✓ CORRECTO. En el IPERC avanzado, cada peligro tiene un KPI asociado que permite verificar la efectividad del control: por ejemplo, 'plombemia &lt;0.05 mg/L' para exposición a plomo, 'eficiencia extractora &gt;90%' para LEV de soldadura, 'audiometría sin deterioro' para ruido. Esta es la esencia de la mejora continua en ISO 45001."},
+
+  {q:"Un higienista evalúa vapores de benceno en una planta petroquímica con Fine-Kinney: P=10, E=10, C=40. ¿Cuál es la clasificación correcta del NR y cuál es la prioridad de control?",
+   opts:["NR=4000 → ALTO. Prioridad 1: EPP (respirador), luego ingeniería","NR=400 → SUSTANCIAL. Instalar ventilación en 48 horas",
+         "NR=4000 → ALTO. Prioridad inmediata: eliminación/sustitución del benceno (IARC Grupo 1) o encapsulamiento total del proceso. EPP complementario",
+         "NR=60 → MODERADO. Controles en 30 días"],
+   c:2,
+   fb:"✓ CORRECTO. NR = 10 × 10 × 40 = 4,000 → ALTO (>>>400). PARO INMEDIATO. La prioridad según jerarquía es: 1.SUSTITUCIÓN (reemplazar benceno por tolueno o heptano, que tienen menor toxicidad hematológica). 2.ENCAPSULAMIENTO del proceso. 3.Extracción localizada. El EPP es SIEMPRE el último recurso. El benceno es IARC Grupo 1 (carcinógeno confirmado), VLE = 1 ppm (NOM-010-STPS-2014)."},
+
+  {q:"¿Qué establece la NOM-030-STPS-2009 respecto al IPERC en las empresas mexicanas?",
+   opts:["Que el IPERC solo es obligatorio para empresas con más de 100 trabajadores",
+         "Que los servicios preventivos de SST deben identificar y evaluar los factores de riesgo, establecer controles y dar seguimiento a las acciones correctivas en TODOS los centros de trabajo",
+         "Que el IPERC es voluntario para empresas clasificadas en giro de bajo riesgo ante el IMSS",
+         "Que la STPS realizará el IPERC de forma gratuita a las micro y pequeñas empresas"],
+   c:1,
+   fb:"✓ CORRECTO. La NOM-030-STPS-2009 'Servicios preventivos de seguridad y salud en el trabajo' establece la obligación de identificar y evaluar los factores de riesgo para TODOS los centros de trabajo, independientemente del tamaño. Define las funciones del servicio preventivo: identificar peligros, evaluar riesgos, proponer controles, dar seguimiento y elaborar el programa de SST."},
+
+  {q:"En una cohorte de 420 trabajadores de fundición, 68 desarrollaron silicosis en 8 años. ¿Qué indica un RR=12.3 calculado respecto al grupo control?",
+   opts:["La silicosis tiene un 12.3% de incidencia en fundidores",
+         "Los fundidores expuestos a SiO₂ tienen 12.3 veces mayor riesgo de silicosis que el grupo no expuesto. Es una asociación muy fuerte y estadísticamente significativa",
+         "Por cada 12.3 trabajadores expuestos, 1 desarrollará silicosis",
+         "El RR=12.3 indica que los controles instalados redujeron el riesgo un 12.3%"],
+   c:1,
+   fb:"✓ CORRECTO. RR = 12.3 significa que los trabajadores expuestos tienen 12.3 VECES más probabilidad de desarrollar silicosis comparado con el grupo no expuesto. Un RR > 5 es considerado asociación muy fuerte. La sílice cristalina es IARC Grupo 1 (carcinógeno confirmado). VLE en México: 0.025 mg/m³ fracción respirable (NOM-010-STPS-2014)."},
+
+  {q:"¿Cuál de las siguientes situaciones justifica una acción de PARO INMEDIATO de la actividad según el criterio IPERC?",
+   opts:["Ruido medido en 87 dB(A), VLE = 90 dB(A) (NOM-011). El trabajador lleva 3 años sin audiometría",
+         "Vapores de benceno a 0.8 ppm, VLE = 1 ppm (NOM-010). Sin EPP respiratorio",
+         "Detección de H₂S a 150 ppm en un espacio confinado (IDLH = 50 ppm, NOM-010). NR Fine-Kinney > 400",
+         "Iluminación en 280 lux, NOM-025 exige 300 lux para ese tipo de tarea"],
+   c:2,
+   fb:"✓ CORRECTO. H₂S a 150 ppm supera 3 veces el IDLH (50 ppm = Inmediatamente Peligroso para la Vida). Fine-Kinney daría NR > 400 (ALTO → PARO INMEDIATO). El benceno a 0.8 ppm requiere controles urgentes pero no paro. El ruido a 87 dB requiere PCA pero no paro. La iluminación a 280 lux es corregible sin paro."},
+
+  {q:"¿Cuál es la frecuencia mínima recomendada para revisar el IPERC según la práctica de gestión ISO 45001:2018?",
+   opts:["Una vez al inicio de operaciones, no requiere actualización posterior","Solo cuando haya un accidente mortal","Al menos dos veces por año y siempre que cambien procesos, equipos, materiales o cuando ocurran incidentes","Cada cinco años o cuando lo solicite la CSST"],
+   c:2,
+   fb:"✓ CORRECTO. ISO 45001:2018 (cláusula 6.1.2) exige que la identificación de peligros y la evaluación de riesgos sea un PROCESO CONTINUO. Se actualiza al menos 2 veces por año, y obligatoriamente ante: cambio en proceso/equipo/materiales, nuevos peligros identificados, ocurrencia de incidentes/accidentes, y cambios en la legislación aplicable."},
+
+  {q:"Un trabajador de almacén levanta cajas de 30 kg durante 6 horas diarias en postura incorrecta. Aplicando la jerarquía de controles, ¿cuál es la medida MÁS EFECTIVA?",
+   opts:["Proporcionar faja lumbar (EPP) para proteger la espalda del trabajador",
+         "Capacitar al trabajador en técnica correcta de levantamiento (control administrativo)",
+         "Automatizar el proceso con transpaleta eléctrica o banda transportadora (control de ingeniería), eliminando el levantamiento manual >25 kg",
+         "Rotación del personal para distribuir la carga entre más trabajadores (control administrativo)"],
+   c:2,
+   fb:"✓ CORRECTO. El control de INGENIERÍA (automatización) es superior en la jerarquía. La transpaleta eléctrica elimina el riesgo ergonómico en la fuente. La faja lumbar (EPP) es el peor control porque no elimina el peligro y su evidencia de eficacia es cuestionada. La capacitación y rotación son controles administrativos válidos pero menos efectivos que la solución de ingeniería."},
+
+  {q:"¿Por qué el método Fine-Kinney es más adecuado que el método básico P×C para analizar riesgos en procesos industriales continuos?",
+   opts:["Porque Fine-Kinney usa tres decimales en el cálculo, lo que lo hace más preciso matemáticamente",
+         "Porque Fine-Kinney incluye la variable Exposición (E), que distingue entre un peligro al que el trabajador está expuesto 8h continuas vs. uno al que se expone 10 minutos al mes — situaciones que P×C trataría igual si P y C son iguales",
+         "Porque Fine-Kinney es la única metodología reconocida por la STPS en México",
+         "Porque Fine-Kinney elimina la subjetividad de las evaluaciones al usar valores estandarizados internacionales únicos"],
+   c:1,
+   fb:"✓ CORRECTO. La gran ventaja de Fine-Kinney es que incorpora la EXPOSICIÓN (E). Ejemplo: mismo P=3 y C=7, pero E=10 (continuo) vs. E=1 (raramente): NR₁ = 3×10×7 = 210 (SUSTANCIAL); NR₂ = 3×1×7 = 21 (ACEPTABLE). Con P×C ambos darían 21, sin distinguir la gravedad del tiempo de exposición. Esto es crítico en procesos industriales de 8 horas continuas."}
+];
+
+/* ═══ QUIZ ENGINE ════════════════════════════════════════════ */
+let qi = 0, qscore = 0, qanswered = false;
+
+function renderQ() {
+  const q = QD[qi];
+  document.getElementById('qprog').textContent = `Reactivo ${qi + 1} de ${QD.length}`;
+  document.getElementById('qprogfill').style.width = (qi / QD.length * 100) + '%';
+  document.getElementById('qq').textContent = q.q;
+
+  const ctx = document.getElementById('qctx');
+  if (q.ctx) { ctx.style.display = 'block'; ctx.textContent = '📋 Contexto: ' + q.ctx; }
+  else ctx.style.display = 'none';
+
+  const fb = document.getElementById('qfb');
+  fb.className = 'quiz-feedback';
+  fb.innerHTML = '';
+
+  document.getElementById('qbtn-check').disabled = true;
+  document.getElementById('qbtn-next').disabled = true;
+  document.getElementById('qbtn-next').textContent = 'Siguiente →';
+  document.getElementById('qhint').textContent = '← Selecciona una opción';
+  qanswered = false;
+
+  document.getElementById('qopts').innerHTML = q.opts.map((o, i) => `
+    <div class="quiz-opt" data-i="${i}" onclick="selOpt(this)" role="button" tabindex="0"
+      onkeydown="if(event.key==='Enter'||event.key===' ')selOpt(this)">
+      <div class="quiz-dot" aria-hidden="true"></div>
+      <span>${o}</span>
+    </div>`).join('');
+}
+
+function selOpt(el) {
+  if (qanswered) return;
+  document.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('qselected'));
+  el.classList.add('qselected');
+  document.getElementById('qbtn-check').disabled = false;
+  document.getElementById('qhint').textContent = '';
+}
+
+function checkQ() {
+  if (qanswered) return;
+  const sel = document.querySelector('.quiz-opt.qselected');
+  if (!sel) {
+    const opts = document.getElementById('qopts');
+    opts.style.animation = 'none'; opts.offsetHeight;
+    opts.style.animation = 'shake 0.35s ease';
+    return;
+  }
+  qanswered = true;
+  const idx = parseInt(sel.dataset.i);
+  const correct = QD[qi].c;
+  const ok = idx === correct;
+  if (ok) qscore++;
+
+  document.querySelectorAll('.quiz-opt').forEach((o, i) => {
+    o.onclick = null;
+    o.removeAttribute('onkeydown');
+    if (i === correct) {
+      o.classList.remove('qselected'); o.classList.add('qcorrect');
+      o.querySelector('.quiz-dot').textContent = '✓';
+    } else if (i === idx && !ok) {
+      o.classList.remove('qselected'); o.classList.add('qwrong');
+      o.querySelector('.quiz-dot').textContent = '✗';
+    }
+  });
+
+  const fb = document.getElementById('qfb');
+  fb.className = 'quiz-feedback show ' + (ok ? 'qf-ok' : 'qf-fail');
+  fb.innerHTML = '<strong>' + (ok ? '✓ CORRECTO' : '✗ INCORRECTO') + '</strong> — ' + QD[qi].fb;
+
+  document.getElementById('qbtn-check').disabled = true;
+  const btnNext = document.getElementById('qbtn-next');
+  btnNext.disabled = false;
+  btnNext.textContent = qi === QD.length - 1 ? 'Ver resultado ✓' : 'Siguiente →';
+  btnNext.focus();
+  document.getElementById('qhint').textContent = ok ? '¡Correcto! Continúa.' : 'Lee la retroalimentación.';
+}
+
+function nextQ() {
+  qi++;
+  if (qi >= QD.length) { showScore(); return; }
+  renderQ();
+}
+
+function showScore() {
+  document.getElementById('qbody').style.display = 'none';
+  document.getElementById('qprogfill').style.width = '100%';
+  const sc = document.getElementById('qscore');
+  sc.classList.add('show');
+  const pct = Math.round(qscore / QD.length * 100);
+  const color = pct >= 80 ? 'var(--teal)' : pct >= 60 ? 'var(--amber)' : 'var(--rose)';
+  const ring = document.getElementById('qs-ring');
+  ring.style.borderColor = color;
+  document.getElementById('qs-pct').textContent = pct + '%';
+  document.getElementById('qs-pct').style.color = color;
+  let title, msg;
+  if (pct >= 90) { title = 'Dominio excelente ✓'; msg = `${qscore}/${QD.length} correctos. Excelente comprensión del IPERC en sus tres niveles. Estás listo para elaborar análisis de riesgos en la industria.`; }
+  else if (pct >= 75) { title = 'Buen desempeño'; msg = `${qscore}/${QD.length} correctos. Buen nivel. Repasa los reactivos donde tuviste errores, especialmente los del nivel avanzado.`; }
+  else if (pct >= 60) { title = 'En desarrollo'; msg = `${qscore}/${QD.length} correctos. Revisa los fundamentos del método Fine-Kinney y la jerarquía de controles antes del próximo intento.`; }
+  else { title = 'Requiere repaso'; msg = `${qscore}/${QD.length} correctos. Te recomendamos repasar los tres niveles comenzando por el básico antes de volver a la evaluación.`; }
+  document.getElementById('qs-title').textContent = title;
+  document.getElementById('qs-msg').textContent = msg;
+}
+
+function restartQ() {
+  qi = 0; qscore = 0; qanswered = false;
+  document.getElementById('qscore').classList.remove('show');
+  document.getElementById('qbody').style.display = 'block';
+  renderQ();
+}
+
+// Init
+renderQ();
+</script>
+
+<!-- FOOTER INSTITUCIONAL -->
+<footer style="background:#131C2B;border-top:1px solid rgba(255,255,255,0.09);margin-top:5rem">
+  <div style="max-width:1200px;margin:0 auto;padding:2rem 2rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem">
+
+    <!-- Left: identity -->
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div style="font-family:'Syne',sans-serif;font-size:0.82rem;font-weight:700;color:#C4D4E5">
+        Ing. Marcos G. Victorino &nbsp;·&nbsp; MGV Consultoría e Ingeniería
+      </div>
+      
+      <div style="font-size:0.72rem;color:#4A6070;margin-top:2px">
+        Material didáctico · Ingeniería Industrial · Seguridad e Higiene Industrial
+      </div>
+    </div>
+
+    <!-- Right: links -->
+    <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap">
+      <a href="https://consultoria-mgv.github.io/consultoria-mgv/#sectores" target="_blank"
+         style="font-size:0.78rem;color:#00D4AF;text-decoration:none;font-family:'JetBrains Mono',monospace;
+                display:flex;align-items:center;gap:6px;transition:color 0.15s"
+         onmouseover="this.style.color='#00F0CB'" onmouseout="this.style.color='#00D4AF'">
+        🌐 consultoria-mgv.github.io
+      </a>
+      <span style="font-size:0.70rem;color:#354A5E;font-family:'JetBrains Mono',monospace">
+        © 2025 MGV
+      </span>
+    </div>
+
+  </div>
+</footer>
+
+
+</body>
+</html>
